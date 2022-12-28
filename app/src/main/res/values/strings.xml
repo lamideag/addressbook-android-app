@@ -9,4 +9,7 @@
     <!-- Preference Titles -->
     <string name="general_header">General</string>
     <string name="server_url">Server URL</string>
+
+    <string name="drawer_opened">Opened</string>
+    <string name="drawer_closed">Closed</string>
 </resources>
