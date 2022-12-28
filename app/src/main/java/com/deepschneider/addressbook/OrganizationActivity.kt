@@ -36,7 +36,7 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) return true;
+        if (toggle.onOptionsItemSelected(item)) return true
         return when (item.itemId) {
             R.id.action_settings -> {
                 startActivity(Intent(applicationContext, SettingsActivity::class.java))

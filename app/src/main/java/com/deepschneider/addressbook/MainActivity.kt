@@ -17,10 +17,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         findViewById<Button>(R.id.login_button).setOnClickListener { _ ->
             val intent = Intent(applicationContext, OrganizationActivity::class.java)
-            intent.putExtra("message_key", "test");
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("message_key", "test")
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent);
+            startActivity(intent)
         }
     }
 
