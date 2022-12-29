@@ -3,19 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/action_filter"
-        android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/action_filter"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="110"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="120"
-        android:title="@string/action_logout"
         app:showAsAction="never" />
 </menu>
