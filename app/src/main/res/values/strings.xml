@@ -2,6 +2,7 @@
     <string name="app_name">Addressbook</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
+    <string name="action_filter">Filter</string>
     <string name="action_logout">Logout</string>
     <string name="login_action">Login</string>
     <string name="password_action">Password</string>

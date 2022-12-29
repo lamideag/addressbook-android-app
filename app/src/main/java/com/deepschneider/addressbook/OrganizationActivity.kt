@@ -112,8 +112,9 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        findViewById<TextView>(R.id.textView).text =
-            PreferenceManager.getDefaultSharedPreferences(this).getString("server_url", "NO VALUE")
+        findViewById<TextView>(R.id.textView).text = "server: " +
+                PreferenceManager.getDefaultSharedPreferences(this)
+                    .getString("server_url", "no value")
         super.onResume()
     }
 }
