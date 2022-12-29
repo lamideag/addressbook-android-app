@@ -52,7 +52,7 @@ class OrganizationActivity : AppCompatActivity() {
         )
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            startActivity(Intent(applicationContext, CreateNewOrganization::class.java))
+            startActivity(Intent(applicationContext, CreateNewOrganizationActivity::class.java))
         }
         searchEditTextLastUpdated = findViewById(R.id.searchEditTextLastUpdated)
         searchEditTextLastUpdated.setOnClickListener {

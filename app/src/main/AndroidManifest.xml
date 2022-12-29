@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Addressbook"
         tools:targetApi="31">
         <activity
-            android:name=".CreateNewOrganization"
+            android:name=".CreateNewOrganizationActivity"
             android:exported="false"
             android:label="@string/add_new_organization"
             android:screenOrientation="portrait">
