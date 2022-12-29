@@ -90,6 +90,15 @@ class OrganizationActivity : AppCompatActivity() {
                 }
             builder.create().show()
         }
+
+        val rolesListView = findViewById<ListView>(R.id.rolesListView)
+        rolesListView.adapter = ArrayAdapter(
+            this, android.R.layout.simple_list_item_1, arrayOf(
+                "ADMIN", "USER", "TECH LEAD", "ARCHITECT", "3RD LINE SUPPORT", "TEAM LEAD"
+            )
+        )
+        val usernameTextView = findViewById<TextView>(R.id.username)
+        usernameTextView.text = "NIKITA SCHNEIDER"
     }
 
     private fun updateLabel() {
