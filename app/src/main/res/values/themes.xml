@@ -17,7 +17,7 @@
     <style name="Theme.Addressbook.NoActionBar">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:statusBarColor">@color/purple_500</item>
         <item name="actionOverflowButtonStyle">@style/overflowButtonStyle</item>
     </style>
 
