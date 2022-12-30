@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="snackbarStyle">@style/snackBarStyle</item>
         <item name="windowActionBar">true</item>
     </style>
 
@@ -19,6 +20,10 @@
         <item name="windowNoTitle">false</item>
         <item name="android:statusBarColor">@color/purple_500</item>
         <item name="actionOverflowButtonStyle">@style/overflowButtonStyle</item>
+    </style>
+
+    <style name="snackBarStyle" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@color/purple_500</item>
     </style>
 
     <style name="overflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">

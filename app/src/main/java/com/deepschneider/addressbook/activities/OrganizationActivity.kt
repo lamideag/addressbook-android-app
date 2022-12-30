@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
@@ -72,7 +73,7 @@ class OrganizationActivity : AppCompatActivity() {
                 lastUpdatedCalendar[Calendar.DAY_OF_MONTH]
             )
             dataPickerDialog.setOnDismissListener {
-                if (!isDataSet) searchEditTextLastUpdated.setText(null)
+                if (!isDataSet) searchEditTextLastUpdated.text = null
             }
             dataPickerDialog.show()
         }
@@ -84,7 +85,7 @@ class OrganizationActivity : AppCompatActivity() {
                     R.array.org_types
                 ) { dialog, which ->
                     if (which == 0)
-                        searchEditTextType.setText(null)
+                        searchEditTextType.text = null
                     else
                         searchEditTextType.setText(resources.getStringArray(R.array.org_types)[which])
                     dialog.dismiss()
@@ -100,6 +101,9 @@ class OrganizationActivity : AppCompatActivity() {
         )
         val usernameTextView = findViewById<TextView>(R.id.username)
         usernameTextView.text = "NIKITA SCHNEIDER"
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .getString("token", "no value")?.let { Log.d("TOKEN", it) }
     }
 
     private fun updateLabel() {
