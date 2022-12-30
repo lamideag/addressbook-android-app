@@ -4,19 +4,26 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
+import com.android.volley.*
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,11 +35,16 @@ class OrganizationActivity : AppCompatActivity() {
 
     private lateinit var searchEditTextType: EditText
 
+    private lateinit var requestQueue: RequestQueue
+
     private val lastUpdatedCalendar: Calendar = Calendar.getInstance()
+
+    private val requestTag = "ORGANIZATIONS_TAG"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
+        requestQueue = Volley.newRequestQueue(this)
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerMain)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
@@ -93,17 +105,48 @@ class OrganizationActivity : AppCompatActivity() {
             builder.create().show()
         }
 
-        val rolesListView = findViewById<ListView>(R.id.rolesListView)
-        rolesListView.adapter = ArrayAdapter(
-            this, android.R.layout.simple_list_item_1, arrayOf(
-                "ADMIN", "USER", "TECH LEAD", "ARCHITECT", "3RD LINE SUPPORT", "TEAM LEAD"
-            )
-        )
-        val usernameTextView = findViewById<TextView>(R.id.username)
-        usernameTextView.text = "NIKITA SCHNEIDER"
+        val serverUrl = PreferenceManager.getDefaultSharedPreferences(this)
+            .getString("server_url", "no value")
+        requestQueue.add(object : JsonObjectRequest(
+            Method.GET,
+            "$serverUrl/rest/getUserInfo",
+            null,
+            { response ->
+                findViewById<TextView>(R.id.username).text = (response.get("login") as String?)?.uppercase()
+                val array = response.get("roles") as JSONArray
+                val roles = arrayListOf<String>()
+                for (i in 0 until array.length()) {
+                    roles.add(array.get(i).toString())
+                }
+                findViewById<ListView>(R.id.rolesListView).adapter = ArrayAdapter(
+                    this, android.R.layout.simple_list_item_1, roles
+                )
+            },
+            { error ->
+                makeErrorSnackBar(error)
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return addAuthHeader(super.getHeaders())
+            }
+        }.also { it.tag = requestTag })
 
-        PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("token", "no value")?.let { Log.d("TOKEN", it) }
+        requestQueue.add(object : JsonObjectRequest(
+            Method.GET,
+            "$serverUrl/rest/getBuildInfo",
+            null,
+            { response ->
+                findViewById<TextView>(R.id.version_info).text = "version: " + (response.get("version") as String?)?.uppercase()
+                findViewById<TextView>(R.id.build_info).text = "build: " + (response.get("time") as String?)?.uppercase()
+            },
+            { error ->
+                makeErrorSnackBar(error)
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return addAuthHeader(super.getHeaders())
+            }
+        }.also { it.tag = requestTag })
     }
 
     private fun updateLabel() {
@@ -126,9 +169,42 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        findViewById<TextView>(R.id.textView).text = "server: " +
+        findViewById<TextView>(R.id.server_info).text = "server: " +
                 PreferenceManager.getDefaultSharedPreferences(this)
                     .getString("server_url", "no value")
         super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        requestQueue.cancelAll(requestTag)
+    }
+
+    private fun makeErrorSnackBar(error: VolleyError) {
+        val snackBar = Snackbar.make(
+            findViewById<CoordinatorLayout>(R.id.organizationsCoordinatorLayout),
+            when (error) {
+                is AuthFailureError -> "FORBIDDEN"
+                is TimeoutError -> "SERVER CONNECTION TIMEOUT"
+                else -> error.message.toString()
+            },
+            Snackbar.LENGTH_LONG
+        )
+        val view: View = snackBar.view
+        val params = view.layoutParams as CoordinatorLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        view.layoutParams = params
+        snackBar.show()
+    }
+
+    private fun addAuthHeader(sourceHeaders: MutableMap<String, String>?): MutableMap<String, String>{
+        var headers = sourceHeaders
+        if (headers == null || headers == emptyMap<String, String>()) {
+            headers = HashMap()
+        }
+        headers["authorization"] =
+            "Bearer " + PreferenceManager.getDefaultSharedPreferences(this@OrganizationActivity)
+                .getString("token", "no value")
+        return headers
     }
 }
