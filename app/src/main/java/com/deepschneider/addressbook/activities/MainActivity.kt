@@ -1,4 +1,4 @@
-package com.deepschneider.addressbook
+package com.deepschneider.addressbook.activities
 
 import android.content.Intent
 import android.graphics.Color
@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

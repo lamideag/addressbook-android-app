@@ -1,8 +1,9 @@
-package com.deepschneider.addressbook
+package com.deepschneider.addressbook.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import com.deepschneider.addressbook.R
 
 class CreateNewOrganizationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.deepschneider.addressbook
+package com.deepschneider.addressbook.activities
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
+import com.deepschneider.addressbook.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*

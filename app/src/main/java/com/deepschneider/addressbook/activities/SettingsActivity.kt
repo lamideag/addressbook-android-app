@@ -1,9 +1,10 @@
-package com.deepschneider.addressbook
+package com.deepschneider.addressbook.activities
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
+import com.deepschneider.addressbook.R
 
 class SettingsActivity : AppCompatActivity() {
 
