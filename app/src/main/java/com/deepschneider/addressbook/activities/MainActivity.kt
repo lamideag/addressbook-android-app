@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityMainBinding
+import com.deepschneider.addressbook.utils.NetworkUtils
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 
@@ -73,8 +74,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun createOrRotateLoginToken(create: Boolean) {
         hideLoginButton()
-        val serverUrl = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("server_url", "no value")
+        val serverUrl = NetworkUtils.getServerUrl(this)
         if (serverUrl == "no value") {
             showLoginButton()
             return

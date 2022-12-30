@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Addressbook</string>
     <string name="action_settings">SETTINGS</string>
+    <string name="action_logout">LOGOUT</string>
     <string name="action_search">Search</string>
     <string name="action_filter">FILTER</string>
     <string name="login_action">LOGIN</string>

@@ -21,6 +21,7 @@ import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
+import com.deepschneider.addressbook.utils.NetworkUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
@@ -41,21 +42,20 @@ class OrganizationActivity : AppCompatActivity() {
 
     private val requestTag = "ORGANIZATIONS_TAG"
 
+    private var serverUrl: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
         requestQueue = Volley.newRequestQueue(this)
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerMain)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            R.string.drawer_opened,
-            R.string.drawer_closed
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        serverUrl = NetworkUtils.getServerUrl(this@OrganizationActivity)
+        prepareActionBar()
+        prepareFloatingActionButton()
+        prepareSearchEditTextLastUpdated()
+        prepareSearchEditTextType()
+        updateUserInfo()
+        updateBuildInfo()
+
         val organizationsListView = findViewById<ListView>(R.id.organizationsListView)
         organizationsListView.adapter = ArrayAdapter(
             this, android.R.layout.simple_list_item_1, arrayOf(
@@ -64,19 +64,20 @@ class OrganizationActivity : AppCompatActivity() {
                 "Facebook", "Sony", "Nintendo"
             )
         )
+    }
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            startActivity(Intent(applicationContext, CreateNewOrganizationActivity::class.java))
-        }
+    private fun prepareSearchEditTextLastUpdated() {
         searchEditTextLastUpdated = findViewById(R.id.searchEditTextLastUpdated)
         searchEditTextLastUpdated.setOnClickListener {
             var isDataSet = false
             val dataPickerDialog = DatePickerDialog(
                 this@OrganizationActivity,
                 { _, year, month, day ->
-                    lastUpdatedCalendar.set(Calendar.YEAR, year)
-                    lastUpdatedCalendar.set(Calendar.MONTH, month)
-                    lastUpdatedCalendar.set(Calendar.DAY_OF_MONTH, day)
+                    with(lastUpdatedCalendar) {
+                        set(Calendar.YEAR, year)
+                        set(Calendar.MONTH, month)
+                        set(Calendar.DAY_OF_MONTH, day)
+                    }
                     updateLabel()
                     isDataSet = true
                 },
@@ -89,6 +90,9 @@ class OrganizationActivity : AppCompatActivity() {
             }
             dataPickerDialog.show()
         }
+    }
+
+    private fun prepareSearchEditTextType() {
         searchEditTextType = findViewById(R.id.searchEditTextType)
         searchEditTextType.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationActivity)
@@ -104,15 +108,57 @@ class OrganizationActivity : AppCompatActivity() {
                 }
             builder.create().show()
         }
+    }
 
-        val serverUrl = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("server_url", "no value")
+    private fun prepareFloatingActionButton() {
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            startActivity(Intent(applicationContext, CreateNewOrganizationActivity::class.java))
+        }
+    }
+
+    private fun prepareActionBar() {
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerMain)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            R.string.drawer_opened,
+            R.string.drawer_closed
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+    }
+
+    private fun updateBuildInfo() {
+        requestQueue.add(object : JsonObjectRequest(
+            Method.GET,
+            "$serverUrl/rest/getBuildInfo",
+            null,
+            { response ->
+                findViewById<TextView>(R.id.version_info).text =
+                    "version: " + (response.get("version") as String?)?.uppercase()
+                findViewById<TextView>(R.id.build_info).text =
+                    "build: " + (response.get("time") as String?)?.uppercase()
+            },
+            { error ->
+                makeErrorSnackBar(error)
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return NetworkUtils.addAuthHeader(super.getHeaders(), this@OrganizationActivity)
+            }
+        }.also { it.tag = requestTag })
+    }
+
+    private fun updateUserInfo() {
         requestQueue.add(object : JsonObjectRequest(
             Method.GET,
             "$serverUrl/rest/getUserInfo",
             null,
             { response ->
-                findViewById<TextView>(R.id.username).text = (response.get("login") as String?)?.uppercase()
+                findViewById<TextView>(R.id.username).text =
+                    (response.get("login") as String?)?.uppercase()
                 val array = response.get("roles") as JSONArray
                 val roles = arrayListOf<String>()
                 for (i in 0 until array.length()) {
@@ -127,24 +173,7 @@ class OrganizationActivity : AppCompatActivity() {
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
-                return addAuthHeader(super.getHeaders())
-            }
-        }.also { it.tag = requestTag })
-
-        requestQueue.add(object : JsonObjectRequest(
-            Method.GET,
-            "$serverUrl/rest/getBuildInfo",
-            null,
-            { response ->
-                findViewById<TextView>(R.id.version_info).text = "version: " + (response.get("version") as String?)?.uppercase()
-                findViewById<TextView>(R.id.build_info).text = "build: " + (response.get("time") as String?)?.uppercase()
-            },
-            { error ->
-                makeErrorSnackBar(error)
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return addAuthHeader(super.getHeaders())
+                return NetworkUtils.addAuthHeader(super.getHeaders(), this@OrganizationActivity)
             }
         }.also { it.tag = requestTag })
     }
@@ -159,13 +188,20 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return false
+        menuInflater.inflate(R.menu.menu_organization, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) return true
-        return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                PreferenceManager.getDefaultSharedPreferences(this).edit().remove("token").commit()
+                startActivity(Intent(applicationContext, MainActivity::class.java))
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onResume() {
@@ -195,16 +231,5 @@ class OrganizationActivity : AppCompatActivity() {
         params.gravity = Gravity.TOP
         view.layoutParams = params
         snackBar.show()
-    }
-
-    private fun addAuthHeader(sourceHeaders: MutableMap<String, String>?): MutableMap<String, String>{
-        var headers = sourceHeaders
-        if (headers == null || headers == emptyMap<String, String>()) {
-            headers = HashMap()
-        }
-        headers["authorization"] =
-            "Bearer " + PreferenceManager.getDefaultSharedPreferences(this@OrganizationActivity)
-                .getString("token", "no value")
-        return headers
     }
 }
