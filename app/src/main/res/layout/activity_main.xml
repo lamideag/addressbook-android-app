@@ -23,7 +23,11 @@
             android:ems="10"
             android:hint="@string/password_action"
             android:inputType="textPassword"
+            android:lines="1"
+            android:maxLength="100"
+            android:maxLines="1"
             android:minHeight="48dp"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,17 +43,21 @@
             android:ems="10"
             android:hint="@string/login_action"
             android:inputType="textPersonName"
+            android:lines="1"
+            android:maxLength="100"
+            android:maxLines="1"
             android:minHeight="48dp"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="495dp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
