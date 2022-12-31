@@ -197,9 +197,12 @@ class OrganizationActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) return true
         return when (item.itemId) {
-            R.id.action_logout -> {
+            R.id.action_logout_organizations -> {
                 PreferenceManager.getDefaultSharedPreferences(this).edit().remove("token").commit()
-                startActivity(Intent(applicationContext, MainActivity::class.java))
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

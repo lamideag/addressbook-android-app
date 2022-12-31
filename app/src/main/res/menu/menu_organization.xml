@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.MainActivity">
     <item
-        android:id="@+id/action_logout"
+        android:id="@+id/action_logout_organizations"
         android:orderInCategory="110"
         android:title="@string/action_logout"
         app:showAsAction="never" />
