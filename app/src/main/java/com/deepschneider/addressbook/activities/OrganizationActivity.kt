@@ -140,6 +140,8 @@ class OrganizationActivity : AppCompatActivity() {
                     "version: " + (response.get("version") as String?)?.uppercase()
                 findViewById<TextView>(R.id.build_info).text =
                     "build: " + (response.get("time") as String?)?.uppercase()
+                findViewById<TextView>(R.id.server_host).text =
+                    "server host: " + (response.get("serverHost") as String?)?.uppercase()
             },
             { error ->
                 makeErrorSnackBar(error)
