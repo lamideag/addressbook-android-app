@@ -81,6 +81,18 @@ class OrganizationActivity : AppCompatActivity() {
         requestQueue = Volley.newRequestQueue(this)
         serverUrl = NetworkUtils.getServerUrl(this@OrganizationActivity)
         organizationsListView = findViewById(R.id.organizationsListView)
+        organizationsListView.setOnItemClickListener { _, view, _, _ ->
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.putExtra(
+                "orgId",
+                view.findViewById<TextView>(R.id.organization_id).text.toString()
+            )
+            intent.putExtra(
+                "orgName",
+                view.findViewById<TextView>(R.id.organization_title).text.toString()
+            )
+            startActivity(intent)
+        }
         prepareActionBar()
         prepareFloatingActionButton()
         prepareSearchEditTextLastUpdated()
@@ -361,7 +373,7 @@ class OrganizationActivity : AppCompatActivity() {
                 is ServerError -> {
                     val result = error.networkResponse?.data?.toString(Charsets.UTF_8)
                     if (result != null) {
-                        gson.fromJson(result, AlertDto::class.java).message.toString()
+                        gson.fromJson(result, AlertDto::class.java).headline.toString()
                     } else {
                         error.message.toString()
                     }

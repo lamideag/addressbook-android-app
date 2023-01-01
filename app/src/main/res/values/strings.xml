@@ -15,8 +15,16 @@
     <string name="search_org_last_updated_comp">COMPARATOR</string>
     <string name="title_activity_settings">SETTINGS</string>
 
+    <string name="search_person_id">ID</string>
+    <string name="search_person_first_name">FIRST NAME</string>
+    <string name="search_person_last_name">LAST NAME</string>
+    <string name="search_person_resume">RESUME</string>
+    <string name="search_person_salary">SALARY</string>
+
     <string name="organizations">ORGANIZATIONS</string>
+    <string name="persons">PERSONS</string>
     <string name="add_new_organization">ADD NEW ORGANIZATION</string>
+    <string name="add_new_person">ADD NEW PERSON</string>
     <string name="choose_organization_type">CHOOSE ORGANIZATION TYPE</string>
     <string name="choose_date_comparator">CHOOSE DATE COMPARATOR</string>
     <string name="empty_list_message">NO DATA</string>

@@ -24,6 +24,15 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".activities.CreateNewPersonActivity"
+            android:exported="false"
+            android:label="@string/add_new_person"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"
@@ -36,6 +45,15 @@
             android:name=".activities.OrganizationActivity"
             android:exported="false"
             android:label="@string/organizations"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.PersonsActivity"
+            android:exported="false"
+            android:label="@string/persons"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
