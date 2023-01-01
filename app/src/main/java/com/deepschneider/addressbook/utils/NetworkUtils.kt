@@ -15,12 +15,12 @@ object NetworkUtils {
         }
         headers["authorization"] =
             "Bearer " + PreferenceManager.getDefaultSharedPreferences(context)
-                .getString("token", "no value")
+                .getString(Constants.TOKEN_KEY, Constants.NO_VALUE)
         return headers
     }
 
     fun getServerUrl(context: Context): String? {
         return PreferenceManager.getDefaultSharedPreferences(context)
-            .getString("server_url", "no value")
+            .getString("server_url", Constants.NO_VALUE)
     }
 }

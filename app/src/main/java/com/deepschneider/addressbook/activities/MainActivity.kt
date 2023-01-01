@@ -23,7 +23,9 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityMainBinding
+import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
+import com.deepschneider.addressbook.utils.Urls
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_logout_main -> {
-                PreferenceManager.getDefaultSharedPreferences(this).edit().remove("token").commit()
+                PreferenceManager.getDefaultSharedPreferences(this).edit().remove(Constants.TOKEN_KEY).commit()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     private fun createOrRotateLoginToken(create: Boolean) {
         hideLoginButton()
         val serverUrl = NetworkUtils.getServerUrl(this)
-        if (serverUrl == "no value") {
+        if (serverUrl == Constants.NO_VALUE) {
             showLoginButton()
             return
         }
@@ -94,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         }
         requestQueue.add(JsonObjectRequest(
             Request.Method.POST,
-            if (create) "$serverUrl/auth" else "$serverUrl/rotateToken",
+            if (create) serverUrl + Urls.AUTH else serverUrl + Urls.ROTATE_TOKEN,
             targetDto,
             { response ->
                 saveTokenFromResponse(response)
@@ -112,8 +114,8 @@ class MainActivity : AppCompatActivity() {
         val snackBar = Snackbar.make(
             findViewById<CoordinatorLayout>(R.id.loginCoordinatorLayout),
             when (error) {
-                is AuthFailureError -> "WRONG LOGIN OR PASSWORD"
-                is TimeoutError -> "SERVER CONNECTION TIMEOUT"
+                is AuthFailureError -> Constants.AUTH_FAILURE_MESSAGE
+                is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
                 else -> error.message.toString()
             },
             Snackbar.LENGTH_LONG
@@ -144,8 +146,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun saveTokenFromResponse(response: JSONObject) {
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(
-            "token",
-            response.get("token") as String?
+            Constants.TOKEN_KEY,
+            response.get(Constants.TOKEN_KEY) as String?
         ).commit()
     }
 
@@ -158,10 +160,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTokenDto(): JSONObject? {
         val token = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("token", "no value")
-        if (token == null || token == "no value") return null
+            .getString(Constants.TOKEN_KEY, Constants.NO_VALUE)
+        if (token == null || token == Constants.NO_VALUE) return null
         val tokenDto = JSONObject()
-        tokenDto.put("token", token)
+        tokenDto.put(Constants.TOKEN_KEY, token)
         return tokenDto
     }
 }

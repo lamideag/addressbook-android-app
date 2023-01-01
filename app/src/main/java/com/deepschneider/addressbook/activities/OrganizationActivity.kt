@@ -26,7 +26,9 @@ import com.deepschneider.addressbook.dto.BuildInfoDto
 import com.deepschneider.addressbook.dto.FilterDto
 import com.deepschneider.addressbook.dto.User
 import com.deepschneider.addressbook.network.OrganizationsRequest
+import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
+import com.deepschneider.addressbook.utils.Urls
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -66,11 +68,11 @@ class OrganizationActivity : AppCompatActivity() {
 
     private var pageSize: Int = 15
 
-    private var sortName: String = "id"
+    private var sortName: String = Constants.ORGANIZATIONS_ID_FIELD
 
-    private var sortOrder: String = "desc"
+    private var sortOrder: String = Constants.SORT_ORDER_DESC
 
-    private var targetCache: String = "com.addressbook.model.Organization"
+    private var targetCache: String = Constants.ORGANIZATIONS_CACHE_NAME
 
     private val gson = Gson()
 
@@ -95,32 +97,32 @@ class OrganizationActivity : AppCompatActivity() {
             mainDrawer.closeDrawer(GravityCompat.START)
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
-                "id",
+                Constants.ORGANIZATIONS_ID_FIELD,
                 findViewById<EditText>(R.id.searchEditTextId).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                "name",
+                Constants.ORGANIZATIONS_NAME_FIELD,
                 findViewById<EditText>(R.id.searchEditTextName).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                "street",
+                Constants.ORGANIZATIONS_ADDRESS_FIELD,
                 findViewById<EditText>(R.id.searchEditTextAddress).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                "zip",
+                Constants.ORGANIZATIONS_ZIP_FIELD,
                 findViewById<EditText>(R.id.searchEditTextZip).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                "type",
+                Constants.ORGANIZATIONS_TYPE_FIELD,
                 findViewById<EditText>(R.id.searchEditTextType).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getDateFilterDto(
-                "lastUpdated",
+                Constants.ORGANIZATIONS_LAST_UPDATED_FIELD,
                 findViewById<EditText>(R.id.searchEditTextLastUpdated).text.toString(),
                 findViewById<EditText>(R.id.searchEditTextComparator).text.toString()
             )
@@ -215,7 +217,7 @@ class OrganizationActivity : AppCompatActivity() {
     private fun updateBuildInfo() {
         requestQueue.add(object : JsonObjectRequest(
             Method.GET,
-            "$serverUrl/rest/getBuildInfo",
+            serverUrl + Urls.BUILD_INFO,
             null,
             { response ->
                 val buildInfo = gson.fromJson(response.toString(), BuildInfoDto::class.java)
@@ -239,7 +241,7 @@ class OrganizationActivity : AppCompatActivity() {
     private fun updateUserInfo() {
         requestQueue.add(object : JsonObjectRequest(
             Method.GET,
-            "$serverUrl/rest/getUserInfo",
+            serverUrl + Urls.USER_INFO,
             null,
             { response ->
                 val result = gson.fromJson(response.toString(), User::class.java)
@@ -276,7 +278,8 @@ class OrganizationActivity : AppCompatActivity() {
         if (toggle.onOptionsItemSelected(item)) return true
         return when (item.itemId) {
             R.id.action_logout_organizations -> {
-                PreferenceManager.getDefaultSharedPreferences(this).edit().remove("token").commit()
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .remove(Constants.TOKEN_KEY).commit()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -288,9 +291,8 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        findViewById<TextView>(R.id.server_info).text = "server: " +
-                PreferenceManager.getDefaultSharedPreferences(this)
-                    .getString("server_url", "no value")
+        findViewById<TextView>(R.id.server_info).text =
+            "server: " + NetworkUtils.getServerUrl(this@OrganizationActivity)
         super.onResume()
         updateOrganizationsList(currentFilter ?: emptyList())
     }
@@ -304,7 +306,7 @@ class OrganizationActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
             requestQueue.add(OrganizationsRequest(
-                "$serverUrl/rest/getList4UniversalListForm?start=$start" +
+                "$serverUrl" + Urls.GET_LIST + "?start=$start" +
                         "&pageSize=$pageSize" +
                         "&sortName=$sortName" +
                         "&sortOrder=$sortOrder" +
@@ -350,8 +352,8 @@ class OrganizationActivity : AppCompatActivity() {
         val snackBar = Snackbar.make(
             findViewById<CoordinatorLayout>(R.id.organizationsCoordinatorLayout),
             when (error) {
-                is AuthFailureError -> "FORBIDDEN"
-                is TimeoutError -> "SERVER CONNECTION TIMEOUT"
+                is AuthFailureError -> Constants.FORBIDDEN_MESSAGE
+                is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
                 is ServerError -> error.networkResponse?.data?.toString(Charsets.UTF_8)
                     ?: error.message.toString()
                 else -> error.message.toString()
