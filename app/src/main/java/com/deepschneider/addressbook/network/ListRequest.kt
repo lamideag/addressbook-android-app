@@ -7,24 +7,24 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import com.deepschneider.addressbook.dto.FilterDto
-import com.deepschneider.addressbook.dto.OrganizationDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.TableDataDto
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
 import java.io.UnsupportedEncodingException
+import java.lang.reflect.Type
 import java.nio.charset.Charset
 
 
-class OrganizationsRequest(
+class ListRequest<T>(
     url: String,
     private val filterDto: List<FilterDto>,
-    private val responseListener: Response.Listener<PageDataDto<TableDataDto<OrganizationDto>>>,
+    private val responseListener: Response.Listener<PageDataDto<TableDataDto<T>>>,
     errorListener: Response.ErrorListener,
-    private var context: Context
-) : Request<PageDataDto<TableDataDto<OrganizationDto>>>(Method.POST, url, errorListener) {
+    private var context: Context,
+    private val typeToken: Type
+) : Request<PageDataDto<TableDataDto<T>>>(Method.POST, url, errorListener) {
 
     private val gson = Gson()
 
@@ -32,16 +32,14 @@ class OrganizationsRequest(
         return NetworkUtils.addAuthHeader(super.getHeaders(), context)
     }
 
-    override fun parseNetworkResponse(response: NetworkResponse?): Response<PageDataDto<TableDataDto<OrganizationDto>>> {
+    override fun parseNetworkResponse(response: NetworkResponse?): Response<PageDataDto<TableDataDto<T>>> {
         return try {
-            val type =
-                object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
             val json = String(
                 response?.data ?: ByteArray(0),
                 Charset.forName(HttpHeaderParser.parseCharset(response?.headers))
             )
             Response.success(
-                gson.fromJson(json, type),
+                gson.fromJson(json, typeToken),
                 HttpHeaderParser.parseCacheHeaders(response)
             )
         } catch (e: UnsupportedEncodingException) {
@@ -57,7 +55,7 @@ class OrganizationsRequest(
         return "application/json; charset=utf-8"
     }
 
-    override fun deliverResponse(response: PageDataDto<TableDataDto<OrganizationDto>>?) {
+    override fun deliverResponse(response: PageDataDto<TableDataDto<T>>?) {
         responseListener.onResponse(response)
     }
 

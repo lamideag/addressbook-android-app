@@ -22,11 +22,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
-import com.deepschneider.addressbook.dto.AlertDto
-import com.deepschneider.addressbook.dto.BuildInfoDto
-import com.deepschneider.addressbook.dto.FilterDto
-import com.deepschneider.addressbook.dto.User
-import com.deepschneider.addressbook.network.OrganizationsRequest
+import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.network.ListRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
@@ -34,6 +31,7 @@ import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Calendar
@@ -306,7 +304,7 @@ class OrganizationActivity : AppCompatActivity() {
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
-            requestQueue.add(OrganizationsRequest(
+            requestQueue.add(ListRequest(
                 "$serverUrl" + Urls.GET_LIST + "?start=$start" +
                         "&pageSize=$pageSize" +
                         "&sortName=$sortName" +
@@ -339,7 +337,8 @@ class OrganizationActivity : AppCompatActivity() {
                         progressBar.visibility = ProgressBar.INVISIBLE
                     }
                 },
-                this@OrganizationActivity
+                this@OrganizationActivity,
+                object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
             ).also { it.tag = requestTag })
         }
     }
@@ -357,9 +356,9 @@ class OrganizationActivity : AppCompatActivity() {
                 is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
                 is ServerError -> {
                     val result = error.networkResponse?.data?.toString(Charsets.UTF_8)
-                    if(result != null){
+                    if (result != null) {
                         gson.fromJson(result, AlertDto::class.java).message.toString()
-                    }else {
+                    } else {
                         error.message.toString()
                     }
                 }
