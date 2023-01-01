@@ -4,6 +4,9 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +18,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.marginTop
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.android.volley.*
@@ -25,8 +29,12 @@ import com.deepschneider.addressbook.utils.NetworkUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
 
 class OrganizationActivity : AppCompatActivity() {
 
@@ -44,6 +52,16 @@ class OrganizationActivity : AppCompatActivity() {
 
     private var serverUrl: String? = null
 
+    private var start: Int = 1
+
+    private var pageSize: Int = 15
+
+    private var sortName: String = "id"
+
+    private var sortOrder: String = "desc"
+
+    private var targetCache: String = "com.addressbook.model.Organization"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
@@ -56,14 +74,7 @@ class OrganizationActivity : AppCompatActivity() {
         updateUserInfo()
         updateBuildInfo()
 
-        val organizationsListView = findViewById<ListView>(R.id.organizationsListView)
-        organizationsListView.adapter = ArrayAdapter(
-            this, android.R.layout.simple_list_item_1, arrayOf(
-                "Apple", "Microsoft", "IBM", "Oracle", "Red Hat",
-                "Citibank", "Netflix", "Nvidia", "Intel", "AMD",
-                "Facebook", "Sony", "Nintendo"
-            )
-        )
+
     }
 
     private fun prepareSearchEditTextLastUpdated() {
@@ -214,6 +225,54 @@ class OrganizationActivity : AppCompatActivity() {
                 PreferenceManager.getDefaultSharedPreferences(this)
                     .getString("server_url", "no value")
         super.onResume()
+        updateOrganizationsList()
+    }
+
+    private fun updateOrganizationsList() {
+        val executor: ExecutorService = Executors.newSingleThreadExecutor()
+        val handler = Handler(Looper.getMainLooper())
+        val url = "$serverUrl/rest/getList4UniversalListForm?" +
+                "start=$start" +
+                "&" +
+                "pageSize=$pageSize" +
+                "&" +
+                "sortName=$sortName" +
+                "&" +
+                "sortOrder=$sortOrder" +
+                "&" +
+                "cache=$targetCache"
+        executor.execute {
+            requestQueue.add(object : JsonObjectRequest(
+                Method.POST,
+                url,
+                null,
+                { response ->
+                    val organizationsListView = findViewById<ListView>(R.id.organizationsListView)
+                    val organizations =
+                        (response.get("data") as JSONObject).get("data") as JSONArray
+                    val orgNames = arrayListOf<String>()
+                    for (i in 0 until organizations.length()) {
+                        orgNames.add((organizations.get(i) as JSONObject).get("name").toString())
+                    }
+                    handler.post {
+                        organizationsListView.adapter = ArrayAdapter(
+                            this, android.R.layout.simple_list_item_1, orgNames
+                        )
+                    }
+                },
+                { error ->
+                    handler.post {
+                        makeErrorSnackBar(error)
+                    }
+                }
+            ) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = NetworkUtils.addAuthHeader(super.getHeaders(), this@OrganizationActivity)
+                    headers["Content-Type"] = "application/json; charset=utf-8"
+                    return headers
+                }
+            }.also { it.tag = requestTag })
+        }
     }
 
     override fun onStop() {
@@ -227,6 +286,8 @@ class OrganizationActivity : AppCompatActivity() {
             when (error) {
                 is AuthFailureError -> "FORBIDDEN"
                 is TimeoutError -> "SERVER CONNECTION TIMEOUT"
+                is ServerError -> error.networkResponse?.data?.toString(Charsets.UTF_8)
+                    ?: error.message.toString()
                 else -> error.message.toString()
             },
             Snackbar.LENGTH_LONG
@@ -234,6 +295,12 @@ class OrganizationActivity : AppCompatActivity() {
         val view: View = snackBar.view
         val params = view.layoutParams as CoordinatorLayout.LayoutParams
         params.gravity = Gravity.TOP
+        params.setMargins(
+            0,
+            (this@OrganizationActivity.resources.displayMetrics.density * 100).toInt(),
+            0,
+            0
+        )
         view.layoutParams = params
         snackBar.show()
     }
