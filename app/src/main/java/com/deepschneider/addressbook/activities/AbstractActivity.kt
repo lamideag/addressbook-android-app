@@ -1,10 +1,14 @@
 package com.deepschneider.addressbook.activities
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ListAdapter
 import android.widget.ListView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,16 +18,18 @@ import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.dto.AlertDto
-import com.deepschneider.addressbook.dto.BuildInfoDto
-import com.deepschneider.addressbook.dto.User
+import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.network.ListRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import java.lang.reflect.Type
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
-abstract class AbstractActivity : AppCompatActivity() {
+abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     protected lateinit var toggle: ActionBarDrawerToggle
 
@@ -143,5 +149,72 @@ abstract class AbstractActivity : AppCompatActivity() {
         snackBar.show()
     }
 
+    protected fun updateList(filterDto: List<FilterDto>) {
+        getMainList().visibility = View.GONE
+        findViewById<TextView>(getEmptyListView()).visibility = View.GONE
+        val progressBar = findViewById<ProgressBar>(getProgressBar())
+        progressBar.visibility = ProgressBar.VISIBLE
+        val executor: ExecutorService = Executors.newSingleThreadExecutor()
+        val handler = Handler(Looper.getMainLooper())
+        executor.execute {
+            requestQueue.add(
+                ListRequest(
+                    "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" +
+                            "&pageSize=${getPageSize()}" +
+                            "&sortName=${getSortName()}" +
+                            "&sortOrder=${getSortOrder()}" +
+                            "&cache=${getTargetCache()}",
+                    filterDto,
+                    { response ->
+                        if (response.data?.data?.isEmpty() == true) {
+                            handler.post {
+                                progressBar.visibility = ProgressBar.INVISIBLE
+                                findViewById<TextView>(getEmptyListView()).visibility =
+                                    View.VISIBLE
+                            }
+                        } else {
+                            response.data?.data?.let {
+                                handler.post {
+                                    getMainList().adapter = getListAdapter(it)
+                                    getMainList().visibility = View.VISIBLE
+                                    progressBar.visibility = ProgressBar.INVISIBLE
+                                }
+                            }
+                        }
+                    },
+                    { error ->
+                        handler.post {
+                            makeErrorSnackBar(error)
+                            findViewById<TextView>(getEmptyListView()).visibility =
+                                View.VISIBLE
+                            progressBar.visibility = ProgressBar.INVISIBLE
+                        }
+                    },
+                    this@AbstractActivity,
+                    getMainListType()
+                ).also { it.tag = getRequestTag() })
+        }
+    }
+
     abstract fun getParentCoordinatorLayoutForSnackBar(): Int
+
+    abstract fun getEmptyListView(): Int
+
+    abstract fun getMainList(): ListView
+
+    abstract fun getProgressBar(): Int
+
+    abstract fun getStartPage(): Int
+
+    abstract fun getPageSize(): Int
+
+    abstract fun getSortName(): String
+
+    abstract fun getSortOrder(): String
+
+    abstract fun getTargetCache(): String
+
+    abstract fun getMainListType(): Type
+
+    abstract fun getListAdapter(list: List<T>): ListAdapter
 }

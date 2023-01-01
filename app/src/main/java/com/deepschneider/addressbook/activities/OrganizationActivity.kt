@@ -4,33 +4,26 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
 import com.deepschneider.addressbook.dto.*
-import com.deepschneider.addressbook.network.ListRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
-import com.deepschneider.addressbook.utils.Urls
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Calendar
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
-
-class OrganizationActivity : AbstractActivity() {
+class OrganizationActivity : AbstractActivity<OrganizationDto>() {
 
     private lateinit var searchEditTextLastUpdated: EditText
 
@@ -42,8 +35,6 @@ class OrganizationActivity : AbstractActivity() {
 
     private val lastUpdatedCalendar: Calendar = Calendar.getInstance()
 
-    private val requestTag = "ORGANIZATIONS_TAG"
-
     private var currentFilter: List<FilterDto>? = null
 
     private var start: Int = 1
@@ -53,8 +44,6 @@ class OrganizationActivity : AbstractActivity() {
     private var sortName: String = Constants.ORGANIZATIONS_ID_FIELD
 
     private var sortOrder: String = Constants.SORT_ORDER_DESC
-
-    private var targetCache: String = Constants.ORGANIZATIONS_CACHE_NAME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,7 +111,7 @@ class OrganizationActivity : AbstractActivity() {
             )
                 ?.let { it1 -> filters.add(it1) }
             currentFilter = filters
-            updateOrganizationsList(filters)
+            updateList(filters)
         }
     }
 
@@ -232,61 +221,32 @@ class OrganizationActivity : AbstractActivity() {
         findViewById<TextView>(R.id.server_info).text =
             "server: " + NetworkUtils.getServerUrl(this@OrganizationActivity)
         super.onResume()
-        updateOrganizationsList(currentFilter ?: emptyList())
+        updateList(currentFilter ?: emptyList())
     }
 
-    private fun updateOrganizationsList(filterDto: List<FilterDto>) {
-        organizationsListView.visibility = View.GONE
-        findViewById<TextView>(R.id.empty_organizations_list).visibility = View.GONE
-        val progressBar = findViewById<ProgressBar>(R.id.organizationsProgressBar)
-        progressBar.visibility = ProgressBar.VISIBLE
-        val executor: ExecutorService = Executors.newSingleThreadExecutor()
-        val handler = Handler(Looper.getMainLooper())
-        executor.execute {
-            requestQueue.add(ListRequest(
-                "$serverUrl" + Urls.GET_LIST + "?start=$start" +
-                        "&pageSize=$pageSize" +
-                        "&sortName=$sortName" +
-                        "&sortOrder=$sortOrder" +
-                        "&cache=$targetCache",
-                filterDto,
-                { response ->
-                    if (response.data?.data?.isEmpty() == true) {
-                        handler.post {
-                            progressBar.visibility = ProgressBar.INVISIBLE
-                            findViewById<TextView>(R.id.empty_organizations_list).visibility =
-                                View.VISIBLE
-                        }
-                    } else {
-                        response.data?.data?.let {
-                            handler.post {
-                                organizationsListView.adapter =
-                                    OrganizationsListAdapter(it, this@OrganizationActivity)
-                                organizationsListView.visibility = View.VISIBLE
-                                progressBar.visibility = ProgressBar.INVISIBLE
-                            }
-                        }
-                    }
-                },
-                { error ->
-                    handler.post {
-                        makeErrorSnackBar(error)
-                        findViewById<TextView>(R.id.empty_organizations_list).visibility =
-                            View.VISIBLE
-                        progressBar.visibility = ProgressBar.INVISIBLE
-                    }
-                },
-                this@OrganizationActivity,
-                object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
-            ).also { it.tag = requestTag })
-        }
-    }
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.organizationsCoordinatorLayout
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int {
-        return R.id.organizationsCoordinatorLayout
-    }
+    override fun getRequestTag(): String = "ORGANIZATIONS_TAG"
 
-    override fun getRequestTag(): String {
-        return requestTag
-    }
+    override fun getEmptyListView(): Int = R.id.empty_organizations_list
+
+    override fun getMainList(): ListView = organizationsListView
+
+    override fun getProgressBar(): Int = R.id.organizationsProgressBar
+
+    override fun getStartPage(): Int = start
+
+    override fun getPageSize(): Int = pageSize
+
+    override fun getSortName(): String = sortName
+
+    override fun getSortOrder(): String = sortOrder
+
+    override fun getTargetCache(): String = Constants.ORGANIZATIONS_CACHE_NAME
+
+    override fun getMainListType(): Type =
+        object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
+
+    override fun getListAdapter(list: List<OrganizationDto>): ListAdapter =
+        OrganizationsListAdapter(list, this@OrganizationActivity)
 }

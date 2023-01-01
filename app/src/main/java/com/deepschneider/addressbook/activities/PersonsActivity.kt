@@ -2,32 +2,24 @@ package com.deepschneider.addressbook.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.PersonsListAdapter
 import com.deepschneider.addressbook.dto.*
-import com.deepschneider.addressbook.network.ListRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
-import com.deepschneider.addressbook.utils.Urls
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.lang.reflect.Type
 
-class PersonsActivity : AbstractActivity() {
+class PersonsActivity : AbstractActivity<PersonDto>() {
 
     private lateinit var personsListView: ListView
-
-    private val requestTag = "PERSONS_TAG"
 
     private var currentFilter: List<FilterDto>? = null
 
@@ -38,8 +30,6 @@ class PersonsActivity : AbstractActivity() {
     private var sortName: String = Constants.PERSONS_ID_FIELD
 
     private var sortOrder: String = Constants.SORT_ORDER_DESC
-
-    private var targetCache: String = Constants.PERSONS_CACHE_NAME
 
     private lateinit var orgId: String
 
@@ -93,7 +83,7 @@ class PersonsActivity : AbstractActivity() {
 
             filters.add(getOrgIdFilterDto())
             currentFilter = filters
-            updatePersonsList(filters)
+            updateList(filters)
         }
     }
 
@@ -137,62 +127,32 @@ class PersonsActivity : AbstractActivity() {
         findViewById<TextView>(R.id.server_info_persons).text =
             "server: " + NetworkUtils.getServerUrl(this@PersonsActivity)
         super.onResume()
-        updatePersonsList(currentFilter ?: listOf(getOrgIdFilterDto()))
+        updateList(currentFilter ?: listOf(getOrgIdFilterDto()))
     }
 
-    private fun updatePersonsList(filterDto: List<FilterDto>) {
-        personsListView.visibility = View.GONE
-        findViewById<TextView>(R.id.empty_persons_list).visibility = View.GONE
-        val progressBar = findViewById<ProgressBar>(R.id.personsProgressBar)
-        progressBar.visibility = ProgressBar.VISIBLE
-        val executor: ExecutorService = Executors.newSingleThreadExecutor()
-        val handler = Handler(Looper.getMainLooper())
-        executor.execute {
-            requestQueue.add(
-                ListRequest(
-                    "$serverUrl" + Urls.GET_LIST + "?start=$start" +
-                            "&pageSize=$pageSize" +
-                            "&sortName=$sortName" +
-                            "&sortOrder=$sortOrder" +
-                            "&cache=$targetCache",
-                    filterDto,
-                    { response ->
-                        if (response.data?.data?.isEmpty() == true) {
-                            handler.post {
-                                progressBar.visibility = ProgressBar.INVISIBLE
-                                findViewById<TextView>(R.id.empty_persons_list).visibility =
-                                    View.VISIBLE
-                            }
-                        } else {
-                            response.data?.data?.let {
-                                handler.post {
-                                    personsListView.adapter =
-                                        PersonsListAdapter(it, this@PersonsActivity)
-                                    personsListView.visibility = View.VISIBLE
-                                    progressBar.visibility = ProgressBar.INVISIBLE
-                                }
-                            }
-                        }
-                    },
-                    { error ->
-                        handler.post {
-                            makeErrorSnackBar(error)
-                            findViewById<TextView>(R.id.empty_persons_list).visibility =
-                                View.VISIBLE
-                            progressBar.visibility = ProgressBar.INVISIBLE
-                        }
-                    },
-                    this@PersonsActivity,
-                    object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
-                ).also { it.tag = requestTag })
-        }
-    }
+    override fun getRequestTag(): String = "PERSONS_TAG"
 
-    override fun getRequestTag(): String {
-        return requestTag
-    }
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.personsCoordinatorLayout
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int {
-        return R.id.personsCoordinatorLayout
-    }
+    override fun getSortName(): String = sortName
+
+    override fun getTargetCache(): String = Constants.PERSONS_CACHE_NAME
+
+    override fun getSortOrder(): String = sortOrder
+
+    override fun getPageSize(): Int = pageSize
+
+    override fun getMainList(): ListView = personsListView
+
+    override fun getStartPage(): Int = start
+
+    override fun getEmptyListView(): Int = R.id.empty_persons_list
+
+    override fun getListAdapter(list: List<PersonDto>): ListAdapter =
+        PersonsListAdapter(list, this@PersonsActivity)
+
+    override fun getProgressBar(): Int = R.id.personsProgressBar
+
+    override fun getMainListType(): Type =
+        object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
 }
