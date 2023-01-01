@@ -11,15 +11,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
-import com.android.volley.*
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
 import com.deepschneider.addressbook.dto.*
@@ -29,8 +22,6 @@ import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -39,11 +30,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
-class OrganizationActivity : AppCompatActivity() {
-
-    private lateinit var toggle: ActionBarDrawerToggle
-
-    private lateinit var mainDrawer: DrawerLayout
+class OrganizationActivity : AbstractActivity() {
 
     private lateinit var searchEditTextLastUpdated: EditText
 
@@ -53,13 +40,9 @@ class OrganizationActivity : AppCompatActivity() {
 
     private lateinit var searchEditTextType: EditText
 
-    private lateinit var requestQueue: RequestQueue
-
     private val lastUpdatedCalendar: Calendar = Calendar.getInstance()
 
     private val requestTag = "ORGANIZATIONS_TAG"
-
-    private var serverUrl: String? = null
 
     private var currentFilter: List<FilterDto>? = null
 
@@ -73,16 +56,12 @@ class OrganizationActivity : AppCompatActivity() {
 
     private var targetCache: String = Constants.ORGANIZATIONS_CACHE_NAME
 
-    private val gson = Gson()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
-        requestQueue = Volley.newRequestQueue(this)
-        serverUrl = NetworkUtils.getServerUrl(this@OrganizationActivity)
         organizationsListView = findViewById(R.id.organizationsListView)
         organizationsListView.setOnItemClickListener { _, view, _, _ ->
-            val intent = Intent(applicationContext, MainActivity::class.java)
+            val intent = Intent(applicationContext, PersonsActivity::class.java)
             intent.putExtra(
                 "orgId",
                 view.findViewById<TextView>(R.id.organization_id).text.toString()
@@ -93,12 +72,16 @@ class OrganizationActivity : AppCompatActivity() {
             )
             startActivity(intent)
         }
-        prepareActionBar()
+        prepareActionBar(R.id.drawerMain)
         prepareFloatingActionButton()
         prepareSearchEditTextLastUpdated()
         prepareSearchEditTextType()
-        updateUserInfo()
-        updateBuildInfo()
+        updateUserInfo(R.id.username, R.id.rolesListView)
+        updateBuildInfo(
+            R.id.version_info,
+            R.id.build_info,
+            R.id.server_host
+        )
         prepareOrganizationSearchButton()
     }
 
@@ -214,66 +197,6 @@ class OrganizationActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareActionBar() {
-        mainDrawer = findViewById(R.id.drawerMain)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        toggle = ActionBarDrawerToggle(
-            this,
-            mainDrawer,
-            R.string.drawer_opened,
-            R.string.drawer_closed
-        )
-        mainDrawer.addDrawerListener(toggle)
-        toggle.syncState()
-    }
-
-    private fun updateBuildInfo() {
-        requestQueue.add(object : JsonObjectRequest(
-            Method.GET,
-            serverUrl + Urls.BUILD_INFO,
-            null,
-            { response ->
-                val buildInfo = gson.fromJson(response.toString(), BuildInfoDto::class.java)
-                findViewById<TextView>(R.id.version_info).text =
-                    "version: " + buildInfo.version?.uppercase()
-                findViewById<TextView>(R.id.build_info).text =
-                    "build: " + buildInfo.time?.uppercase()
-                findViewById<TextView>(R.id.server_host).text =
-                    "server host: " + buildInfo.serverHost?.uppercase()
-            },
-            { error ->
-                makeErrorSnackBar(error)
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return NetworkUtils.addAuthHeader(super.getHeaders(), this@OrganizationActivity)
-            }
-        }.also { it.tag = requestTag })
-    }
-
-    private fun updateUserInfo() {
-        requestQueue.add(object : JsonObjectRequest(
-            Method.GET,
-            serverUrl + Urls.USER_INFO,
-            null,
-            { response ->
-                val result = gson.fromJson(response.toString(), User::class.java)
-                findViewById<TextView>(R.id.username).text = result.login.uppercase()
-                findViewById<ListView>(R.id.rolesListView).adapter = ArrayAdapter(
-                    this, android.R.layout.simple_list_item_1, result.roles
-                )
-            },
-            { error ->
-                makeErrorSnackBar(error)
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return NetworkUtils.addAuthHeader(super.getHeaders(), this@OrganizationActivity)
-            }
-        }.also { it.tag = requestTag })
-    }
-
     private fun updateLabel() {
         searchEditTextLastUpdated.setText(
             SimpleDateFormat(
@@ -359,39 +282,11 @@ class OrganizationActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        requestQueue.cancelAll(requestTag)
+    override fun getParentCoordinatorLayoutForSnackBar(): Int {
+        return R.id.organizationsCoordinatorLayout
     }
 
-    private fun makeErrorSnackBar(error: VolleyError) {
-        val snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(R.id.organizationsCoordinatorLayout),
-            when (error) {
-                is AuthFailureError -> Constants.FORBIDDEN_MESSAGE
-                is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
-                is ServerError -> {
-                    val result = error.networkResponse?.data?.toString(Charsets.UTF_8)
-                    if (result != null) {
-                        gson.fromJson(result, AlertDto::class.java).headline.toString()
-                    } else {
-                        error.message.toString()
-                    }
-                }
-                else -> error.message.toString()
-            },
-            Snackbar.LENGTH_LONG
-        )
-        val view: View = snackBar.view
-        val params = view.layoutParams as CoordinatorLayout.LayoutParams
-        params.gravity = Gravity.TOP
-        params.setMargins(
-            0,
-            (this@OrganizationActivity.resources.displayMetrics.density * 100).toInt(),
-            0,
-            0
-        )
-        view.layoutParams = params
-        snackBar.show()
+    override fun getRequestTag(): String {
+        return requestTag
     }
 }

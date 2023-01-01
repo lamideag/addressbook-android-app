@@ -4,22 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
-import com.android.volley.*
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
+import com.deepschneider.addressbook.adapters.PersonsListAdapter
 import com.deepschneider.addressbook.dto.*
 import com.deepschneider.addressbook.network.ListRequest
 import com.deepschneider.addressbook.utils.Constants
@@ -27,25 +19,15 @@ import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class PersonsActivity : AppCompatActivity() {
-
-    private lateinit var toggle: ActionBarDrawerToggle
-
-    private lateinit var mainDrawer: DrawerLayout
+class PersonsActivity : AbstractActivity() {
 
     private lateinit var personsListView: ListView
 
-    private lateinit var requestQueue: RequestQueue
-
     private val requestTag = "PERSONS_TAG"
-
-    private var serverUrl: String? = null
 
     private var currentFilter: List<FilterDto>? = null
 
@@ -59,8 +41,6 @@ class PersonsActivity : AppCompatActivity() {
 
     private var targetCache: String = Constants.PERSONS_CACHE_NAME
 
-    private val gson = Gson()
-
     private lateinit var orgId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,13 +48,15 @@ class PersonsActivity : AppCompatActivity() {
         orgId = intent.getStringExtra("orgId").toString()
         title = intent.getStringExtra("orgName").toString()
         setContentView(R.layout.activity_person)
-        requestQueue = Volley.newRequestQueue(this)
-        serverUrl = NetworkUtils.getServerUrl(this@PersonsActivity)
         personsListView = findViewById(R.id.personsListView)
-        prepareActionBar()
+        prepareActionBar(R.id.personsDrawerMain)
         prepareFloatingActionButton()
-        updateUserInfo()
-        updateBuildInfo()
+        updateUserInfo(R.id.usernamePersons, R.id.rolesListViewPersons)
+        updateBuildInfo(
+            R.id.version_info_persons,
+            R.id.build_info_persons,
+            R.id.server_host_persons
+        )
         preparePersonSearchButton()
     }
 
@@ -115,7 +97,7 @@ class PersonsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getOrgIdFilterDto(): FilterDto{
+    private fun getOrgIdFilterDto(): FilterDto {
         val orgIdFilterDto = FilterDto()
         orgIdFilterDto.name = "orgId"
         orgIdFilterDto.value = orgId
@@ -128,66 +110,6 @@ class PersonsActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fab_persons).setOnClickListener {
             startActivity(Intent(applicationContext, CreateNewPersonActivity::class.java))
         }
-    }
-
-    private fun prepareActionBar() {
-        mainDrawer = findViewById(R.id.personsDrawerMain)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        toggle = ActionBarDrawerToggle(
-            this,
-            mainDrawer,
-            R.string.drawer_opened,
-            R.string.drawer_closed
-        )
-        mainDrawer.addDrawerListener(toggle)
-        toggle.syncState()
-    }
-
-    private fun updateBuildInfo() {
-        requestQueue.add(object : JsonObjectRequest(
-            Method.GET,
-            serverUrl + Urls.BUILD_INFO,
-            null,
-            { response ->
-                val buildInfo = gson.fromJson(response.toString(), BuildInfoDto::class.java)
-                findViewById<TextView>(R.id.version_info_persons).text =
-                    "version: " + buildInfo.version?.uppercase()
-                findViewById<TextView>(R.id.build_info_persons).text =
-                    "build: " + buildInfo.time?.uppercase()
-                findViewById<TextView>(R.id.server_host_persons).text =
-                    "server host: " + buildInfo.serverHost?.uppercase()
-            },
-            { error ->
-                makeErrorSnackBar(error)
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return NetworkUtils.addAuthHeader(super.getHeaders(), this@PersonsActivity)
-            }
-        }.also { it.tag = requestTag })
-    }
-
-    private fun updateUserInfo() {
-        requestQueue.add(object : JsonObjectRequest(
-            Method.GET,
-            serverUrl + Urls.USER_INFO,
-            null,
-            { response ->
-                val result = gson.fromJson(response.toString(), User::class.java)
-                findViewById<TextView>(R.id.usernamePersons).text = result.login.uppercase()
-                findViewById<ListView>(R.id.rolesListViewPersons).adapter = ArrayAdapter(
-                    this, android.R.layout.simple_list_item_1, result.roles
-                )
-            },
-            { error ->
-                makeErrorSnackBar(error)
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return NetworkUtils.addAuthHeader(super.getHeaders(), this@PersonsActivity)
-            }
-        }.also { it.tag = requestTag })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -245,7 +167,7 @@ class PersonsActivity : AppCompatActivity() {
                             response.data?.data?.let {
                                 handler.post {
                                     personsListView.adapter =
-                                        OrganizationsListAdapter(it, this@PersonsActivity)
+                                        PersonsListAdapter(it, this@PersonsActivity)
                                     personsListView.visibility = View.VISIBLE
                                     progressBar.visibility = ProgressBar.INVISIBLE
                                 }
@@ -266,39 +188,11 @@ class PersonsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        requestQueue.cancelAll(requestTag)
+    override fun getRequestTag(): String {
+        return requestTag
     }
 
-    private fun makeErrorSnackBar(error: VolleyError) {
-        val snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(R.id.personsCoordinatorLayout),
-            when (error) {
-                is AuthFailureError -> Constants.FORBIDDEN_MESSAGE
-                is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
-                is ServerError -> {
-                    val result = error.networkResponse?.data?.toString(Charsets.UTF_8)
-                    if (result != null) {
-                        gson.fromJson(result, AlertDto::class.java).headline.toString()
-                    } else {
-                        error.message.toString()
-                    }
-                }
-                else -> error.message.toString()
-            },
-            Snackbar.LENGTH_LONG
-        )
-        val view: View = snackBar.view
-        val params = view.layoutParams as CoordinatorLayout.LayoutParams
-        params.gravity = Gravity.TOP
-        params.setMargins(
-            0,
-            (this@PersonsActivity.resources.displayMetrics.density * 100).toInt(),
-            0,
-            0
-        )
-        view.layoutParams = params
-        snackBar.show()
+    override fun getParentCoordinatorLayoutForSnackBar(): Int {
+        return R.id.personsCoordinatorLayout
     }
 }
