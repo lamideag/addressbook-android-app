@@ -22,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
+import com.deepschneider.addressbook.dto.AlertDto
 import com.deepschneider.addressbook.dto.BuildInfoDto
 import com.deepschneider.addressbook.dto.FilterDto
 import com.deepschneider.addressbook.dto.User
@@ -354,8 +355,14 @@ class OrganizationActivity : AppCompatActivity() {
             when (error) {
                 is AuthFailureError -> Constants.FORBIDDEN_MESSAGE
                 is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
-                is ServerError -> error.networkResponse?.data?.toString(Charsets.UTF_8)
-                    ?: error.message.toString()
+                is ServerError -> {
+                    val result = error.networkResponse?.data?.toString(Charsets.UTF_8)
+                    if(result != null){
+                        gson.fromJson(result, AlertDto::class.java).message.toString()
+                    }else {
+                        error.message.toString()
+                    }
+                }
                 else -> error.message.toString()
             },
             Snackbar.LENGTH_LONG
