@@ -36,7 +36,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import java.util.Calendar
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -58,6 +59,8 @@ class OrganizationActivity : AppCompatActivity() {
     private val requestTag = "ORGANIZATIONS_TAG"
 
     private var serverUrl: String? = null
+
+    private var currentFilter: List<FilterDto>? = null
 
     private var start: Int = 1
 
@@ -120,6 +123,7 @@ class OrganizationActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.searchEditTextLastUpdated).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
+            currentFilter = filters
             updateOrganizationsList(filters)
         }
     }
@@ -268,7 +272,7 @@ class OrganizationActivity : AppCompatActivity() {
                 PreferenceManager.getDefaultSharedPreferences(this)
                     .getString("server_url", "no value")
         super.onResume()
-        updateOrganizationsList(emptyList())
+        updateOrganizationsList(currentFilter ?: emptyList())
     }
 
     private fun updateOrganizationsList(filterDto: List<FilterDto>) {
