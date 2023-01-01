@@ -151,7 +151,10 @@ class OrganizationActivity : AppCompatActivity() {
                 lastUpdatedCalendar[Calendar.DAY_OF_MONTH]
             )
             dataPickerDialog.setOnDismissListener {
-                if (!isDataSet) searchEditTextLastUpdated.text = null
+                if (!isDataSet) {
+                    searchEditTextLastUpdated.text = null
+                    searchEditTextLastUpdated.gravity = Gravity.LEFT
+                }
             }
             dataPickerDialog.show()
         }
@@ -266,6 +269,7 @@ class OrganizationActivity : AppCompatActivity() {
                 Locale.US
             ).format(lastUpdatedCalendar.time)
         )
+        searchEditTextLastUpdated.gravity = Gravity.CENTER
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
