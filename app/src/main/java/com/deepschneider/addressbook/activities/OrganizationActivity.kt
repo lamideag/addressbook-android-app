@@ -11,23 +11,27 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
+import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
 import com.deepschneider.addressbook.dto.BuildInfoDto
 import com.deepschneider.addressbook.dto.FilterDto
 import com.deepschneider.addressbook.dto.User
 import com.deepschneider.addressbook.network.OrganizationsRequest
 import com.deepschneider.addressbook.utils.NetworkUtils
+import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -40,6 +44,8 @@ import java.util.concurrent.Executors
 class OrganizationActivity : AppCompatActivity() {
 
     private lateinit var toggle: ActionBarDrawerToggle
+
+    private lateinit var mainDrawer: DrawerLayout
 
     private lateinit var searchEditTextLastUpdated: EditText
 
@@ -76,6 +82,46 @@ class OrganizationActivity : AppCompatActivity() {
         prepareSearchEditTextType()
         updateUserInfo()
         updateBuildInfo()
+        prepareOrganizationSearchButton()
+    }
+
+    private fun prepareOrganizationSearchButton() {
+        val organizationSearchButton = findViewById<Button>(R.id.organizations_search)
+        organizationSearchButton.setOnClickListener {
+            mainDrawer.closeDrawer(GravityCompat.START)
+            val filters = arrayListOf<FilterDto>()
+            Utils.getTextFilterDto(
+                "id",
+                findViewById<EditText>(R.id.searchEditTextId).text.toString()
+            )
+                ?.let { it1 -> filters.add(it1) }
+            Utils.getTextFilterDto(
+                "name",
+                findViewById<EditText>(R.id.searchEditTextName).text.toString()
+            )
+                ?.let { it1 -> filters.add(it1) }
+            Utils.getTextFilterDto(
+                "street",
+                findViewById<EditText>(R.id.searchEditTextAddress).text.toString()
+            )
+                ?.let { it1 -> filters.add(it1) }
+            Utils.getTextFilterDto(
+                "zip",
+                findViewById<EditText>(R.id.searchEditTextZip).text.toString()
+            )
+                ?.let { it1 -> filters.add(it1) }
+            Utils.getTextFilterDto(
+                "type",
+                findViewById<EditText>(R.id.searchEditTextType).text.toString()
+            )
+                ?.let { it1 -> filters.add(it1) }
+            Utils.getDateFilterDto(
+                "lastUpdated",
+                findViewById<EditText>(R.id.searchEditTextLastUpdated).text.toString()
+            )
+                ?.let { it1 -> filters.add(it1) }
+            updateOrganizationsList(filters)
+        }
     }
 
     private fun prepareSearchEditTextLastUpdated() {
@@ -129,16 +175,16 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     private fun prepareActionBar() {
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerMain)
+        mainDrawer = findViewById(R.id.drawerMain)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         toggle = ActionBarDrawerToggle(
             this,
-            drawerLayout,
+            mainDrawer,
             R.string.drawer_opened,
             R.string.drawer_closed
         )
-        drawerLayout.addDrawerListener(toggle)
+        mainDrawer.addDrawerListener(toggle)
         toggle.syncState()
     }
 
@@ -238,12 +284,11 @@ class OrganizationActivity : AppCompatActivity() {
                 filterDto,
                 { response ->
                     val organizationsListView = findViewById<ListView>(R.id.organizationsListView)
-                    val orgNames = arrayListOf<String>()
-                    response.data?.data?.forEach { it.name?.let { it1 -> orgNames.add(it1) } }
-                    handler.post {
-                        organizationsListView.adapter = ArrayAdapter(
-                            this, android.R.layout.simple_list_item_1, orgNames
-                        )
+                    response.data?.data?.let {
+                        handler.post {
+                            organizationsListView.adapter =
+                                OrganizationsListAdapter(it, this@OrganizationActivity)
+                        }
                     }
                 },
                 { error ->

@@ -190,7 +190,7 @@
                     tools:ignore="TextFields" />
 
                 <Button
-                    android:id="@+id/login_search"
+                    android:id="@+id/organizations_search"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginStart="3dp"

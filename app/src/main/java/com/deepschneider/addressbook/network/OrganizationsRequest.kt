@@ -21,13 +21,11 @@ import java.nio.charset.Charset
 class OrganizationsRequest(
     url: String,
     private val filterDto: List<FilterDto>,
-    responseListener: Response.Listener<PageDataDto<TableDataDto<OrganizationDto>>>,
+    private val responseListener: Response.Listener<PageDataDto<TableDataDto<OrganizationDto>>>,
     errorListener: Response.ErrorListener,
     private var context: Context
 ) : Request<PageDataDto<TableDataDto<OrganizationDto>>>(Method.POST, url, errorListener) {
 
-    private var listener: Response.Listener<PageDataDto<TableDataDto<OrganizationDto>>> =
-        responseListener
     private val gson = Gson()
 
     override fun getHeaders(): MutableMap<String, String> {
@@ -48,10 +46,10 @@ class OrganizationsRequest(
             )
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
-            return Response.error(ParseError(e));
+            return Response.error(ParseError(e))
         } catch (e: JsonSyntaxException) {
             e.printStackTrace()
-            return Response.error(ParseError(e));
+            return Response.error(ParseError(e))
         }
     }
 
@@ -60,7 +58,7 @@ class OrganizationsRequest(
     }
 
     override fun deliverResponse(response: PageDataDto<TableDataDto<OrganizationDto>>?) {
-        listener.onResponse(response)
+        responseListener.onResponse(response)
     }
 
     override fun getBody(): ByteArray {
