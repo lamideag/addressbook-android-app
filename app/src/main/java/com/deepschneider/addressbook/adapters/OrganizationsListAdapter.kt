@@ -22,6 +22,7 @@ class OrganizationsListAdapter(
         rowView.findViewById<TextView>(R.id.organization_last_updated).text =
             organizations[position].lastUpdated
         rowView.findViewById<TextView>(R.id.organization_id).text = organizations[position].id
+        rowView.findViewById<TextView>(R.id.organization_type).text = organizations[position].type
         return rowView
     }
 }

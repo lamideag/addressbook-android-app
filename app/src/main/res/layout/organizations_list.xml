@@ -37,22 +37,38 @@
             tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight=".40"
         android:gravity="end"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/organization_last_updated"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="end"
             android:paddingEnd="2dp"
+            android:textAlignment="gravity"
             android:textColor="#4d4d4d"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/organization_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="end"
+            android:paddingEnd="2dp"
+            android:textAlignment="gravity"
+            android:textAllCaps="true"
+            android:textColor="#4d4d4d"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+    </RelativeLayout>
 </LinearLayout>

@@ -19,6 +19,7 @@
     <string name="add_new_organization">ADD NEW ORGANIZATION</string>
     <string name="choose_organization_type">CHOOSE ORGANIZATION TYPE</string>
     <string name="choose_date_comparator">CHOOSE DATE COMPARATOR</string>
+    <string name="empty_list_message">NO DATA</string>
 
     <!-- Preference Titles -->
     <string name="general_header">GENERAL</string>

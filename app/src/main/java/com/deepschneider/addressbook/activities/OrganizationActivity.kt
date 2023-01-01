@@ -48,6 +48,8 @@ class OrganizationActivity : AppCompatActivity() {
 
     private lateinit var searchEditTextLastComparator: EditText
 
+    private lateinit var organizationsListView: ListView
+
     private lateinit var searchEditTextType: EditText
 
     private lateinit var requestQueue: RequestQueue
@@ -77,6 +79,7 @@ class OrganizationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_organization)
         requestQueue = Volley.newRequestQueue(this)
         serverUrl = NetworkUtils.getServerUrl(this@OrganizationActivity)
+        organizationsListView = findViewById(R.id.organizationsListView)
         prepareActionBar()
         prepareFloatingActionButton()
         prepareSearchEditTextLastUpdated()
@@ -293,8 +296,8 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     private fun updateOrganizationsList(filterDto: List<FilterDto>) {
-        val organizationsListView = findViewById<ListView>(R.id.organizationsListView)
         organizationsListView.visibility = View.GONE
+        findViewById<TextView>(R.id.empty_organizations_list).visibility = View.GONE
         val progressBar = findViewById<ProgressBar>(R.id.organizationsProgressBar)
         progressBar.visibility = ProgressBar.VISIBLE
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
@@ -308,19 +311,28 @@ class OrganizationActivity : AppCompatActivity() {
                         "&cache=$targetCache",
                 filterDto,
                 { response ->
-                    response.data?.data?.let {
+                    if (response.data?.data?.isEmpty() == true) {
                         handler.post {
-                            organizationsListView.adapter =
-                                OrganizationsListAdapter(it, this@OrganizationActivity)
-                            organizationsListView.visibility = View.VISIBLE
                             progressBar.visibility = ProgressBar.INVISIBLE
+                            findViewById<TextView>(R.id.empty_organizations_list).visibility =
+                                View.VISIBLE
+                        }
+                    } else {
+                        response.data?.data?.let {
+                            handler.post {
+                                organizationsListView.adapter =
+                                    OrganizationsListAdapter(it, this@OrganizationActivity)
+                                organizationsListView.visibility = View.VISIBLE
+                                progressBar.visibility = ProgressBar.INVISIBLE
+                            }
                         }
                     }
                 },
                 { error ->
                     handler.post {
                         makeErrorSnackBar(error)
-                        organizationsListView.visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.empty_organizations_list).visibility =
+                            View.VISIBLE
                         progressBar.visibility = ProgressBar.INVISIBLE
                     }
                 },
