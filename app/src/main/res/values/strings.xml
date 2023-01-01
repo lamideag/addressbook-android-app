@@ -12,11 +12,13 @@
     <string name="search_org_zip">ZIP</string>
     <string name="search_org_type">TYPE</string>
     <string name="search_org_last_updated">LAST UPDATED</string>
+    <string name="search_org_last_updated_comp">COMPARATOR</string>
     <string name="title_activity_settings">SETTINGS</string>
 
     <string name="organizations">ORGANIZATIONS</string>
     <string name="add_new_organization">ADD NEW ORGANIZATION</string>
     <string name="choose_organization_type">CHOOSE ORGANIZATION TYPE</string>
+    <string name="choose_date_comparator">CHOOSE DATE COMPARATOR</string>
 
     <!-- Preference Titles -->
     <string name="general_header">GENERAL</string>

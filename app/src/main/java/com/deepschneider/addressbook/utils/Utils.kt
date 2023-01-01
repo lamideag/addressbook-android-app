@@ -15,8 +15,8 @@ object Utils {
         return filterDto
     }
 
-    fun getDateFilterDto(name: String, value: String?): FilterDto? {
-        if (value.isNullOrBlank()) return null
+    fun getDateFilterDto(name: String, value: String?, comparator: String?): FilterDto? {
+        if (value.isNullOrBlank() || comparator.isNullOrBlank()) return null
         val filterDto = FilterDto()
         filterDto.name = name
         filterDto.value = SimpleDateFormat(
@@ -28,7 +28,7 @@ object Utils {
                 Locale.US
             ).format(it)
         }
-        filterDto.comparator = "="
+        filterDto.comparator = comparator
         filterDto.type = "DateFilter"
         return filterDto
     }

@@ -17,4 +17,14 @@
         <item>Government</item>
         <item>Public</item>
     </string-array>
+
+    <string-array name="date_comparators">
+        <item>No value</item>
+        <item>=</item>
+        <item>&gt;</item>
+        <item>&gt;=</item>
+        <item>&lt;</item>
+        <item>&lt;=</item>
+        <item>!=</item>
+    </string-array>
 </resources>

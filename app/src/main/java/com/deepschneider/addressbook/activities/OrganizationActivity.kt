@@ -10,11 +10,7 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -49,6 +45,8 @@ class OrganizationActivity : AppCompatActivity() {
     private lateinit var mainDrawer: DrawerLayout
 
     private lateinit var searchEditTextLastUpdated: EditText
+
+    private lateinit var searchEditTextLastComparator: EditText
 
     private lateinit var searchEditTextType: EditText
 
@@ -120,7 +118,8 @@ class OrganizationActivity : AppCompatActivity() {
                 ?.let { it1 -> filters.add(it1) }
             Utils.getDateFilterDto(
                 "lastUpdated",
-                findViewById<EditText>(R.id.searchEditTextLastUpdated).text.toString()
+                findViewById<EditText>(R.id.searchEditTextLastUpdated).text.toString(),
+                findViewById<EditText>(R.id.searchEditTextComparator).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             currentFilter = filters
@@ -151,6 +150,24 @@ class OrganizationActivity : AppCompatActivity() {
                 if (!isDataSet) searchEditTextLastUpdated.text = null
             }
             dataPickerDialog.show()
+        }
+        searchEditTextLastComparator = findViewById(R.id.searchEditTextComparator)
+        searchEditTextLastComparator.setOnClickListener {
+            val builder = AlertDialog.Builder(this@OrganizationActivity)
+            builder.setTitle(R.string.choose_date_comparator)
+                .setItems(
+                    R.array.date_comparators
+                ) { dialog, which ->
+                    if (which == 0) {
+                        searchEditTextLastComparator.text = null
+                        searchEditTextLastComparator.gravity = Gravity.LEFT
+                    } else {
+                        searchEditTextLastComparator.setText(resources.getStringArray(R.array.date_comparators)[which])
+                        searchEditTextLastComparator.gravity = Gravity.CENTER
+                    }
+                    dialog.dismiss()
+                }
+            builder.create().show()
         }
     }
 
@@ -276,6 +293,10 @@ class OrganizationActivity : AppCompatActivity() {
     }
 
     private fun updateOrganizationsList(filterDto: List<FilterDto>) {
+        val organizationsListView = findViewById<ListView>(R.id.organizationsListView)
+        organizationsListView.visibility = View.GONE
+        val progressBar = findViewById<ProgressBar>(R.id.organizationsProgressBar)
+        progressBar.visibility = ProgressBar.VISIBLE
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
@@ -287,17 +308,20 @@ class OrganizationActivity : AppCompatActivity() {
                         "&cache=$targetCache",
                 filterDto,
                 { response ->
-                    val organizationsListView = findViewById<ListView>(R.id.organizationsListView)
                     response.data?.data?.let {
                         handler.post {
                             organizationsListView.adapter =
                                 OrganizationsListAdapter(it, this@OrganizationActivity)
+                            organizationsListView.visibility = View.VISIBLE
+                            progressBar.visibility = ProgressBar.INVISIBLE
                         }
                     }
                 },
                 { error ->
                     handler.post {
                         makeErrorSnackBar(error)
+                        organizationsListView.visibility = View.VISIBLE
+                        progressBar.visibility = ProgressBar.INVISIBLE
                     }
                 },
                 this@OrganizationActivity
