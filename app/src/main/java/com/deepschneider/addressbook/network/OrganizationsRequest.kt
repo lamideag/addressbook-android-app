@@ -1,34 +1,35 @@
 package com.deepschneider.addressbook.network
 
+import android.content.Context
 import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
+import com.deepschneider.addressbook.dto.OrganizationDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.TableDataDto
+import com.deepschneider.addressbook.utils.NetworkUtils
 import org.json.JSONObject
 import java.nio.charset.Charset
 
 
-class OrganizationsRequest : Request<PageDataDto<TableDataDto<Any>>> {
-    private var mMethod = 0
-    private var mUrl: String? = null
-    private var mParams: Map<String, String>? = null
-    private var mListener: Response.Listener<JSONObject>? = null
+class OrganizationsRequest(
+    url: String,
+    responseListener: Response.Listener<JSONObject>,
+    errorListener: Response.ErrorListener,
+    context: Context
+) : Request<PageDataDto<TableDataDto<List<OrganizationDto>>>>(Method.POST, url, errorListener) {
 
+    private var mListener: Response.Listener<JSONObject>? = responseListener
+    private var mContext: Context = context
 
-    constructor(
-        method: Int, url: String?, params: Map<String?, String?>,
-        reponseListener: Listener<JSONObject?>, errorListener: ErrorListener?
-    ) {
-        super(method, url, errorListener)
-        mMethod = method
-        mUrl = url
-        this.mParams = params
-        this.mListener = reponseListener
+    override fun getHeaders(): MutableMap<String, String> {
+        val headers = NetworkUtils.addAuthHeader(super.getHeaders(), mContext)
+        headers["Content-Type"] = "application/json; charset=utf-8"
+        return headers
     }
 
-    override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
+    override fun parseNetworkResponse(response: NetworkResponse?): Response<PageDataDto<TableDataDto<List<OrganizationDto>>>> {
         return try {
             val json = String(
                 response?.data ?: ByteArray(0),
@@ -39,6 +40,7 @@ class OrganizationsRequest : Request<PageDataDto<TableDataDto<Any>>> {
         } catch ()
     }
 
-    override fun deliverResponse(response: T) = listener.onResponse(response)
-
+    override fun getBodyContentType(): String {
+        return "application/json; charset=utf-8"
+    }
 }
