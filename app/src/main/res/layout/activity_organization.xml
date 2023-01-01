@@ -2,13 +2,13 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/organizationsCoordinatorLayout"
+    android:id="@+id/organizations_activity_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.OrganizationActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerMain"
+        android:id="@+id/organizations_activity_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -19,12 +19,12 @@
             android:layout_height="match_parent">
 
             <ListView
-                android:id="@+id/organizationsListView"
+                android:id="@+id/organizations_activity_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <ProgressBar
-                android:id="@+id/organizationsProgressBar"
+                android:id="@+id/organizations_activity_progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -32,7 +32,7 @@
                 android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/empty_organizations_list"
+                android:id="@+id/organizations_activity_empty_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -42,19 +42,18 @@
         </RelativeLayout>
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationViewId"
+            android:id="@+id/organizations_activity_navigation_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayoutCompat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center">
 
                 <TextView
-                    android:id="@+id/username"
+                    android:id="@+id/organizations_activity_username_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
@@ -80,7 +79,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ListView
-                    android:id="@+id/rolesListView"
+                    android:id="@+id/organizations_activity_roles_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:layout_marginStart="3dp"
@@ -112,7 +111,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/searchEditTextId"
+                    android:id="@+id/organizations_activity_search_edit_text_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="300dp"
@@ -128,7 +127,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/searchEditTextName"
+                    android:id="@+id/organizations_activity_search_edit_text_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="350dp"
@@ -144,7 +143,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/searchEditTextAddress"
+                    android:id="@+id/organizations_activity_search_edit_text_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="400dp"
@@ -160,7 +159,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/searchEditTextZip"
+                    android:id="@+id/organizations_activity_search_edit_text_zip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="450dp"
@@ -176,7 +175,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/searchEditTextType"
+                    android:id="@+id/organizations_activity_search_edit_text_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="500dp"
@@ -203,7 +202,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/searchEditTextComparator"
+                            android:id="@+id/organizations_activity_search_edit_text_date_comparator"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="false"
@@ -224,7 +223,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/searchEditTextLastUpdated"
+                            android:id="@+id/organizations_activity_search_edit_text_date_last_updated"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="false"
@@ -240,7 +239,7 @@
 
 
                 <Button
-                    android:id="@+id/organizations_search"
+                    android:id="@+id/organizations_activity_search_button"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginStart="3dp"
@@ -252,7 +251,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/version_info"
+                    android:id="@+id/organizations_activity_version_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="49dp"
@@ -267,7 +266,7 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/build_info"
+                    android:id="@+id/organizations_activity_build_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="36dp"
@@ -282,7 +281,7 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/server_host"
+                    android:id="@+id/organizations_activity_server_host"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="23dp"
@@ -297,7 +296,7 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/server_info"
+                    android:id="@+id/organizations_activity_server_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -319,7 +318,7 @@
     </androidx.drawerlayout.widget.DrawerLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/organizations_activity_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

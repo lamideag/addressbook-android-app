@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
         supportActionBar?.elevation = 0F
         requestQueue = Volley.newRequestQueue(this)
-        findViewById<Button>(R.id.login_button).setOnClickListener {
+        findViewById<Button>(R.id.login_activity_login_button).setOnClickListener {
             createOrRotateLoginToken(true)
         }
     }
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(R.id.loginCoordinatorLayout),
+            findViewById<CoordinatorLayout>(R.id.login_activity_coordinator_layout),
             when (error) {
                 is AuthFailureError -> Constants.AUTH_FAILURE_MESSAGE
                 is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
@@ -128,13 +128,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoginButton() {
-        findViewById<Button>(R.id.login_button).visibility = View.VISIBLE
-        findViewById<ProgressBar>(R.id.progressBar).visibility = ProgressBar.INVISIBLE
+        findViewById<Button>(R.id.login_activity_login_button).visibility = View.VISIBLE
+        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility = ProgressBar.INVISIBLE
     }
 
     private fun hideLoginButton() {
-        findViewById<Button>(R.id.login_button).visibility = View.GONE
-        findViewById<ProgressBar>(R.id.progressBar).visibility = ProgressBar.VISIBLE
+        findViewById<Button>(R.id.login_activity_login_button).visibility = View.GONE
+        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility = ProgressBar.VISIBLE
     }
 
     private fun startOrganizationActivity() {
@@ -153,8 +153,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getLoginDto(): JSONObject {
         val loginDto = JSONObject()
-        loginDto.put("login", findViewById<EditText>(R.id.editTextLogin).text)
-        loginDto.put("password", findViewById<EditText>(R.id.editTextPassword).text)
+        loginDto.put("login", findViewById<EditText>(R.id.login_activity_edit_text_login).text)
+        loginDto.put("password", findViewById<EditText>(R.id.login_activity_edit_text_password).text)
         return loginDto
     }
 

@@ -48,7 +48,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
-        organizationsListView = findViewById(R.id.organizationsListView)
+        organizationsListView = findViewById(R.id.organizations_activity_list_view)
         organizationsListView.setOnItemClickListener { _, view, _, _ ->
             val intent = Intent(applicationContext, PersonsActivity::class.java)
             intent.putExtra(
@@ -61,53 +61,57 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
             )
             startActivity(intent)
         }
-        prepareActionBar(R.id.drawerMain)
+        prepareActionBar(R.id.organizations_activity_drawer_layout)
         prepareFloatingActionButton()
         prepareSearchEditTextLastUpdated()
         prepareSearchEditTextType()
-        updateUserInfo(R.id.username, R.id.rolesListView)
+        updateUserInfo(
+            R.id.organizations_activity_username_text_view,
+            R.id.organizations_activity_roles_list_view
+        )
         updateBuildInfo(
-            R.id.version_info,
-            R.id.build_info,
-            R.id.server_host
+            R.id.organizations_activity_version_info,
+            R.id.organizations_activity_build_info,
+            R.id.organizations_activity_server_host
         )
         prepareOrganizationSearchButton()
     }
 
     private fun prepareOrganizationSearchButton() {
-        val organizationSearchButton = findViewById<Button>(R.id.organizations_search)
+        val organizationSearchButton =
+            findViewById<Button>(R.id.organizations_activity_search_button)
         organizationSearchButton.setOnClickListener {
             mainDrawer.closeDrawer(GravityCompat.START)
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_ID_FIELD,
-                findViewById<EditText>(R.id.searchEditTextId).text.toString()
+                findViewById<EditText>(R.id.organizations_activity_search_edit_text_id).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_NAME_FIELD,
-                findViewById<EditText>(R.id.searchEditTextName).text.toString()
+                findViewById<EditText>(R.id.organizations_activity_search_edit_text_name).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_ADDRESS_FIELD,
-                findViewById<EditText>(R.id.searchEditTextAddress).text.toString()
+                findViewById<EditText>(R.id.organizations_activity_search_edit_text_address).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_ZIP_FIELD,
-                findViewById<EditText>(R.id.searchEditTextZip).text.toString()
+                findViewById<EditText>(R.id.organizations_activity_search_edit_text_zip).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_TYPE_FIELD,
-                findViewById<EditText>(R.id.searchEditTextType).text.toString()
+                findViewById<EditText>(R.id.organizations_activity_search_edit_text_type).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getDateFilterDto(
                 Constants.ORGANIZATIONS_LAST_UPDATED_FIELD,
-                findViewById<EditText>(R.id.searchEditTextLastUpdated).text.toString(),
-                findViewById<EditText>(R.id.searchEditTextComparator).text.toString()
+                findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_last_updated).text.toString(),
+                findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_comparator).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             currentFilter = filters
@@ -116,7 +120,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
     }
 
     private fun prepareSearchEditTextLastUpdated() {
-        searchEditTextLastUpdated = findViewById(R.id.searchEditTextLastUpdated)
+        searchEditTextLastUpdated = findViewById(R.id.organizations_activity_search_edit_text_date_last_updated)
         searchEditTextLastUpdated.setOnClickListener {
             var isDataSet = false
             val dataPickerDialog = DatePickerDialog(
@@ -142,7 +146,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
             }
             dataPickerDialog.show()
         }
-        searchEditTextLastComparator = findViewById(R.id.searchEditTextComparator)
+        searchEditTextLastComparator = findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
         searchEditTextLastComparator.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationActivity)
             builder.setTitle(R.string.choose_date_comparator)
@@ -163,7 +167,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
     }
 
     private fun prepareSearchEditTextType() {
-        searchEditTextType = findViewById(R.id.searchEditTextType)
+        searchEditTextType = findViewById(R.id.organizations_activity_search_edit_text_type)
         searchEditTextType.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationActivity)
             builder.setTitle(R.string.choose_organization_type)
@@ -181,7 +185,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
     }
 
     private fun prepareFloatingActionButton() {
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+        findViewById<FloatingActionButton>(R.id.organizations_activity_fab).setOnClickListener {
             startActivity(Intent(applicationContext, CreateNewOrganizationActivity::class.java))
         }
     }
@@ -218,21 +222,21 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
     }
 
     override fun onResume() {
-        findViewById<TextView>(R.id.server_info).text =
+        findViewById<TextView>(R.id.organizations_activity_server_info).text =
             "server: " + NetworkUtils.getServerUrl(this@OrganizationActivity)
         super.onResume()
         updateList(currentFilter ?: emptyList())
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.organizationsCoordinatorLayout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.organizations_activity_coordinator_layout
 
     override fun getRequestTag(): String = "ORGANIZATIONS_TAG"
 
-    override fun getEmptyListView(): Int = R.id.empty_organizations_list
+    override fun getEmptyListView(): Int = R.id.organizations_activity_empty_list
 
     override fun getMainList(): ListView = organizationsListView
 
-    override fun getProgressBar(): Int = R.id.organizationsProgressBar
+    override fun getProgressBar(): Int = R.id.organizations_activity_progress_bar
 
     override fun getStartPage(): Int = start
 

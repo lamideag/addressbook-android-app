@@ -38,46 +38,46 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
         orgId = intent.getStringExtra("orgId").toString()
         title = intent.getStringExtra("orgName").toString()
         setContentView(R.layout.activity_person)
-        personsListView = findViewById(R.id.personsListView)
-        prepareActionBar(R.id.personsDrawerMain)
+        personsListView = findViewById(R.id.persons_activity_list_view)
+        prepareActionBar(R.id.persons_activity_drawer_layout)
         prepareFloatingActionButton()
-        updateUserInfo(R.id.usernamePersons, R.id.rolesListViewPersons)
+        updateUserInfo(R.id.persons_activity_username_text_view, R.id.persons_activity_roles_list_view)
         updateBuildInfo(
-            R.id.version_info_persons,
-            R.id.build_info_persons,
-            R.id.server_host_persons
+            R.id.persons_activity_version_info,
+            R.id.persons_activity_build_info,
+            R.id.persons_activity_server_host
         )
         preparePersonSearchButton()
     }
 
     private fun preparePersonSearchButton() {
-        val personSearchButton = findViewById<Button>(R.id.persons_search)
+        val personSearchButton = findViewById<Button>(R.id.persons_activity_search_button)
         personSearchButton.setOnClickListener {
             mainDrawer.closeDrawer(GravityCompat.START)
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
                 Constants.PERSONS_ID_FIELD,
-                findViewById<EditText>(R.id.searchEditTextPersonId).text.toString()
+                findViewById<EditText>(R.id.persons_activity_search_edit_text_id).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_FIRST_NAME_FIELD,
-                findViewById<EditText>(R.id.searchEditPersonFirstName).text.toString()
+                findViewById<EditText>(R.id.persons_activity_search_edit_first_name).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_LAST_NAME_FIELD,
-                findViewById<EditText>(R.id.searchEditTextPersonLastName).text.toString()
+                findViewById<EditText>(R.id.persons_activity_search_edit_text_last_name).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_RESUME_FIELD,
-                findViewById<EditText>(R.id.searchEditTextResume).text.toString()
+                findViewById<EditText>(R.id.persons_activity_search_edit_text_resume).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_SALARY_FIELD,
-                findViewById<EditText>(R.id.searchEditTextSalary).text.toString()
+                findViewById<EditText>(R.id.persons_activity_search_edit_text_salary).text.toString()
             )
                 ?.let { it1 -> filters.add(it1) }
 
@@ -97,7 +97,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
     }
 
     private fun prepareFloatingActionButton() {
-        findViewById<FloatingActionButton>(R.id.fab_persons).setOnClickListener {
+        findViewById<FloatingActionButton>(R.id.persons_activity_fab).setOnClickListener {
             startActivity(Intent(applicationContext, CreateNewPersonActivity::class.java))
         }
     }
@@ -124,7 +124,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
     }
 
     override fun onResume() {
-        findViewById<TextView>(R.id.server_info_persons).text =
+        findViewById<TextView>(R.id.persons_activity_server_info).text =
             "server: " + NetworkUtils.getServerUrl(this@PersonsActivity)
         super.onResume()
         updateList(currentFilter ?: listOf(getOrgIdFilterDto()))
@@ -132,7 +132,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     override fun getRequestTag(): String = "PERSONS_TAG"
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.personsCoordinatorLayout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.persons_activity_coordinator_layout
 
     override fun getSortName(): String = sortName
 
@@ -146,12 +146,12 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     override fun getStartPage(): Int = start
 
-    override fun getEmptyListView(): Int = R.id.empty_persons_list
+    override fun getEmptyListView(): Int = R.id.persons_activity_empty_list
 
     override fun getListAdapter(list: List<PersonDto>): ListAdapter =
         PersonsListAdapter(list, this@PersonsActivity)
 
-    override fun getProgressBar(): Int = R.id.personsProgressBar
+    override fun getProgressBar(): Int = R.id.persons_activity_progress_bar
 
     override fun getMainListType(): Type =
         object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
