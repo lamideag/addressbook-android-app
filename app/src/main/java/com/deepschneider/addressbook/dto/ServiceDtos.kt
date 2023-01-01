@@ -1,6 +1,7 @@
 package com.deepschneider.addressbook.dto
 
 import java.io.Serializable
+import java.util.*
 
 class AlertDto(headline: String?, type: String?, message: String?) : Serializable {
     companion object {
@@ -77,4 +78,11 @@ class BuildInfoDto() : Serializable {
     var group: String? = null
     var name: String? = null
     var time: String? = null
+}
+
+class User(var login: String,
+           var password: String,
+           var roles: List<String>) : Serializable {
+
+    constructor() : this("", "", Collections.emptyList<String>())
 }
