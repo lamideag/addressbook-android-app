@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import com.deepschneider.addressbook.listeners.OnSwipeTouchListener
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -60,6 +61,24 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
             )
             startActivity(intent)
         }
+        organizationsListView.setOnTouchListener(object :
+            OnSwipeTouchListener(this@OrganizationsActivity) {
+            override fun onSwipeTop() {
+                this@OrganizationsActivity.totalListSize?.let {
+                    if (start * pageSize < it) {
+                        start++
+                        updateList(currentFilter ?: emptyList())
+                    }
+                }
+            }
+
+            override fun onSwipeBottom() {
+                if (start > 1) {
+                    start--
+                    updateList(currentFilter ?: emptyList())
+                }
+            }
+        })
         prepareActionBar(R.id.organizations_activity_drawer_layout)
         prepareFloatingActionButton()
         prepareSearchEditTextLastUpdated()
@@ -217,6 +236,8 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
     override fun getMainList(): ListView = organizationsListView
 
     override fun getProgressBar(): Int = R.id.organizations_activity_progress_bar
+
+    override fun getTotalListSizeTextView(): Int = R.id.organizations_activity_list_total_size
 
     override fun getStartPage(): Int = start
 

@@ -39,6 +39,14 @@
                 android:layout_gravity="center"
                 android:text="@string/empty_list_message"
                 android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/persons_activity_list_total_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="5dp" />
         </RelativeLayout>
 
         <com.google.android.material.navigation.NavigationView

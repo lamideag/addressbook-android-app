@@ -36,6 +36,8 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     private val gson = Gson()
 
+    protected var totalListSize: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestQueue = Volley.newRequestQueue(this)
@@ -60,7 +62,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
         requestQueue.cancelAll(getRequestTag())
     }
 
-    protected fun makeErrorSnackBar(error: VolleyError) {
+    private fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
             findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()), when (error) {
                 is AuthFailureError -> Constants.FORBIDDEN_MESSAGE
@@ -108,7 +110,17 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
                             handler.post {
                                 getMainList().adapter = getListAdapter(it)
                                 getMainList().visibility = View.VISIBLE
-                                progressBar.visibility = ProgressBar.INVISIBLE
+                                val totalListSize = response.data?.totalDataSize
+                                totalListSize?.let {
+                                    var upperBound = getStartPage() * getPageSize()
+                                    if (upperBound > totalListSize) upperBound = totalListSize
+                                    val total: String =
+                                        "From " + ((getStartPage() - 1) * getPageSize() + 1) +
+                                                " to " + upperBound + " total " + totalListSize
+                                    findViewById<TextView>(getTotalListSizeTextView()).text = total
+                                    progressBar.visibility = ProgressBar.INVISIBLE
+                                    this.totalListSize = totalListSize
+                                }
                             }
                         }
                     }
@@ -137,6 +149,8 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
     abstract fun getStartPage(): Int
 
     abstract fun getPageSize(): Int
+
+    abstract fun getTotalListSizeTextView(): Int
 
     abstract fun getSortName(): String
 

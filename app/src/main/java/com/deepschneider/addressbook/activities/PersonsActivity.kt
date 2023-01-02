@@ -143,6 +143,8 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     override fun getProgressBar(): Int = R.id.persons_activity_progress_bar
 
+    override fun getTotalListSizeTextView(): Int = R.id.persons_activity_list_total_size
+
     override fun getMainListType(): Type =
         object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
 }
