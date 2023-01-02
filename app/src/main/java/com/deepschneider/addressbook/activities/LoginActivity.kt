@@ -18,7 +18,7 @@ import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.databinding.ActivityMainBinding
+import com.deepschneider.addressbook.databinding.ActivityLoginBinding
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
@@ -27,7 +27,7 @@ import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityLoginBinding
 
     private lateinit var requestQueue: RequestQueue
 
@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
         supportActionBar?.elevation = 0F
