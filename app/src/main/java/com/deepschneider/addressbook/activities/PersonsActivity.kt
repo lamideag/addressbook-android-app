@@ -119,7 +119,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
             R.id.action_logout_persons -> {
                 PreferenceManager.getDefaultSharedPreferences(this).edit()
                     .remove(Constants.TOKEN_KEY).commit()
-                val intent = Intent(applicationContext, MainActivity::class.java)
+                val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)

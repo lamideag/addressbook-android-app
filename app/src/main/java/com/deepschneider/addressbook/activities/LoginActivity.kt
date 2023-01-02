@@ -25,7 +25,7 @@ import com.deepschneider.addressbook.utils.Urls
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             R.id.action_logout_main -> {
                 PreferenceManager.getDefaultSharedPreferences(this).edit()
                     .remove(Constants.TOKEN_KEY).commit()
-                val intent = Intent(applicationContext, MainActivity::class.java)
+                val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)

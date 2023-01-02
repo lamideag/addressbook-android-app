@@ -60,7 +60,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
