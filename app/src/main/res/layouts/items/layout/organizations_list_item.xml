@@ -16,8 +16,10 @@
             android:id="@+id/organization_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingStart="2dp"
-            android:textColor="#4d4d4d"
+            android:textColor="@color/purple_500"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry" />
@@ -26,6 +28,8 @@
             android:id="@+id/organization_item_address_and_zip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingStart="2dp"
             tools:ignore="RtlSymmetry" />
 
@@ -33,6 +37,8 @@
             android:id="@+id/organization_item_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingEnd="2dp"
             tools:ignore="RtlSymmetry" />
     </LinearLayout>
