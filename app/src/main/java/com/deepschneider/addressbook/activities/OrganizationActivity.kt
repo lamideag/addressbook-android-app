@@ -12,7 +12,10 @@ import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
-import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.dto.FilterDto
+import com.deepschneider.addressbook.dto.OrganizationDto
+import com.deepschneider.addressbook.dto.PageDataDto
+import com.deepschneider.addressbook.dto.TableDataDto
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Utils
@@ -20,8 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.Calendar
+import java.util.*
 
 class OrganizationActivity : AbstractActivity<OrganizationDto>() {
 
@@ -120,7 +122,8 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
     }
 
     private fun prepareSearchEditTextLastUpdated() {
-        searchEditTextLastUpdated = findViewById(R.id.organizations_activity_search_edit_text_date_last_updated)
+        searchEditTextLastUpdated =
+            findViewById(R.id.organizations_activity_search_edit_text_date_last_updated)
         searchEditTextLastUpdated.setOnClickListener {
             var isDataSet = false
             val dataPickerDialog = DatePickerDialog(
@@ -146,7 +149,8 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
             }
             dataPickerDialog.show()
         }
-        searchEditTextLastComparator = findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
+        searchEditTextLastComparator =
+            findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
         searchEditTextLastComparator.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationActivity)
             builder.setTitle(R.string.choose_date_comparator)
@@ -228,7 +232,8 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
         updateList(currentFilter ?: emptyList())
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.organizations_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int =
+        R.id.organizations_activity_coordinator_layout
 
     override fun getRequestTag(): String = "ORGANIZATIONS_TAG"
 

@@ -14,11 +14,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.preference.PreferenceManager
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.TimeoutError
-import com.android.volley.VolleyError
+import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
@@ -71,7 +67,8 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_logout_main -> {
-                PreferenceManager.getDefaultSharedPreferences(this).edit().remove(Constants.TOKEN_KEY).commit()
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .remove(Constants.TOKEN_KEY).commit()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -129,7 +126,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLoginButton() {
         findViewById<Button>(R.id.login_activity_login_button).visibility = View.VISIBLE
-        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility = ProgressBar.INVISIBLE
+        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility =
+            ProgressBar.INVISIBLE
     }
 
     private fun hideLoginButton() {
@@ -154,7 +152,10 @@ class MainActivity : AppCompatActivity() {
     private fun getLoginDto(): JSONObject {
         val loginDto = JSONObject()
         loginDto.put("login", findViewById<EditText>(R.id.login_activity_edit_text_login).text)
-        loginDto.put("password", findViewById<EditText>(R.id.login_activity_edit_text_password).text)
+        loginDto.put(
+            "password",
+            findViewById<EditText>(R.id.login_activity_edit_text_password).text
+        )
         return loginDto
     }
 

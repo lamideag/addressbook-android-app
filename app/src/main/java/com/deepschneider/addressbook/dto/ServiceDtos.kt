@@ -80,9 +80,11 @@ class BuildInfoDto() : Serializable {
     var time: String? = null
 }
 
-class User(var login: String,
-           var password: String,
-           var roles: List<String>) : Serializable {
+class User(
+    var login: String,
+    var password: String,
+    var roles: List<String>
+) : Serializable {
 
     constructor() : this("", "", Collections.emptyList<String>())
 }

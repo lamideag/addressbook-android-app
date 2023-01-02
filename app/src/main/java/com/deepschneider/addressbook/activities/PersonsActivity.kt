@@ -9,7 +9,10 @@ import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.PersonsListAdapter
-import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.dto.FilterDto
+import com.deepschneider.addressbook.dto.PageDataDto
+import com.deepschneider.addressbook.dto.PersonDto
+import com.deepschneider.addressbook.dto.TableDataDto
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Utils
@@ -41,7 +44,10 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
         personsListView = findViewById(R.id.persons_activity_list_view)
         prepareActionBar(R.id.persons_activity_drawer_layout)
         prepareFloatingActionButton()
-        updateUserInfo(R.id.persons_activity_username_text_view, R.id.persons_activity_roles_list_view)
+        updateUserInfo(
+            R.id.persons_activity_username_text_view,
+            R.id.persons_activity_roles_list_view
+        )
         updateBuildInfo(
             R.id.persons_activity_version_info,
             R.id.persons_activity_build_info,
@@ -132,7 +138,8 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     override fun getRequestTag(): String = "PERSONS_TAG"
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.persons_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int =
+        R.id.persons_activity_coordinator_layout
 
     override fun getSortName(): String = sortName
 

@@ -2,7 +2,6 @@ package com.deepschneider.addressbook.utils
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import java.util.HashMap
 
 object NetworkUtils {
     fun addAuthHeader(
