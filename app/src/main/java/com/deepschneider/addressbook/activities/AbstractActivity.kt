@@ -90,6 +90,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     protected fun updateList(filterDto: List<FilterDto>) {
         getMainList().visibility = View.GONE
+        findViewById<TextView>(getTotalListSizeTextView()).visibility = View.GONE
         findViewById<TextView>(getEmptyListView()).visibility = View.GONE
         val progressBar = findViewById<ProgressBar>(getProgressBar())
         progressBar.visibility = ProgressBar.VISIBLE
@@ -110,6 +111,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
                             handler.post {
                                 getMainList().adapter = getListAdapter(it)
                                 getMainList().visibility = View.VISIBLE
+                                findViewById<TextView>(getTotalListSizeTextView()).visibility = View.VISIBLE
                                 val totalListSize = response.data?.totalDataSize
                                 totalListSize?.let {
                                     var upperBound = getStartPage() * getPageSize()
@@ -118,9 +120,9 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
                                         "From " + ((getStartPage() - 1) * getPageSize() + 1) +
                                                 " to " + upperBound + " total " + totalListSize
                                     findViewById<TextView>(getTotalListSizeTextView()).text = total
-                                    progressBar.visibility = ProgressBar.INVISIBLE
                                     this.totalListSize = totalListSize
                                 }
+                                progressBar.visibility = ProgressBar.INVISIBLE
                             }
                         }
                     }

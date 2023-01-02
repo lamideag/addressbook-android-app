@@ -13,6 +13,7 @@ import com.deepschneider.addressbook.dto.FilterDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.PersonDto
 import com.deepschneider.addressbook.dto.TableDataDto
+import com.deepschneider.addressbook.listeners.OnSwipeTouchListener
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -41,6 +42,24 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
         title = intent.getStringExtra("orgName").toString()
         setContentView(R.layout.activity_person)
         personsListView = findViewById(R.id.persons_activity_list_view)
+        personsListView.setOnTouchListener(object :
+            OnSwipeTouchListener(this@PersonsActivity) {
+            override fun onSwipeTop() {
+                this@PersonsActivity.totalListSize?.let {
+                    if (start * pageSize < it) {
+                        start++
+                        updateList(currentFilter ?: emptyList())
+                    }
+                }
+            }
+
+            override fun onSwipeBottom() {
+                if (start > 1) {
+                    start--
+                    updateList(currentFilter ?: emptyList())
+                }
+            }
+        })
         prepareActionBar(R.id.persons_activity_drawer_layout)
         prepareFloatingActionButton()
         preparePersonSearchButton()

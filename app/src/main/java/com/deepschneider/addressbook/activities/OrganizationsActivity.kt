@@ -118,6 +118,7 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_comparator).text.toString()
             )?.let { it1 -> filters.add(it1) }
             currentFilter = filters
+            start = 1
             updateList(filters)
         }
     }
