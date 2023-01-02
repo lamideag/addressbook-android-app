@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startOrganizationActivity() {
-        val intent = Intent(applicationContext, OrganizationActivity::class.java)
+        val intent = Intent(applicationContext, OrganizationsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

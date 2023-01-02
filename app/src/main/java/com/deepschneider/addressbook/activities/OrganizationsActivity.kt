@@ -25,7 +25,7 @@ import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 
-class OrganizationActivity : AbstractActivity<OrganizationDto>() {
+class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
 
     private lateinit var searchEditTextLastUpdated: EditText
 
@@ -127,7 +127,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
         searchEditTextLastUpdated.setOnClickListener {
             var isDataSet = false
             val dataPickerDialog = DatePickerDialog(
-                this@OrganizationActivity,
+                this@OrganizationsActivity,
                 { _, year, month, day ->
                     with(lastUpdatedCalendar) {
                         set(Calendar.YEAR, year)
@@ -152,7 +152,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
         searchEditTextLastComparator =
             findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
         searchEditTextLastComparator.setOnClickListener {
-            val builder = AlertDialog.Builder(this@OrganizationActivity)
+            val builder = AlertDialog.Builder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_date_comparator)
                 .setItems(
                     R.array.date_comparators
@@ -173,7 +173,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
     private fun prepareSearchEditTextType() {
         searchEditTextType = findViewById(R.id.organizations_activity_search_edit_text_type)
         searchEditTextType.setOnClickListener {
-            val builder = AlertDialog.Builder(this@OrganizationActivity)
+            val builder = AlertDialog.Builder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_organization_type)
                 .setItems(
                     R.array.org_types
@@ -227,7 +227,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
 
     override fun onResume() {
         findViewById<TextView>(R.id.organizations_activity_server_info).text =
-            "server: " + NetworkUtils.getServerUrl(this@OrganizationActivity)
+            "server: " + NetworkUtils.getServerUrl(this@OrganizationsActivity)
         super.onResume()
         updateList(currentFilter ?: emptyList())
     }
@@ -257,5 +257,5 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
         object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
 
     override fun getListAdapter(list: List<OrganizationDto>): ListAdapter =
-        OrganizationsListAdapter(list, this@OrganizationActivity)
+        OrganizationsListAdapter(list, this@OrganizationsActivity)
 }

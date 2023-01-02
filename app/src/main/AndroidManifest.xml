@@ -42,7 +42,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.OrganizationActivity"
+            android:name=".activities.OrganizationsActivity"
             android:exported="false"
             android:label="@string/organizations"
             android:screenOrientation="portrait">

@@ -5,7 +5,7 @@
     android:id="@+id/organizations_activity_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.OrganizationActivity">
+    tools:context=".activities.OrganizationsActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/organizations_activity_drawer_layout"

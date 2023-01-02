@@ -29,7 +29,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     protected lateinit var toggle: ActionBarDrawerToggle
 
-    protected lateinit var requestQueue: RequestQueue
+    private lateinit var requestQueue: RequestQueue
 
     protected lateinit var mainDrawer: DrawerLayout
 
