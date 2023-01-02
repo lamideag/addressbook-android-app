@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.deepschneider.addressbook.R
 
-class CreateNewOrganizationActivity : AppCompatActivity() {
+class CreateOrEditPersonActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_new_organization)
+        setContentView(R.layout.activity_create_new_person)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
     }

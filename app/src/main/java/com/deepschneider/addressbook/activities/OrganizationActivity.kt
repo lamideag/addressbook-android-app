@@ -53,11 +53,11 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
             val intent = Intent(applicationContext, PersonsActivity::class.java)
             intent.putExtra(
                 "orgId",
-                view.findViewById<TextView>(R.id.organization_id).text.toString()
+                view.findViewById<TextView>(R.id.organization_item_id).text.toString()
             )
             intent.putExtra(
                 "orgName",
-                view.findViewById<TextView>(R.id.organization_title).text.toString()
+                view.findViewById<TextView>(R.id.organization_item_name).text.toString()
             )
             startActivity(intent)
         }
@@ -186,7 +186,7 @@ class OrganizationActivity : AbstractActivity<OrganizationDto>() {
 
     private fun prepareFloatingActionButton() {
         findViewById<FloatingActionButton>(R.id.organizations_activity_fab).setOnClickListener {
-            startActivity(Intent(applicationContext, CreateNewOrganizationActivity::class.java))
+            startActivity(Intent(applicationContext, CreateOrEditOrganizationActivity::class.java))
         }
     }
 

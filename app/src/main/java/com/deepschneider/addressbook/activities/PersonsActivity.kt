@@ -98,7 +98,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     private fun prepareFloatingActionButton() {
         findViewById<FloatingActionButton>(R.id.persons_activity_fab).setOnClickListener {
-            startActivity(Intent(applicationContext, CreateNewPersonActivity::class.java))
+            startActivity(Intent(applicationContext, CreateOrEditPersonActivity::class.java))
         }
     }
 
