@@ -17,7 +17,6 @@ import com.deepschneider.addressbook.dto.OrganizationDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.TableDataDto
 import com.deepschneider.addressbook.utils.Constants
-import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
@@ -54,12 +53,10 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
         organizationsListView.setOnItemClickListener { _, view, _, _ ->
             val intent = Intent(applicationContext, PersonsActivity::class.java)
             intent.putExtra(
-                "orgId",
-                view.findViewById<TextView>(R.id.organization_item_id).text.toString()
+                "orgId", view.findViewById<TextView>(R.id.organization_item_id).text.toString()
             )
             intent.putExtra(
-                "orgName",
-                view.findViewById<TextView>(R.id.organization_item_name).text.toString()
+                "orgName", view.findViewById<TextView>(R.id.organization_item_name).text.toString()
             )
             startActivity(intent)
         }
@@ -67,15 +64,6 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
         prepareFloatingActionButton()
         prepareSearchEditTextLastUpdated()
         prepareSearchEditTextType()
-        updateUserInfo(
-            R.id.organizations_activity_username_text_view,
-            R.id.organizations_activity_roles_list_view
-        )
-        updateBuildInfo(
-            R.id.organizations_activity_version_info,
-            R.id.organizations_activity_build_info,
-            R.id.organizations_activity_server_host
-        )
         prepareOrganizationSearchButton()
     }
 
@@ -88,34 +76,28 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_ID_FIELD,
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_id).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_NAME_FIELD,
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_name).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_ADDRESS_FIELD,
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_address).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_ZIP_FIELD,
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_zip).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.ORGANIZATIONS_TYPE_FIELD,
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_type).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getDateFilterDto(
                 Constants.ORGANIZATIONS_LAST_UPDATED_FIELD,
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_last_updated).text.toString(),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_comparator).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             currentFilter = filters
             updateList(filters)
         }
@@ -153,19 +135,18 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
             findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
         searchEditTextLastComparator.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationsActivity)
-            builder.setTitle(R.string.choose_date_comparator)
-                .setItems(
-                    R.array.date_comparators
-                ) { dialog, which ->
-                    if (which == 0) {
-                        searchEditTextLastComparator.text = null
-                        searchEditTextLastComparator.gravity = Gravity.LEFT
-                    } else {
-                        searchEditTextLastComparator.setText(resources.getStringArray(R.array.date_comparators)[which])
-                        searchEditTextLastComparator.gravity = Gravity.CENTER
-                    }
-                    dialog.dismiss()
+            builder.setTitle(R.string.choose_date_comparator).setItems(
+                R.array.date_comparators
+            ) { dialog, which ->
+                if (which == 0) {
+                    searchEditTextLastComparator.text = null
+                    searchEditTextLastComparator.gravity = Gravity.LEFT
+                } else {
+                    searchEditTextLastComparator.setText(resources.getStringArray(R.array.date_comparators)[which])
+                    searchEditTextLastComparator.gravity = Gravity.CENTER
                 }
+                dialog.dismiss()
+            }
             builder.create().show()
         }
     }
@@ -174,16 +155,13 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
         searchEditTextType = findViewById(R.id.organizations_activity_search_edit_text_type)
         searchEditTextType.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationsActivity)
-            builder.setTitle(R.string.choose_organization_type)
-                .setItems(
-                    R.array.org_types
-                ) { dialog, which ->
-                    if (which == 0)
-                        searchEditTextType.text = null
-                    else
-                        searchEditTextType.setText(resources.getStringArray(R.array.org_types)[which])
-                    dialog.dismiss()
-                }
+            builder.setTitle(R.string.choose_organization_type).setItems(
+                R.array.org_types
+            ) { dialog, which ->
+                if (which == 0) searchEditTextType.text = null
+                else searchEditTextType.setText(resources.getStringArray(R.array.org_types)[which])
+                dialog.dismiss()
+            }
             builder.create().show()
         }
     }
@@ -197,8 +175,7 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
     private fun updateLabel() {
         searchEditTextLastUpdated.setText(
             SimpleDateFormat(
-                "MM/dd/yy",
-                Locale.US
+                "MM/dd/yy", Locale.US
             ).format(lastUpdatedCalendar.time)
         )
         searchEditTextLastUpdated.gravity = Gravity.CENTER
@@ -226,8 +203,6 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
     }
 
     override fun onResume() {
-        findViewById<TextView>(R.id.organizations_activity_server_info).text =
-            "server: " + NetworkUtils.getServerUrl(this@OrganizationsActivity)
         super.onResume()
         updateList(currentFilter ?: emptyList())
     }

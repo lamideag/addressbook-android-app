@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import com.android.volley.*
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.*
@@ -33,9 +32,9 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     protected lateinit var mainDrawer: DrawerLayout
 
-    protected var serverUrl: String? = null
+    private var serverUrl: String? = null
 
-    protected val gson = Gson()
+    private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,63 +47,10 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         toggle = ActionBarDrawerToggle(
-            this,
-            mainDrawer,
-            R.string.drawer_opened,
-            R.string.drawer_closed
+            this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed
         )
         mainDrawer.addDrawerListener(toggle)
         toggle.syncState()
-    }
-
-    protected fun updateBuildInfo(
-        versionTextView: Int,
-        buildTextView: Int,
-        serverHostTextView: Int
-    ) {
-        requestQueue.add(object : JsonObjectRequest(
-            Method.GET,
-            serverUrl + Urls.BUILD_INFO,
-            null,
-            { response ->
-                val buildInfo = gson.fromJson(response.toString(), BuildInfoDto::class.java)
-                findViewById<TextView>(versionTextView).text =
-                    "version: " + buildInfo.version?.uppercase()
-                findViewById<TextView>(buildTextView).text =
-                    "build: " + buildInfo.time?.uppercase()
-                findViewById<TextView>(serverHostTextView).text =
-                    "server host: " + buildInfo.serverHost?.uppercase()
-            },
-            { error ->
-                makeErrorSnackBar(error)
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return NetworkUtils.addAuthHeader(super.getHeaders(), this@AbstractActivity)
-            }
-        }.also { it.tag = getRequestTag() })
-    }
-
-    protected fun updateUserInfo(userNameTextView: Int, rolesListView: Int) {
-        requestQueue.add(object : JsonObjectRequest(
-            Method.GET,
-            serverUrl + Urls.USER_INFO,
-            null,
-            { response ->
-                val result = gson.fromJson(response.toString(), User::class.java)
-                findViewById<TextView>(userNameTextView).text = result.login.uppercase()
-                findViewById<ListView>(rolesListView).adapter = ArrayAdapter(
-                    this, android.R.layout.simple_list_item_1, result.roles
-                )
-            },
-            { error ->
-                makeErrorSnackBar(error)
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return NetworkUtils.addAuthHeader(super.getHeaders(), this@AbstractActivity)
-            }
-        }.also { it.tag = getRequestTag() })
     }
 
     abstract fun getRequestTag(): String
@@ -116,8 +62,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     protected fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()),
-            when (error) {
+            findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()), when (error) {
                 is AuthFailureError -> Constants.FORBIDDEN_MESSAGE
                 is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
                 is ServerError -> {
@@ -129,17 +74,13 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
                     }
                 }
                 else -> error.message.toString()
-            },
-            Snackbar.LENGTH_LONG
+            }, Snackbar.LENGTH_LONG
         )
         val view: View = snackBar.view
         val params = view.layoutParams as CoordinatorLayout.LayoutParams
         params.gravity = Gravity.TOP
         params.setMargins(
-            0,
-            (this@AbstractActivity.resources.displayMetrics.density * 100).toInt(),
-            0,
-            0
+            0, (this@AbstractActivity.resources.displayMetrics.density * 100).toInt(), 0, 0
         )
         view.layoutParams = params
         snackBar.show()
@@ -153,42 +94,35 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
-            requestQueue.add(
-                ListRequest(
-                    "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" +
-                            "&pageSize=${getPageSize()}" +
-                            "&sortName=${getSortName()}" +
-                            "&sortOrder=${getSortOrder()}" +
-                            "&cache=${getTargetCache()}",
-                    filterDto,
-                    { response ->
-                        if (response.data?.data?.isEmpty() == true) {
-                            handler.post {
-                                progressBar.visibility = ProgressBar.INVISIBLE
-                                findViewById<TextView>(getEmptyListView()).visibility =
-                                    View.VISIBLE
-                            }
-                        } else {
-                            response.data?.data?.let {
-                                handler.post {
-                                    getMainList().adapter = getListAdapter(it)
-                                    getMainList().visibility = View.VISIBLE
-                                    progressBar.visibility = ProgressBar.INVISIBLE
-                                }
-                            }
-                        }
-                    },
-                    { error ->
+            requestQueue.add(ListRequest(
+                "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${getPageSize()}" + "&sortName=${getSortName()}" + "&sortOrder=${getSortOrder()}" + "&cache=${getTargetCache()}",
+                filterDto,
+                { response ->
+                    if (response.data?.data?.isEmpty() == true) {
                         handler.post {
-                            makeErrorSnackBar(error)
-                            findViewById<TextView>(getEmptyListView()).visibility =
-                                View.VISIBLE
                             progressBar.visibility = ProgressBar.INVISIBLE
+                            findViewById<TextView>(getEmptyListView()).visibility = View.VISIBLE
                         }
-                    },
-                    this@AbstractActivity,
-                    getMainListType()
-                ).also { it.tag = getRequestTag() })
+                    } else {
+                        response.data?.data?.let {
+                            handler.post {
+                                getMainList().adapter = getListAdapter(it)
+                                getMainList().visibility = View.VISIBLE
+                                progressBar.visibility = ProgressBar.INVISIBLE
+                            }
+                        }
+                    }
+                },
+                { error ->
+                    handler.post {
+                        makeErrorSnackBar(error)
+                        findViewById<TextView>(getEmptyListView()).visibility = View.VISIBLE
+                        progressBar.visibility = ProgressBar.INVISIBLE
+                    }
+                },
+                this@AbstractActivity,
+                getMainListType()
+            ).also { it.tag = getRequestTag() })
         }
     }
 

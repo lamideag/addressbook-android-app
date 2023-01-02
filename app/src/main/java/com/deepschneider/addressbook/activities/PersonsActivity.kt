@@ -14,7 +14,6 @@ import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.PersonDto
 import com.deepschneider.addressbook.dto.TableDataDto
 import com.deepschneider.addressbook.utils.Constants
-import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
@@ -44,15 +43,6 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
         personsListView = findViewById(R.id.persons_activity_list_view)
         prepareActionBar(R.id.persons_activity_drawer_layout)
         prepareFloatingActionButton()
-        updateUserInfo(
-            R.id.persons_activity_username_text_view,
-            R.id.persons_activity_roles_list_view
-        )
-        updateBuildInfo(
-            R.id.persons_activity_version_info,
-            R.id.persons_activity_build_info,
-            R.id.persons_activity_server_host
-        )
         preparePersonSearchButton()
     }
 
@@ -64,28 +54,23 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
             Utils.getTextFilterDto(
                 Constants.PERSONS_ID_FIELD,
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_id).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_FIRST_NAME_FIELD,
                 findViewById<EditText>(R.id.persons_activity_search_edit_first_name).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_LAST_NAME_FIELD,
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_last_name).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_RESUME_FIELD,
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_resume).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 Constants.PERSONS_SALARY_FIELD,
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_salary).text.toString()
-            )
-                ?.let { it1 -> filters.add(it1) }
+            )?.let { it1 -> filters.add(it1) }
 
             filters.add(getOrgIdFilterDto())
             currentFilter = filters
@@ -130,8 +115,6 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
     }
 
     override fun onResume() {
-        findViewById<TextView>(R.id.persons_activity_server_info).text =
-            "server: " + NetworkUtils.getServerUrl(this@PersonsActivity)
         super.onResume()
         updateList(currentFilter ?: listOf(getOrgIdFilterDto()))
     }

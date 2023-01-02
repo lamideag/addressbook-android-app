@@ -9,8 +9,7 @@ import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.OrganizationDto
 
 class OrganizationsListAdapter(
-    private val organizations: List<OrganizationDto>,
-    private val activity: Activity
+    private val organizations: List<OrganizationDto>, private val activity: Activity
 ) : ArrayAdapter<OrganizationDto>(activity, R.layout.organizations_list_item, organizations) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

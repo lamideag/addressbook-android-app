@@ -10,8 +10,7 @@ import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.PersonDto
 
 class PersonsListAdapter(
-    private val persons: List<PersonDto>,
-    private val activity: Activity
+    private val persons: List<PersonDto>, private val activity: Activity
 ) : ArrayAdapter<PersonDto>(activity, R.layout.persons_list_item, persons) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

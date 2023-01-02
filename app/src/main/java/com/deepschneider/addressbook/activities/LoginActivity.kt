@@ -91,8 +91,7 @@ class LoginActivity : AppCompatActivity() {
             showLoginButton()
             return
         }
-        requestQueue.add(JsonObjectRequest(
-            Request.Method.POST,
+        requestQueue.add(JsonObjectRequest(Request.Method.POST,
             if (create) serverUrl + Urls.AUTH else serverUrl + Urls.ROTATE_TOKEN,
             targetDto,
             { response ->
@@ -103,19 +102,16 @@ class LoginActivity : AppCompatActivity() {
             { error ->
                 makeErrorSnackBar(error)
                 showLoginButton()
-            }
-        ).also { it.tag = requestTag })
+            }).also { it.tag = requestTag })
     }
 
     private fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(R.id.login_activity_coordinator_layout),
-            when (error) {
+            findViewById<CoordinatorLayout>(R.id.login_activity_coordinator_layout), when (error) {
                 is AuthFailureError -> Constants.AUTH_FAILURE_MESSAGE
                 is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
                 else -> error.message.toString()
-            },
-            Snackbar.LENGTH_LONG
+            }, Snackbar.LENGTH_LONG
         )
         val view: View = snackBar.view
         val params = view.layoutParams as CoordinatorLayout.LayoutParams
@@ -144,8 +140,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun saveTokenFromResponse(response: JSONObject) {
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(
-            Constants.TOKEN_KEY,
-            response.get(Constants.TOKEN_KEY) as String?
+            Constants.TOKEN_KEY, response.get(Constants.TOKEN_KEY) as String?
         ).commit()
     }
 
@@ -153,8 +148,7 @@ class LoginActivity : AppCompatActivity() {
         val loginDto = JSONObject()
         loginDto.put("login", findViewById<EditText>(R.id.login_activity_edit_text_login).text)
         loginDto.put(
-            "password",
-            findViewById<EditText>(R.id.login_activity_edit_text_password).text
+            "password", findViewById<EditText>(R.id.login_activity_edit_text_password).text
         )
         return loginDto
     }
