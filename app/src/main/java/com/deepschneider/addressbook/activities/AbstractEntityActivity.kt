@@ -3,6 +3,9 @@ package com.deepschneider.addressbook.activities
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
+import android.view.View
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
@@ -57,11 +60,19 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
     }
 
     protected fun makeSnackBar(message: String) {
-        Snackbar.make(
-            findViewById(getParentCoordinatorLayoutForSnackBar()),
+        val snackBar = Snackbar.make(
+            findViewById<FrameLayout>(getParentCoordinatorLayoutForSnackBar()),
             message,
             Snackbar.LENGTH_LONG
-        ).show()
+        )
+        val view: View = snackBar.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        params.setMargins(
+            0, (this@AbstractEntityActivity.resources.displayMetrics.density * 10).toInt(), 0, 0
+        )
+        view.layoutParams = params
+        snackBar.show()
     }
 
     protected fun makeErrorSnackBar(error: VolleyError) {

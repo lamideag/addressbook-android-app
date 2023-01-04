@@ -26,6 +26,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     private lateinit var zipEditText: TextInputEditText
     private lateinit var addressEditText: TextInputEditText
     private lateinit var nameEditText: TextInputEditText
+    private lateinit var idEditText: TextInputEditText
+    private lateinit var lastUpdatedEditText: TextInputEditText
     private lateinit var saveOrCreateButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +42,12 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
                 title = "Edit " + it.name
             }
         }
-
         typeEditText = findViewById(R.id.create_or_edit_organization_activity_type)
         zipEditText = findViewById(R.id.create_or_edit_organization_activity_zip)
         addressEditText = findViewById(R.id.create_or_edit_organization_activity_address)
         nameEditText = findViewById(R.id.create_or_edit_organization_activity_name)
+        idEditText = findViewById(R.id.create_or_edit_organization_activity_id)
+        lastUpdatedEditText = findViewById(R.id.create_or_edit_organization_activity_last_updated)
         saveOrCreateButton =
             findViewById(R.id.create_or_edit_organization_activity_save_create_button)
         saveOrCreateButton.setOnClickListener {
@@ -70,6 +73,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
             zipEditText.setText(it.zip)
             addressEditText.setText(it.street)
             nameEditText.setText(it.name)
+            idEditText.setText(it.id)
+            lastUpdatedEditText.setText(it.lastUpdated)
             saveOrCreateButton.text = this.getString(R.string.action_save_changes)
         } ?: run {
             saveOrCreateButton.text = this.getString(R.string.action_create)
