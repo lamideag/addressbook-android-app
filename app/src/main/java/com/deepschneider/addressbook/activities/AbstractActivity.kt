@@ -45,6 +45,8 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     private var sortOrder: String = "asc"
 
+    private var pageSize: Int = 15
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestQueue = Volley.newRequestQueue(this)
@@ -105,7 +107,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
             requestQueue.add(ListRequest(
-                "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${getPageSize()}" + "&sortName=${sortName}" + "&sortOrder=${sortOrder}" + "&cache=${getTargetCache()}",
+                "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${pageSize}" + "&sortName=${sortName}" + "&sortOrder=${sortOrder}" + "&cache=${getTargetCache()}",
                 filterDto,
                 { response ->
                     if (response.data?.data?.isEmpty() == true) {
@@ -122,10 +124,10 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
                                     View.VISIBLE
                                 val totalListSize = response.data?.totalDataSize
                                 totalListSize?.let {
-                                    var upperBound = getStartPage() * getPageSize()
+                                    var upperBound = getStartPage() * pageSize
                                     if (upperBound > totalListSize) upperBound = totalListSize
                                     val total: String =
-                                        "From " + ((getStartPage() - 1) * getPageSize() + 1) +
+                                        "From " + ((getStartPage() - 1) * pageSize + 1) +
                                                 " to " + upperBound + " total " + totalListSize
                                     findViewById<TextView>(getTotalListSizeTextView()).text = total
                                     this.totalListSize = totalListSize
@@ -189,8 +191,6 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     abstract fun getStartPage(): Int
 
-    abstract fun getPageSize(): Int
-
     abstract fun getTotalListSizeTextView(): Int
 
     abstract fun getTargetCache(): String
@@ -204,4 +204,6 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
     abstract fun getFieldListDisplayNames(): Int
 
     abstract fun getFieldListObjNames(): Int
+
+    protected fun getPageSize(): Int = pageSize
 }

@@ -40,8 +40,6 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
 
     private var start: Int = 1
 
-    private var pageSize: Int = 15
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
@@ -60,7 +58,7 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
             OnSwipeTouchListener(this@OrganizationsActivity) {
             override fun onSwipeTop() {
                 this@OrganizationsActivity.totalListSize?.let {
-                    if (start * pageSize < it) {
+                    if (start * getPageSize() < it) {
                         start++
                         updateList(getFilter())
                     }
@@ -235,8 +233,6 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
     override fun getTotalListSizeTextView(): Int = R.id.organizations_activity_list_total_size
 
     override fun getStartPage(): Int = start
-
-    override fun getPageSize(): Int = pageSize
 
     override fun getTargetCache(): String = Constants.ORGANIZATIONS_CACHE_NAME
 

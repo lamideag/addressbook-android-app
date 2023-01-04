@@ -27,8 +27,6 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     private var start: Int = 1
 
-    private var pageSize: Int = 15
-
     private lateinit var orgId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +39,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
             OnSwipeTouchListener(this@PersonsActivity) {
             override fun onSwipeTop() {
                 this@PersonsActivity.totalListSize?.let {
-                    if (start * pageSize < it) {
+                    if (start * getPageSize() < it) {
                         start++
                         updateList(getFilter())
                     }
@@ -138,8 +136,6 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
         R.id.persons_activity_coordinator_layout
 
     override fun getTargetCache(): String = Constants.PERSONS_CACHE_NAME
-
-    override fun getPageSize(): Int = pageSize
 
     override fun getMainList(): ListView = personsListView
 
