@@ -44,14 +44,11 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
         organizationsListView = findViewById(R.id.organizations_activity_list_view)
-        organizationsListView.setOnItemClickListener { _, view, _, _ ->
+        organizationsListView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, PersonsActivity::class.java)
-            intent.putExtra(
-                "orgId", view.findViewById<TextView>(R.id.organization_item_id).text.toString()
-            )
-            intent.putExtra(
-                "orgName", view.findViewById<TextView>(R.id.organization_item_name).text.toString()
-            )
+            val organizationDto: OrganizationDto =
+                parent.adapter.getItem(position) as OrganizationDto
+            intent.putExtra("organization", organizationDto)
             startActivity(intent)
         }
         organizationsListView.setOnTouchListener(object :

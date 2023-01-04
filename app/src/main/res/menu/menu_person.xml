@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.LoginActivity">
     <item
+        android:id="@+id/action_edit_organization"
+        android:icon="@drawable/ic_round_edit_24"
+        android:orderInCategory="100"
+        android:title="@string/action_edit_organization"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_sort_settings_persons"
         android:icon="@drawable/ic_round_sort_24"
         android:orderInCategory="110"

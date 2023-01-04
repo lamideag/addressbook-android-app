@@ -4,6 +4,7 @@
     <string name="action_settings">SETTINGS</string>
     <string name="action_logout">LOGOUT</string>
     <string name="action_sort_settings">SORT SETTINGS</string>
+    <string name="action_edit_organization">EDIT ORGANIZATION</string>
     <string name="action_search">Search</string>
     <string name="action_filter">FILTER</string>
     <string name="login_action">LOGIN</string>

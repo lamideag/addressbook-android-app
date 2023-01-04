@@ -8,10 +8,7 @@ import android.widget.*
 import androidx.core.view.GravityCompat
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.PersonsListAdapter
-import com.deepschneider.addressbook.dto.FilterDto
-import com.deepschneider.addressbook.dto.PageDataDto
-import com.deepschneider.addressbook.dto.PersonDto
-import com.deepschneider.addressbook.dto.TableDataDto
+import com.deepschneider.addressbook.dto.*
 import com.deepschneider.addressbook.listeners.OnSwipeTouchListener
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Utils
@@ -27,12 +24,12 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     private var start: Int = 1
 
-    private lateinit var orgId: String
+    private lateinit var organizationDto: OrganizationDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        orgId = intent.getStringExtra("orgId").toString()
-        title = intent.getStringExtra("orgName").toString()
+        organizationDto = intent.extras?.get("organization") as OrganizationDto
+        title = organizationDto.name
         setContentView(R.layout.activity_person)
         personsListView = findViewById(R.id.persons_activity_list_view)
         personsListView.setOnTouchListener(object :
@@ -93,7 +90,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
     private fun getOrgIdFilterDto(): FilterDto {
         val orgIdFilterDto = FilterDto()
         orgIdFilterDto.name = "orgId"
-        orgIdFilterDto.value = orgId
+        orgIdFilterDto.value = organizationDto.id
         orgIdFilterDto.comparator = ""
         orgIdFilterDto.type = "TextFilter"
         return orgIdFilterDto
@@ -119,6 +116,13 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
             }
             R.id.action_sort_settings_persons -> {
                 showSortSettingsDialogs()
+                return true
+            }
+            R.id.action_edit_organization -> {
+                val intent =
+                    Intent(applicationContext, CreateOrEditOrganizationActivity::class.java)
+                intent.putExtra("organization", organizationDto)
+                startActivity(intent)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
