@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.core.view.GravityCompat
-import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.PersonsListAdapter
 import com.deepschneider.addressbook.dto.FilterDto
@@ -30,10 +29,6 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     private var pageSize: Int = 15
 
-    private var sortName: String = Constants.PERSONS_ID_FIELD
-
-    private var sortOrder: String = Constants.SORT_ORDER_DESC
-
     private lateinit var orgId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +43,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
                 this@PersonsActivity.totalListSize?.let {
                     if (start * pageSize < it) {
                         start++
-                        updateList(currentFilter ?: emptyList())
+                        updateList(getFilter())
                     }
                 }
             }
@@ -56,7 +51,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
             override fun onSwipeBottom() {
                 if (start > 1) {
                     start--
-                    updateList(currentFilter ?: emptyList())
+                    updateList(getFilter())
                 }
             }
         })
@@ -71,23 +66,23 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
             mainDrawer.closeDrawer(GravityCompat.START)
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
-                Constants.PERSONS_ID_FIELD,
+                this.getString(R.string.search_person_obj_id),
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_id).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.PERSONS_FIRST_NAME_FIELD,
+                this.getString(R.string.search_person_obj_first_name),
                 findViewById<EditText>(R.id.persons_activity_search_edit_first_name).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.PERSONS_LAST_NAME_FIELD,
+                this.getString(R.string.search_person_obj_last_name),
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_last_name).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.PERSONS_RESUME_FIELD,
+                this.getString(R.string.search_person_obj_resume),
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_resume).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.PERSONS_SALARY_FIELD,
+                this.getString(R.string.search_person_obj_salary),
                 findViewById<EditText>(R.id.persons_activity_search_edit_text_salary).text.toString()
             )?.let { it1 -> filters.add(it1) }
 
@@ -121,12 +116,11 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
         if (toggle.onOptionsItemSelected(item)) return true
         return when (item.itemId) {
             R.id.action_logout_persons -> {
-                PreferenceManager.getDefaultSharedPreferences(this).edit()
-                    .remove(Constants.TOKEN_KEY).commit()
-                val intent = Intent(applicationContext, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                logout()
+                return true
+            }
+            R.id.action_sort_settings_persons -> {
+                showSortSettingsDialogs()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -135,7 +129,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     override fun onResume() {
         super.onResume()
-        updateList(currentFilter ?: listOf(getOrgIdFilterDto()))
+        updateList(getFilter())
     }
 
     override fun getRequestTag(): String = "PERSONS_TAG"
@@ -143,11 +137,7 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
     override fun getParentCoordinatorLayoutForSnackBar(): Int =
         R.id.persons_activity_coordinator_layout
 
-    override fun getSortName(): String = sortName
-
     override fun getTargetCache(): String = Constants.PERSONS_CACHE_NAME
-
-    override fun getSortOrder(): String = sortOrder
 
     override fun getPageSize(): Int = pageSize
 
@@ -166,4 +156,11 @@ class PersonsActivity : AbstractActivity<PersonDto>() {
 
     override fun getMainListType(): Type =
         object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
+
+    override fun getFilter(): List<FilterDto> = currentFilter ?: listOf(getOrgIdFilterDto())
+
+    override fun getFieldListObjNames(): Int = R.array.persons_list_field_obj_names
+
+    override fun getFieldListDisplayNames(): Int = R.array.persons_list_field_display_names
+
 }

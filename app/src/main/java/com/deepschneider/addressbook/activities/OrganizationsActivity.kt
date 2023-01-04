@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.core.view.GravityCompat
-import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
 import com.deepschneider.addressbook.dto.FilterDto
@@ -43,10 +42,6 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
 
     private var pageSize: Int = 15
 
-    private var sortName: String = Constants.ORGANIZATIONS_ID_FIELD
-
-    private var sortOrder: String = Constants.SORT_ORDER_DESC
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
@@ -67,7 +62,7 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
                 this@OrganizationsActivity.totalListSize?.let {
                     if (start * pageSize < it) {
                         start++
-                        updateList(currentFilter ?: emptyList())
+                        updateList(getFilter())
                     }
                 }
             }
@@ -75,7 +70,7 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
             override fun onSwipeBottom() {
                 if (start > 1) {
                     start--
-                    updateList(currentFilter ?: emptyList())
+                    updateList(getFilter())
                 }
             }
         })
@@ -93,27 +88,27 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
             mainDrawer.closeDrawer(GravityCompat.START)
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
-                Constants.ORGANIZATIONS_ID_FIELD,
+                this.getString(R.string.search_org_obj_id),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_id).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.ORGANIZATIONS_NAME_FIELD,
+                this.getString(R.string.search_org_obj_name),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_name).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.ORGANIZATIONS_ADDRESS_FIELD,
+                this.getString(R.string.search_org_obj_address),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_address).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.ORGANIZATIONS_ZIP_FIELD,
+                this.getString(R.string.search_org_obj_zip),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_zip).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
-                Constants.ORGANIZATIONS_TYPE_FIELD,
+                this.getString(R.string.search_org_obj_type),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_type).text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getDateFilterDto(
-                Constants.ORGANIZATIONS_LAST_UPDATED_FIELD,
+                this.getString(R.string.search_org_obj_last_updated),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_last_updated).text.toString(),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_comparator).text.toString()
             )?.let { it1 -> filters.add(it1) }
@@ -210,12 +205,11 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
         if (toggle.onOptionsItemSelected(item)) return true
         return when (item.itemId) {
             R.id.action_logout_organizations -> {
-                PreferenceManager.getDefaultSharedPreferences(this).edit()
-                    .remove(Constants.TOKEN_KEY).commit()
-                val intent = Intent(applicationContext, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                logout()
+                return true
+            }
+            R.id.action_sort_settings_organizations -> {
+                showSortSettingsDialogs()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -224,7 +218,7 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
 
     override fun onResume() {
         super.onResume()
-        updateList(currentFilter ?: emptyList())
+        updateList(getFilter())
     }
 
     override fun getParentCoordinatorLayoutForSnackBar(): Int =
@@ -244,10 +238,6 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
 
     override fun getPageSize(): Int = pageSize
 
-    override fun getSortName(): String = sortName
-
-    override fun getSortOrder(): String = sortOrder
-
     override fun getTargetCache(): String = Constants.ORGANIZATIONS_CACHE_NAME
 
     override fun getMainListType(): Type =
@@ -255,4 +245,10 @@ class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
 
     override fun getListAdapter(list: List<OrganizationDto>): ListAdapter =
         OrganizationsListAdapter(list, this@OrganizationsActivity)
+
+    override fun getFilter(): List<FilterDto> = currentFilter ?: emptyList()
+
+    override fun getFieldListObjNames(): Int = R.array.organizations_list_field_obj_names
+
+    override fun getFieldListDisplayNames(): Int = R.array.organizations_list_field_display_names
 }

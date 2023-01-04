@@ -27,4 +27,48 @@
         <item>&lt;=</item>
         <item>!=</item>
     </string-array>
+
+    <string-array name="organizations_list_field_display_names">
+        <item>@string/search_org_id</item>
+        <item>@string/search_org_name</item>
+        <item>@string/search_org_address</item>
+        <item>@string/search_org_zip</item>
+        <item>@string/search_org_type</item>
+        <item>@string/search_org_last_updated</item>
+    </string-array>
+
+    <string-array name="organizations_list_field_obj_names">
+        <item>@string/search_org_obj_id</item>
+        <item>@string/search_org_obj_name</item>
+        <item>@string/search_org_obj_address</item>
+        <item>@string/search_org_obj_zip</item>
+        <item>@string/search_org_obj_type</item>
+        <item>@string/search_org_obj_last_updated</item>
+    </string-array>
+
+    <string-array name="persons_list_field_display_names">
+        <item>@string/search_person_id</item>
+        <item>@string/search_person_first_name</item>
+        <item>@string/search_person_last_name</item>
+        <item>@string/search_person_resume</item>
+        <item>@string/search_person_salary</item>
+    </string-array>
+
+    <string-array name="persons_list_field_obj_names">
+        <item>@string/search_person_obj_id</item>
+        <item>@string/search_person_obj_first_name</item>
+        <item>@string/search_person_obj_last_name</item>
+        <item>@string/search_person_obj_resume</item>
+        <item>@string/search_person_obj_salary</item>
+    </string-array>
+
+    <string-array name="list_sort_order_obj_names">
+        <item>desc</item>
+        <item>asc</item>
+    </string-array>
+
+    <string-array name="list_sort_order_display_names">
+        <item>Descending</item>
+        <item>Ascending</item>
+    </string-array>
 </resources>

@@ -1,17 +1,28 @@
 <resources>
     <string name="app_name">Addressbook</string>
+
     <string name="action_settings">SETTINGS</string>
     <string name="action_logout">LOGOUT</string>
+    <string name="action_sort_settings">SORT SETTINGS</string>
     <string name="action_search">Search</string>
     <string name="action_filter">FILTER</string>
     <string name="login_action">LOGIN</string>
     <string name="password_action">PASSWORD</string>
+
     <string name="search_org_id">ID</string>
     <string name="search_org_name">NAME</string>
     <string name="search_org_address">ADDRESS</string>
     <string name="search_org_zip">ZIP</string>
     <string name="search_org_type">TYPE</string>
     <string name="search_org_last_updated">LAST UPDATED</string>
+
+    <string name="search_org_obj_id">id</string>
+    <string name="search_org_obj_name">name</string>
+    <string name="search_org_obj_address">street</string>
+    <string name="search_org_obj_zip">zip</string>
+    <string name="search_org_obj_type">type</string>
+    <string name="search_org_obj_last_updated">lastUpdated</string>
+
     <string name="search_org_last_updated_comp">COMPARATOR</string>
     <string name="title_activity_settings">SETTINGS</string>
 
@@ -21,12 +32,20 @@
     <string name="search_person_resume">RESUME</string>
     <string name="search_person_salary">SALARY</string>
 
+    <string name="search_person_obj_id">id</string>
+    <string name="search_person_obj_first_name">firstName</string>
+    <string name="search_person_obj_last_name">lastName</string>
+    <string name="search_person_obj_resume">resume</string>
+    <string name="search_person_obj_salary">salary</string>
+
     <string name="organizations">ORGANIZATIONS</string>
     <string name="persons">PERSONS</string>
     <string name="add_new_organization">ADD NEW ORGANIZATION</string>
     <string name="add_new_person">ADD NEW PERSON</string>
     <string name="choose_organization_type">CHOOSE ORGANIZATION TYPE</string>
     <string name="choose_date_comparator">CHOOSE DATE COMPARATOR</string>
+    <string name="choose_sort_field">CHOOSE SORT FIELD</string>
+    <string name="choose_sort_order">CHOOSE SORT ORDER</string>
     <string name="empty_list_message">NO DATA</string>
 
     <!-- Preference Titles -->
@@ -35,4 +54,9 @@
 
     <string name="drawer_opened">Opened</string>
     <string name="drawer_closed">Closed</string>
+
+    <string name="auth_failure_message">WRONG LOGIN OR PASSWORD</string>
+    <string name="forbidden_message">WRONG LOGIN OR PASSWORD</string>
+    <string name="server_timeout_message">SERVER CONNECTION TIMEOUT</string>
+
 </resources>

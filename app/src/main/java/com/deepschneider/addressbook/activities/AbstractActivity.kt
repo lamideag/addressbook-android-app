@@ -1,5 +1,7 @@
 package com.deepschneider.addressbook.activities
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
@@ -38,6 +41,10 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     protected var totalListSize: Int? = null
 
+    private var sortName: String = "id"
+
+    private var sortOrder: String = "asc"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestQueue = Volley.newRequestQueue(this)
@@ -65,8 +72,8 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
     private fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
             findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()), when (error) {
-                is AuthFailureError -> Constants.FORBIDDEN_MESSAGE
-                is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
+                is AuthFailureError -> this.getString(R.string.forbidden_message)
+                is TimeoutError -> this.getString(R.string.server_timeout_message)
                 is ServerError -> {
                     val result = error.networkResponse?.data?.toString(Charsets.UTF_8)
                     if (result != null) {
@@ -98,7 +105,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
             requestQueue.add(ListRequest(
-                "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${getPageSize()}" + "&sortName=${getSortName()}" + "&sortOrder=${getSortOrder()}" + "&cache=${getTargetCache()}",
+                "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${getPageSize()}" + "&sortName=${sortName}" + "&sortOrder=${sortOrder}" + "&cache=${getTargetCache()}",
                 filterDto,
                 { response ->
                     if (response.data?.data?.isEmpty() == true) {
@@ -111,7 +118,8 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
                             handler.post {
                                 getMainList().adapter = getListAdapter(it)
                                 getMainList().visibility = View.VISIBLE
-                                findViewById<TextView>(getTotalListSizeTextView()).visibility = View.VISIBLE
+                                findViewById<TextView>(getTotalListSizeTextView()).visibility =
+                                    View.VISIBLE
                                 val totalListSize = response.data?.totalDataSize
                                 totalListSize?.let {
                                     var upperBound = getStartPage() * getPageSize()
@@ -140,6 +148,37 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
         }
     }
 
+    protected fun logout() {
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+            .remove(Constants.TOKEN_KEY).commit()
+        val intent = Intent(applicationContext, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+    protected fun showSortSettingsDialogs() {
+        val builderSortField = AlertDialog.Builder(this)
+        builderSortField.setTitle(R.string.choose_sort_field).setItems(
+            getFieldListDisplayNames()
+        ) { dialogField, whichField ->
+            sortName =
+                this.resources.getStringArray(getFieldListObjNames())[whichField]
+            dialogField.dismiss()
+            val builderSortOrder = AlertDialog.Builder(this)
+            builderSortOrder.setTitle(R.string.choose_sort_order).setItems(
+                R.array.list_sort_order_display_names
+            ) { dialogOrder, whichOrder ->
+                sortOrder =
+                    this.resources.getStringArray(R.array.list_sort_order_obj_names)[whichOrder]
+                dialogOrder.dismiss()
+                updateList(getFilter())
+            }
+            builderSortOrder.create().show()
+        }
+        builderSortField.create().show()
+    }
+
     abstract fun getParentCoordinatorLayoutForSnackBar(): Int
 
     abstract fun getEmptyListView(): Int
@@ -154,13 +193,15 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
 
     abstract fun getTotalListSizeTextView(): Int
 
-    abstract fun getSortName(): String
-
-    abstract fun getSortOrder(): String
-
     abstract fun getTargetCache(): String
 
     abstract fun getMainListType(): Type
 
     abstract fun getListAdapter(list: List<T>): ListAdapter
+
+    abstract fun getFilter(): List<FilterDto>
+
+    abstract fun getFieldListDisplayNames(): Int
+
+    abstract fun getFieldListObjNames(): Int
 }

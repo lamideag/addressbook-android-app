@@ -108,8 +108,8 @@ class LoginActivity : AppCompatActivity() {
     private fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
             findViewById<CoordinatorLayout>(R.id.login_activity_coordinator_layout), when (error) {
-                is AuthFailureError -> Constants.AUTH_FAILURE_MESSAGE
-                is TimeoutError -> Constants.SERVER_TIMEOUT_MESSAGE
+                is AuthFailureError -> this.getString(R.string.auth_failure_message)
+                is TimeoutError -> this.getString(R.string.server_timeout_message)
                 else -> error.message.toString()
             }, Snackbar.LENGTH_LONG
         )
