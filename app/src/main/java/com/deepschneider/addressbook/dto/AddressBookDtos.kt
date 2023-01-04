@@ -10,15 +10,7 @@ class ContactDto() : Serializable {
     var description: String? = null
 }
 
-class OrganizationDto(
-    id: String?,
-    name: String?,
-    street: String?,
-    zip: String?,
-    type: String?,
-    lastUpdated: String?
-) : Serializable {
-
+class OrganizationDto() : Serializable {
     var id: String? = null
     var name: String? = null
     var street: String? = null

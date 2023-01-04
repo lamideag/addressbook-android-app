@@ -18,13 +18,11 @@ import java.util.concurrent.Executors
 
 abstract class AbstractEntityActivity : AppCompatActivity() {
 
-    private lateinit var requestQueue: RequestQueue
+    protected lateinit var requestQueue: RequestQueue
 
-    private var serverUrl: String? = null
+    protected var serverUrl: String? = null
 
-    private val gson = Gson()
-
-    private var recordLocked: Boolean = false
+    protected val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +41,6 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
                     url,
                     { response ->
                         response.data?.let {
-                            recordLocked = it.type != "success" && lock
                             handler.post {
                                 it.headline?.let { headline -> makeSnackBar(headline) }
                             }
@@ -59,7 +56,7 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
         }
     }
 
-    private fun makeSnackBar(message: String) {
+    protected fun makeSnackBar(message: String) {
         Snackbar.make(
             findViewById(getParentCoordinatorLayoutForSnackBar()),
             message,
@@ -67,7 +64,7 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun makeErrorSnackBar(error: VolleyError) {
+    protected fun makeErrorSnackBar(error: VolleyError) {
         when (error) {
             is AuthFailureError -> makeSnackBar(this.getString(R.string.forbidden_message))
             is TimeoutError -> makeSnackBar(this.getString(R.string.server_timeout_message))
