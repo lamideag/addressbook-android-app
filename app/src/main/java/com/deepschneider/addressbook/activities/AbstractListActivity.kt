@@ -27,7 +27,7 @@ import java.lang.reflect.Type
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-abstract class AbstractActivity<in T> : AppCompatActivity() {
+abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected lateinit var toggle: ActionBarDrawerToggle
 
@@ -50,7 +50,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestQueue = Volley.newRequestQueue(this)
-        serverUrl = NetworkUtils.getServerUrl(this@AbstractActivity)
+        serverUrl = NetworkUtils.getServerUrl(this@AbstractListActivity)
     }
 
     protected fun prepareActionBar(drawer: Int) {
@@ -91,7 +91,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
         val params = view.layoutParams as CoordinatorLayout.LayoutParams
         params.gravity = Gravity.TOP
         params.setMargins(
-            0, (this@AbstractActivity.resources.displayMetrics.density * 100).toInt(), 0, 0
+            0, (this@AbstractListActivity.resources.displayMetrics.density * 100).toInt(), 0, 0
         )
         view.layoutParams = params
         snackBar.show()
@@ -144,7 +144,7 @@ abstract class AbstractActivity<in T> : AppCompatActivity() {
                         progressBar.visibility = ProgressBar.INVISIBLE
                     }
                 },
-                this@AbstractActivity,
+                this@AbstractListActivity,
                 getMainListType()
             ).also { it.tag = getRequestTag() })
         }

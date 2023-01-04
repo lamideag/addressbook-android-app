@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
-class PersonsActivity : AbstractActivity<PersonDto>() {
+class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     private lateinit var personsListView: ListView
 

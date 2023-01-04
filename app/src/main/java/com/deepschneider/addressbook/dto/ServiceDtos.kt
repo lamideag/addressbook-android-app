@@ -22,6 +22,10 @@ class AlertDto(headline: String?, type: String?, message: String?) : Serializabl
     }
 
     constructor() : this(null, null, null)
+
+    override fun toString(): String {
+        return "AlertDto(headline=$headline, type=$type, message=$message)"
+    }
 }
 
 class BreadcrumbDto constructor(name: String?, url: String?) {

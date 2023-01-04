@@ -24,7 +24,7 @@ import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 
-class OrganizationsActivity : AbstractActivity<OrganizationDto>() {
+class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
 
     private lateinit var searchEditTextLastUpdated: EditText
 
