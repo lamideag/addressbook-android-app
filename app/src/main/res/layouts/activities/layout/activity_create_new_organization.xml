@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_org_id"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/create_or_edit_organization_activity_id"
@@ -31,7 +33,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_org_last_updated"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingTop="20dp"
+        android:paddingRight="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/create_or_edit_organization_activity_last_updated"
@@ -50,7 +54,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_org_name"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="20dp"
+        android:paddingRight="10dp"
         app:endIconMode="clear_text"
         app:errorEnabled="true">
 
@@ -66,7 +72,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_org_address"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:endIconMode="clear_text"
         app:errorEnabled="true">
 
@@ -82,7 +89,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_org_zip"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:endIconMode="clear_text"
         app:errorEnabled="true">
 
@@ -99,7 +107,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_org_type"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
