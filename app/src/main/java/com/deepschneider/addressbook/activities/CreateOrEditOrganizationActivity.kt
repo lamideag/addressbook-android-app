@@ -1,10 +1,13 @@
 package com.deepschneider.addressbook.activities
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.OrganizationDto
 import com.deepschneider.addressbook.utils.Constants
+import com.google.android.material.textfield.TextInputEditText
 
 class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
@@ -21,6 +24,39 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
             organizationDto?.let {
                 title = "Edit " + it.name
             }
+        }
+
+        val editTextType =
+            findViewById<TextInputEditText>(R.id.create_or_edit_organization_activity_type)
+        editTextType.setOnClickListener {
+            val builder = AlertDialog.Builder(this@CreateOrEditOrganizationActivity)
+            builder.setTitle(R.string.choose_organization_type).setItems(
+                R.array.org_types
+            ) { dialog, which ->
+                if (which == 0) editTextType.text = null
+                else editTextType.setText(resources.getStringArray(R.array.org_types)[which])
+                dialog.dismiss()
+            }
+            builder.create().show()
+        }
+        organizationDto?.let {
+            findViewById<TextInputEditText>(R.id.create_or_edit_organization_activity_type).setText(
+                it.type
+            )
+            findViewById<TextInputEditText>(R.id.create_or_edit_organization_activity_zip).setText(
+                it.zip
+            )
+            findViewById<TextInputEditText>(R.id.create_or_edit_organization_activity_address).setText(
+                it.street
+            )
+            findViewById<TextInputEditText>(R.id.create_or_edit_organization_activity_name).setText(
+                it.name
+            )
+            findViewById<Button>(R.id.create_or_edit_organization_activity_save_create_button).text =
+                this.getString(R.string.action_save_changes)
+        } ?: run {
+            findViewById<Button>(R.id.create_or_edit_organization_activity_save_create_button).text =
+                this.getString(R.string.action_create)
         }
     }
 

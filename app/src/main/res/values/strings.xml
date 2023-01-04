@@ -5,8 +5,10 @@
     <string name="action_logout">LOGOUT</string>
     <string name="action_sort_settings">SORT SETTINGS</string>
     <string name="action_edit_organization">EDIT ORGANIZATION</string>
+    <string name="action_create">CREATE</string>
     <string name="action_search">Search</string>
     <string name="action_filter">FILTER</string>
+    <string name="action_save_changes">SAVE</string>
     <string name="login_action">LOGIN</string>
     <string name="password_action">PASSWORD</string>
 

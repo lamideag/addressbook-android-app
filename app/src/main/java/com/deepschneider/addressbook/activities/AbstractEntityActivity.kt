@@ -3,10 +3,7 @@ package com.deepschneider.addressbook.activities
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
@@ -63,19 +60,11 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
     }
 
     private fun makeSnackBar(message: String) {
-        val snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()),
+        Snackbar.make(
+            findViewById(getParentCoordinatorLayoutForSnackBar()),
             message,
             Snackbar.LENGTH_LONG
-        )
-        val view: View = snackBar.view
-        val params = view.layoutParams as CoordinatorLayout.LayoutParams
-        params.gravity = Gravity.TOP
-        params.setMargins(
-            0, (this@AbstractEntityActivity.resources.displayMetrics.density * 10).toInt(), 0, 0
-        )
-        view.layoutParams = params
-        snackBar.show()
+        ).show()
     }
 
     private fun makeErrorSnackBar(error: VolleyError) {
