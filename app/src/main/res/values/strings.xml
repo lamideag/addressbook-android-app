@@ -9,6 +9,8 @@
     <string name="login_action">LOGIN</string>
     <string name="password_action">PASSWORD</string>
 
+    <string name="no_value_placeholder">No value</string>
+
     <string name="search_org_id">ID</string>
     <string name="search_org_name">NAME</string>
     <string name="search_org_address">ADDRESS</string>
@@ -44,19 +46,26 @@
     <string name="add_new_person">ADD NEW PERSON</string>
     <string name="choose_organization_type">CHOOSE ORGANIZATION TYPE</string>
     <string name="choose_date_comparator">CHOOSE DATE COMPARATOR</string>
-    <string name="choose_sort_field">CHOOSE SORT FIELD</string>
-    <string name="choose_sort_order">CHOOSE SORT ORDER</string>
+    <string name="choose_sort_field">CHOOSE SORTING FIELD</string>
+    <string name="choose_sort_order">CHOOSE SORTING ORDER</string>
     <string name="empty_list_message">NO DATA</string>
 
     <!-- Preference Titles -->
     <string name="general_header">GENERAL</string>
     <string name="server_url">SERVER URL</string>
 
-    <string name="drawer_opened">Opened</string>
-    <string name="drawer_closed">Closed</string>
+    <string name="drawer_opened">OPENED</string>
+    <string name="drawer_closed">CLOSED</string>
 
     <string name="auth_failure_message">WRONG LOGIN OR PASSWORD</string>
     <string name="forbidden_message">WRONG LOGIN OR PASSWORD</string>
     <string name="server_timeout_message">SERVER CONNECTION TIMEOUT</string>
 
+    <string name="organization_type_non_profit">Non profit</string>
+    <string name="organization_type_private">Private</string>
+    <string name="organization_type_government">Government</string>
+    <string name="organization_type_public">Public</string>
+
+    <string name="sort_order_asc">Ascending</string>
+    <string name="sort_order_desc">Descending</string>
 </resources>
