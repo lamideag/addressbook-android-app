@@ -41,11 +41,9 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected var totalListSize: Int? = null
 
-    private var sortName: String = "id"
+    protected var sortName: String = "id"
 
-    private var sortOrder: String = "asc"
-
-    private var pageSize: Int = 15
+    protected var sortOrder: String = "asc"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,6 +172,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                 sortOrder =
                     this.resources.getStringArray(R.array.list_sort_order_obj_names)[whichOrder]
                 dialogOrder.dismiss()
+                saveSortSettings()
                 updateList(getFilter())
             }
             builderSortOrder.create().show()
@@ -204,4 +203,6 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
     abstract fun getFieldListDisplayNames(): Int
 
     abstract fun getFieldListObjNames(): Int
+
+    abstract fun saveSortSettings()
 }

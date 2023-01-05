@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ListAdapter
 import android.widget.ListView
 import androidx.core.view.GravityCompat
+import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
 import com.deepschneider.addressbook.dto.FilterDto
@@ -216,7 +217,23 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
 
     override fun onResume() {
         super.onResume()
+        loadSortSettings()
         updateList(getFilter())
+    }
+
+    private fun loadSortSettings() {
+        sortName = PreferenceManager.getDefaultSharedPreferences(this)
+            .getString("organization_list_sort_field", this.getString(R.string.search_org_obj_id))
+            .toString()
+        sortOrder = PreferenceManager.getDefaultSharedPreferences(this)
+            .getString("organization_list_sort_order", "desc").toString()
+    }
+
+    override fun saveSortSettings() {
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+            .putString("organization_list_sort_field", sortName).commit()
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+            .putString("organization_list_sort_order", sortOrder).commit()
     }
 
     override fun getParentCoordinatorLayoutForSnackBar(): Int =
