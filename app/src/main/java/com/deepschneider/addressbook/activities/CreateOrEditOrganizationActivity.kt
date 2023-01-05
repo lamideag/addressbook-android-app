@@ -187,6 +187,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
             idEditText.setText(it.id)
             lastUpdatedEditText.setText(it.lastUpdated)
             saveOrCreateButton.text = this.getString(R.string.action_save_changes)
+            title = "Edit " + it.name
         } ?: run {
             saveOrCreateButton.text = this.getString(R.string.action_create)
         }
@@ -238,7 +239,9 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
                                         response.data?.type = convertIndexToType(it)
                                     }
                                     organizationDto = it
-                                    updateUi(it)
+                                    handler.post {
+                                        updateUi(it)
+                                    }
                                     organizationDto?.id?.let {
                                         if (create)
                                             sendLockRequest(

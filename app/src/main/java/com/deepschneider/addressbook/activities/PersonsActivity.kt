@@ -2,6 +2,8 @@ package com.deepschneider.addressbook.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -10,11 +12,15 @@ import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.PersonsListAdapter
 import com.deepschneider.addressbook.dto.*
 import com.deepschneider.addressbook.listeners.OnSwipeTouchListener
+import com.deepschneider.addressbook.network.EntityGetRequest
 import com.deepschneider.addressbook.utils.Constants
+import com.deepschneider.addressbook.utils.Urls
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class PersonsActivity : AbstractListActivity<PersonDto>() {
 
@@ -87,6 +93,33 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         }
     }
 
+    private fun updateOrganization() {
+        val handler = Handler(Looper.getMainLooper())
+        val executor: ExecutorService = Executors.newSingleThreadExecutor()
+        val url = "$serverUrl" + Urls.GET_ORGANIZATION + "?id=${organizationDto.id}"
+        executor.execute {
+            requestQueue.add(
+                EntityGetRequest<OrganizationDto>(
+                    url,
+                    { response ->
+                        response.data?.let {
+                            organizationDto = it
+                        }
+                        handler.post {
+                            title = organizationDto.name
+                        }
+                    },
+                    { error ->
+                        handler.post {
+                            makeErrorSnackBar(error)
+                        }
+                    },
+                    this@PersonsActivity,
+                    object : TypeToken<PageDataDto<OrganizationDto>>() {}.type
+                ).also { it.tag = getRequestTag() })
+        }
+    }
+
     private fun getOrgIdFilterDto(): FilterDto {
         val orgIdFilterDto = FilterDto()
         orgIdFilterDto.name = "orgId"
@@ -131,6 +164,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     override fun onResume() {
         super.onResume()
+        updateOrganization()
         updateList(getFilter())
     }
 

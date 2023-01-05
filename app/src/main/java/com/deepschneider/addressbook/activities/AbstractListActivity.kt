@@ -31,11 +31,11 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected lateinit var toggle: ActionBarDrawerToggle
 
-    private lateinit var requestQueue: RequestQueue
+    protected lateinit var requestQueue: RequestQueue
 
     protected lateinit var mainDrawer: DrawerLayout
 
-    private var serverUrl: String? = null
+    protected var serverUrl: String? = null
 
     private val gson = Gson()
 
@@ -71,7 +71,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         requestQueue.cancelAll(getRequestTag())
     }
 
-    private fun makeErrorSnackBar(error: VolleyError) {
+    protected fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
             findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()), when (error) {
                 is AuthFailureError -> this.getString(R.string.forbidden_message)

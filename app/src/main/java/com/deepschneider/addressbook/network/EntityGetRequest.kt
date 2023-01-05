@@ -10,26 +10,25 @@ import com.deepschneider.addressbook.dto.*
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
 import java.io.UnsupportedEncodingException
+import java.lang.reflect.Type
 import java.nio.charset.Charset
 
-class LockRequest(
+class EntityGetRequest<T>(
     url: String,
-    private val responseListener: Response.Listener<PageDataDto<AlertDto>>,
+    private val responseListener: Response.Listener<PageDataDto<T>>,
     errorListener: Response.ErrorListener,
-    private var context: Context
-) : Request<PageDataDto<AlertDto>>(Method.GET, url, errorListener) {
+    private var context: Context,
+    private var type: Type
+) : Request<PageDataDto<T>>(Method.GET, url, errorListener) {
 
     private val gson = Gson()
-
-    private val type = object : TypeToken<PageDataDto<AlertDto>>() {}.type
 
     override fun getHeaders(): MutableMap<String, String> {
         return NetworkUtils.addAuthHeader(super.getHeaders(), context)
     }
 
-    override fun parseNetworkResponse(response: NetworkResponse?): Response<PageDataDto<AlertDto>> {
+    override fun parseNetworkResponse(response: NetworkResponse?): Response<PageDataDto<T>> {
         return try {
             val json = String(
                 response?.data ?: ByteArray(0),
@@ -52,7 +51,7 @@ class LockRequest(
         return "application/json; charset=utf-8"
     }
 
-    override fun deliverResponse(response: PageDataDto<AlertDto>?) {
+    override fun deliverResponse(response: PageDataDto<T>?) {
         responseListener.onResponse(response)
     }
 }
