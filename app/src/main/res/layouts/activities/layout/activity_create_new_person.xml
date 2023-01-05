@@ -87,6 +87,15 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.onegravity.rteditor.RTEditText
+        android:id="@+id/rtEditTextResume"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:imeOptions="actionDone|flagNoEnterAction"
+        android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
     <LinearLayout
         android:id="@+id/rte_toolbar_container"
         android:layout_width="match_parent"
@@ -94,13 +103,6 @@
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
-
-        <com.onegravity.rteditor.RTEditText
-            android:id="@+id/rtEditTextResume"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone|flagNoEnterAction"
-            android:inputType="textMultiLine|textAutoCorrect|textCapSentences" />
 
         <include layout="@layout/rte_toolbar_character" />
 
