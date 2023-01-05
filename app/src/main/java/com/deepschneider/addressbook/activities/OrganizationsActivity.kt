@@ -1,6 +1,5 @@
 package com.deepschneider.addressbook.activities
 
-import com.deepschneider.addressbook.listeners.OnSwipeTouchListener
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -8,7 +7,10 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ListAdapter
+import android.widget.ListView
 import androidx.core.view.GravityCompat
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.OrganizationsListAdapter
@@ -16,6 +18,7 @@ import com.deepschneider.addressbook.dto.FilterDto
 import com.deepschneider.addressbook.dto.OrganizationDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.TableDataDto
+import com.deepschneider.addressbook.listeners.OnSwipeTouchListener
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -55,7 +58,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             OnSwipeTouchListener(this@OrganizationsActivity) {
             override fun onSwipeTop() {
                 this@OrganizationsActivity.totalListSize?.let {
-                    if (start * getPageSize() < it) {
+                    if (start * Constants.PAGE_SIZE < it) {
                         start++
                         updateList(getFilter())
                     }

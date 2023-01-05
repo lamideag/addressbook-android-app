@@ -6,7 +6,7 @@ import com.android.volley.ParseError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
-import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException

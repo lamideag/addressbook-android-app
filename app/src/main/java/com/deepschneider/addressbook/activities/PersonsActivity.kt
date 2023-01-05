@@ -6,7 +6,10 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ListAdapter
+import android.widget.ListView
 import androidx.core.view.GravityCompat
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.PersonsListAdapter
@@ -42,7 +45,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
             OnSwipeTouchListener(this@PersonsActivity) {
             override fun onSwipeTop() {
                 this@PersonsActivity.totalListSize?.let {
-                    if (start * getPageSize() < it) {
+                    if (start * Constants.PAGE_SIZE < it) {
                         start++
                         updateList(getFilter())
                     }

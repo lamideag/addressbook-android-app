@@ -56,6 +56,7 @@
     <!-- Preference Titles -->
     <string name="general_header">GENERAL</string>
     <string name="server_url">SERVER URL</string>
+    <string name="should_use_http">SHOULD USE HTTP?</string>
 
     <string name="drawer_opened">OPENED</string>
     <string name="drawer_closed">CLOSED</string>

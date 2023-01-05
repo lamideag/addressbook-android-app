@@ -107,7 +107,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
             requestQueue.add(ListRequest(
-                "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${pageSize}" + "&sortName=${sortName}" + "&sortOrder=${sortOrder}" + "&cache=${getTargetCache()}",
+                "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${Constants.PAGE_SIZE}" + "&sortName=${sortName}" + "&sortOrder=${sortOrder}" + "&cache=${getTargetCache()}",
                 filterDto,
                 { response ->
                     if (response.data?.data?.isEmpty() == true) {
@@ -124,10 +124,10 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                                     View.VISIBLE
                                 val totalListSize = response.data?.totalDataSize
                                 totalListSize?.let {
-                                    var upperBound = getStartPage() * pageSize
+                                    var upperBound = getStartPage() * Constants.PAGE_SIZE
                                     if (upperBound > totalListSize) upperBound = totalListSize
                                     val total: String =
-                                        "From " + ((getStartPage() - 1) * pageSize + 1) +
+                                        "From " + ((getStartPage() - 1) * Constants.PAGE_SIZE + 1) +
                                                 " to " + upperBound + " total " + totalListSize
                                     findViewById<TextView>(getTotalListSizeTextView()).text = total
                                     this.totalListSize = totalListSize
@@ -204,6 +204,4 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
     abstract fun getFieldListDisplayNames(): Int
 
     abstract fun getFieldListObjNames(): Int
-
-    protected fun getPageSize(): Int = pageSize
 }
