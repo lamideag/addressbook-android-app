@@ -8,6 +8,7 @@ import com.deepschneider.addressbook.R
 class CreateOrEditPersonActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.ThemeLight);
         setContentView(R.layout.activity_create_new_person)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)

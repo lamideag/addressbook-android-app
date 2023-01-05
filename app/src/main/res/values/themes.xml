@@ -22,12 +22,29 @@
         <item name="actionOverflowButtonStyle">@style/overflowButtonStyle</item>
     </style>
 
+    <style name="ThemeLight" parent="@style/RTE_ThemeLight">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorAccent">@color/purple_700</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="android:statusBarColor">@color/purple_500</item>
+        <item name="alertDialogTheme">@style/Theme_Dialog_Light</item>
+        <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
     <style name="snackBarStyle" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:background">@color/purple_500</item>
     </style>
 
     <style name="overflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/purple_500</item>
+    </style>
+
+    <style name="Theme_Dialog_Light" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/purple_700</item>
     </style>
 
     <style name="Theme.Addressbook.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
