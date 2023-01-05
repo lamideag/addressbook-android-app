@@ -67,8 +67,12 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateNameEditText() {
-        if (nameEditText.text.toString().trim().isEmpty()) {
-            nameEditTextLayout.error = "Required Field!"
+        val value = nameEditText.text.toString().trim()
+        if (value.isEmpty()) {
+            nameEditTextLayout.error = "Required field!"
+            fieldValidation[3] = false
+        } else if (value.length > 500) {
+            nameEditTextLayout.error = "Value is too long!"
             fieldValidation[3] = false
         } else {
             nameEditTextLayout.error = null
@@ -77,8 +81,12 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateAddressEditText() {
-        if (addressEditText.text.toString().trim().isEmpty()) {
-            addressEditTextLayout.error = "Required Field!"
+        val value = addressEditText.text.toString().trim()
+        if (value.isEmpty()) {
+            addressEditTextLayout.error = "Required field!"
+            fieldValidation[1] = false
+        } else if (value.length > 500) {
+            addressEditTextLayout.error = "Value is too long!"
             fieldValidation[1] = false
         } else {
             addressEditTextLayout.error = null
@@ -87,8 +95,12 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateZipEditText() {
-        if (zipEditText.text.toString().trim().isEmpty()) {
-            zipEditTextLayout.error = "Required Field!"
+        val value = zipEditText.text.toString().trim()
+        if (value.isEmpty()) {
+            zipEditTextLayout.error = "Required field!"
+            fieldValidation[0] = false
+        } else if (value.length > 100) {
+            zipEditTextLayout.error = "Value is too long!"
             fieldValidation[0] = false
         } else {
             zipEditTextLayout.error = null
@@ -98,7 +110,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
     private fun validateTypeEditText() {
         if (typeEditText.text.toString().trim().isEmpty()) {
-            typeEditTextLayout.error = "Required Field!"
+            typeEditTextLayout.error = "Required field!"
             fieldValidation[2] = false
         } else {
             typeEditTextLayout.error = null
