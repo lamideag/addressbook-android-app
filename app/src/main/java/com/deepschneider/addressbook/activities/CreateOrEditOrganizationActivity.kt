@@ -69,10 +69,10 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     private fun validateNameEditText() {
         val value = nameEditText.text.toString().trim()
         if (value.isEmpty()) {
-            nameEditTextLayout.error = "Required field!"
+            nameEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[3] = false
         } else if (value.length > 500) {
-            nameEditTextLayout.error = "Value is too long!"
+            nameEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[3] = false
         } else {
             nameEditTextLayout.error = null
@@ -83,10 +83,10 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     private fun validateAddressEditText() {
         val value = addressEditText.text.toString().trim()
         if (value.isEmpty()) {
-            addressEditTextLayout.error = "Required field!"
+            addressEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[1] = false
         } else if (value.length > 500) {
-            addressEditTextLayout.error = "Value is too long!"
+            addressEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[1] = false
         } else {
             addressEditTextLayout.error = null
@@ -97,10 +97,10 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     private fun validateZipEditText() {
         val value = zipEditText.text.toString().trim()
         if (value.isEmpty()) {
-            zipEditTextLayout.error = "Required field!"
+            zipEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[0] = false
         } else if (value.length > 100) {
-            zipEditTextLayout.error = "Value is too long!"
+            zipEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[0] = false
         } else {
             zipEditTextLayout.error = null
@@ -110,7 +110,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
     private fun validateTypeEditText() {
         if (typeEditText.text.toString().trim().isEmpty()) {
-            typeEditTextLayout.error = "Required field!"
+            typeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
         } else {
             typeEditTextLayout.error = null
@@ -127,7 +127,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         if (extra != null) {
             organizationDto = extra as OrganizationDto
             organizationDto?.let {
-                title = "Edit " + it.name
+                title = this.getString(R.string.edit_activity_header) + " " + it.name
             }
         }
         typeEditText = findViewById(R.id.create_or_edit_organization_activity_type)
@@ -187,7 +187,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
             idEditText.setText(it.id)
             lastUpdatedEditText.setText(it.lastUpdated)
             saveOrCreateButton.text = this.getString(R.string.action_save_changes)
-            title = "Edit " + it.name
+            title = this.getString(R.string.edit_activity_header) + " " + it.name
         } ?: run {
             saveOrCreateButton.text = this.getString(R.string.action_create)
         }
@@ -228,41 +228,41 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
             val executor: ExecutorService = Executors.newSingleThreadExecutor()
             val url = "$serverUrl" + Urls.SAVE_OR_CREATE_ORGANIZATION
             executor.execute {
-                requestQueue.add(
-                    SaveOrCreateEntityRequest(
-                        url,
-                        it,
-                        { response ->
-                            response.data?.let {
+                requestQueue.add(SaveOrCreateEntityRequest(
+                    url,
+                    it,
+                    { response ->
+                        response.data?.let {
+                            handler.post {
+                                it.type?.let {
+                                    response.data?.type = convertIndexToType(it)
+                                }
+                                organizationDto = it
                                 handler.post {
-                                    it.type?.let {
-                                        response.data?.type = convertIndexToType(it)
-                                    }
-                                    organizationDto = it
-                                    handler.post {
-                                        updateUi(it)
-                                    }
-                                    organizationDto?.id?.let {
-                                        if (create)
-                                            sendLockRequest(
-                                                true,
-                                                Constants.ORGANIZATIONS_CACHE_NAME,
-                                                it
-                                            ) else {
-                                            makeSnackBar("Changes saved!")
-                                        }
+                                    updateUi(it)
+                                }
+                                organizationDto?.id?.let {
+                                    if (create) sendLockRequest(
+                                        true, Constants.ORGANIZATIONS_CACHE_NAME, it
+                                    ) else {
+                                        makeSnackBar(
+                                            this@CreateOrEditOrganizationActivity.getString(
+                                                R.string.changes_saved_message
+                                            )
+                                        )
                                     }
                                 }
                             }
-                        },
-                        { error ->
-                            handler.post {
-                                makeErrorSnackBar(error)
-                            }
-                        },
-                        this@CreateOrEditOrganizationActivity,
-                        object : TypeToken<PageDataDto<OrganizationDto>>() {}.type
-                    ).also { it.tag = getRequestTag() })
+                        }
+                    },
+                    { error ->
+                        handler.post {
+                            makeErrorSnackBar(error)
+                        }
+                    },
+                    this@CreateOrEditOrganizationActivity,
+                    object : TypeToken<PageDataDto<OrganizationDto>>() {}.type
+                ).also { it.tag = getRequestTag() })
             }
         }
     }
