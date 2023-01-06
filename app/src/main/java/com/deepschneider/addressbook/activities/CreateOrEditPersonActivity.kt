@@ -155,13 +155,13 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         validateSalaryEditText()
         validateResumeRteEditText()
         if (fieldValidation[2]) {
-            resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_unfocused)
-            rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_unfocused)
+            resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
+            rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
         } else {
             resumeEditTextLayout.background =
-                this.getDrawable(R.drawable.rte_background_error_unfocused)
+                this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
             rteToolbarContainer.background =
-                this.getDrawable(R.drawable.rte_background_error_unfocused)
+                this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
         }
         updateSaveButtonState()
     }
@@ -336,24 +336,24 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun highlightRteErrorFocus() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_error_focus)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_error_focus)
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
     }
 
     private fun highlightRteUnfocused() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_unfocused)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_unfocused)
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
     }
 
     private fun highlightRteErrorUnfocused() {
         resumeEditTextLayout.background =
-            this.getDrawable(R.drawable.rte_background_error_unfocused)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
+            this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
     }
 
     private fun highlightRteFocus() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_focus)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_focus)
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_focus)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_focus)
     }
 
     override fun onToolbarCollapseButtonClicked() {}
