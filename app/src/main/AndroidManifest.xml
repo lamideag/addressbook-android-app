@@ -14,13 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Addressbook"
         tools:targetApi="33">
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            tools:replace="android:authorities"
-            android:authorities="${applicationId}.provider"
-            android:exported="false" />
-
         <activity
             android:name=".activities.CreateOrEditOrganizationActivity"
             android:exported="false"
