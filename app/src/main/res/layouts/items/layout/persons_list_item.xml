@@ -57,7 +57,7 @@
             android:paddingEnd="2dp"
             android:textAlignment="gravity"
             android:textAllCaps="true"
-            android:textColor="#4d4d4d"
+            android:textColor="@color/list_item_secondary_color"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry" />

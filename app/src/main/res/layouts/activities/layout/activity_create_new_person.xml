@@ -117,8 +117,8 @@
                 android:scrollbars="none"
                 android:translationY="10dp"
                 aztec:historyEnable="false"
-                aztec:textColor="#ff1c1b1f"
-                aztec:textColorHint="#757575" />
+                aztec:textColor="@color/rte_resume_text_color"
+                aztec:textColorHint="@color/rte_resume_hint_text_color" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
