@@ -8,5 +8,5 @@
         android:topRightRadius="4dp" />
     <stroke
         android:width="2dp"
-        android:color="#880E4F" />
+        android:color="@color/mtrl_error" />
 </shape>
