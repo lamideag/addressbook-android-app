@@ -1,9 +1,11 @@
 package com.deepschneider.addressbook.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
@@ -67,6 +69,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_person)
@@ -101,6 +104,13 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
 
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
+        rteResumeEditor.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            if ((event.action and MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            return@setOnTouchListener false
+        }
         rteToolbar = findViewById(R.id.formatting_toolbar)
         resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
         rteToolbarContainer = findViewById(R.id.rte_toolbar_container)

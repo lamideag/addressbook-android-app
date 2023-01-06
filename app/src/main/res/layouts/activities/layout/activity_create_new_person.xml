@@ -113,6 +113,8 @@
                 android:fontFamily="sans-serif"
                 android:imeOptions="flagNoExtractUi"
                 android:inputType="textCapSentences|textMultiLine"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
                 android:translationY="10dp"
                 aztec:historyEnable="false"
