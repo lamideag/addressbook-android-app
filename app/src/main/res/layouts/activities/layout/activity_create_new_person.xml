@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aztec="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/create_or_edit_person_activity_coordinator_layout"
     android:layout_width="match_parent"
@@ -86,6 +87,48 @@
             android:inputType="text"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <org.wordpress.aztec.AztecText
+            android:id="@+id/visual"
+            android:hint="@string/search_person_resume"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:imeOptions="flagNoExtractUi"
+            android:scrollbars="vertical"
+            aztec:historyEnable="false" />
+
+        <org.wordpress.aztec.source.SourceViewEditText
+            android:id="@+id/source"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|start"
+            android:hint="@string/search_person_resume"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:scrollbars="vertical"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:imeOptions="flagNoExtractUi"
+            aztec:codeBackgroundColor="@android:color/transparent"
+            aztec:codeTextColor="@android:color/white"/>
+
+        <org.wordpress.aztec.toolbar.AztecToolbar
+            android:id="@+id/formatting_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/create_or_edit_person_activity_save_create_button"
