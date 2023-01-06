@@ -98,9 +98,9 @@
 
         <org.wordpress.aztec.AztecText
             android:id="@+id/visual"
-            android:hint="@string/search_person_resume"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:hint="@string/search_person_resume"
             android:imeOptions="flagNoExtractUi"
             android:scrollbars="vertical"
             aztec:historyEnable="false" />
@@ -111,17 +111,17 @@
             android:layout_height="match_parent"
             android:gravity="top|start"
             android:hint="@string/search_person_resume"
+            android:imeOptions="flagNoExtractUi"
             android:inputType="textNoSuggestions|textMultiLine"
-            android:paddingEnd="16dp"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
             android:scrollbars="vertical"
             android:textSize="14sp"
             android:visibility="gone"
-            android:imeOptions="flagNoExtractUi"
             aztec:codeBackgroundColor="@android:color/transparent"
-            aztec:codeTextColor="@android:color/white"/>
+            aztec:codeTextColor="@android:color/white" />
 
         <org.wordpress.aztec.toolbar.AztecToolbar
             android:id="@+id/formatting_toolbar"
