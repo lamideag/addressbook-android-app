@@ -104,13 +104,6 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
 
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
-        rteResumeEditor.setOnTouchListener { view, event ->
-            view.parent.requestDisallowInterceptTouchEvent(true)
-            if ((event.action and MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
-                view.parent.requestDisallowInterceptTouchEvent(false)
-            }
-            return@setOnTouchListener false
-        }
         rteToolbar = findViewById(R.id.formatting_toolbar)
         resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
         rteToolbarContainer = findViewById(R.id.rte_toolbar_container)
