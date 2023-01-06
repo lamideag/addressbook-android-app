@@ -10,6 +10,7 @@
     tools:context=".activities.CreateOrEditPersonActivity">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/create_or_edit_person_activity_id_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,35 +90,35 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/rte_container"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/create_or_edit_person_activity_resume_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="175dp"
+        android:hint="@string/search_person_resume"
+        app:backgroundColor="@color/purple_500"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:orientation="vertical">
+        app:errorEnabled="true">
 
         <org.wordpress.aztec.AztecText
-            android:id="@+id/visual"
+            android:id="@+id/rte_resume_editor"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_height="170dp"
             android:fontFamily="sans-serif"
-            android:hint="@string/search_person_resume"
             android:imeOptions="flagNoExtractUi"
             android:scrollbars="vertical"
             aztec:historyEnable="false"
             aztec:textColor="#ff1c1b1f"
             aztec:textColorHint="#757575" />
-    </RelativeLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
         android:id="@+id/rte_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:orientation="vertical">
 
@@ -128,5 +129,13 @@
             android:layout_margin="4dp"
             aztec:mediaToolbarAvailable="false" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/create_or_edit_person_activity_save_create_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:height="60dp" />
 
 </LinearLayout>
