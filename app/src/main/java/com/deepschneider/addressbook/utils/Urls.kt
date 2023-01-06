@@ -8,6 +8,7 @@ object Urls {
     const val GET_PERSON = "/rest/getPersonById"
     const val GET_ORGANIZATION = "/rest/getOrganizationById"
     const val SAVE_OR_CREATE_ORGANIZATION = "/rest/saveOrCreateOrganization"
+    const val SAVE_OR_CREATE_PERSON = "/rest/saveOrCreatePerson"
     const val UNLOCK_RECORD = "/rest/unlockRecord"
 
     const val AUTH = "/auth"

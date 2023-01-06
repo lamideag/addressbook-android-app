@@ -2,17 +2,23 @@ package com.deepschneider.addressbook.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
 import com.deepschneider.addressbook.R
+import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.PersonDto
+import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
+import com.deepschneider.addressbook.utils.Constants
+import com.deepschneider.addressbook.utils.Urls
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.reflect.TypeToken
 import org.wordpress.aztec.Aztec
 import org.wordpress.aztec.AztecText
 import org.wordpress.aztec.ITextFormat
@@ -20,6 +26,9 @@ import org.wordpress.aztec.toolbar.AztecToolbar
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 import org.wordpress.aztec.toolbar.ToolbarAction
 import org.wordpress.aztec.toolbar.ToolbarItems
+import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickListener {
 
@@ -44,6 +53,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private lateinit var saveOrCreateButton: Button
 
     private var personDto: PersonDto? = null
+
+    private lateinit var orgId: String
 
     private val fieldValidation = BooleanArray(4)
 
@@ -84,6 +95,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             }
         }
 
+        orgId = intent.getStringExtra("orgId").toString()
+
         idEditText = findViewById(R.id.create_or_edit_person_activity_id)
         idEditTextLayout = findViewById(R.id.create_or_edit_person_activity_id_layout)
 
@@ -100,7 +113,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         saveOrCreateButton =
             findViewById(R.id.create_or_edit_person_activity_save_create_button)
         saveOrCreateButton.setOnClickListener {
-
+            saveOrCreatePerson()
         }
 
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
@@ -224,6 +237,66 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
+    private fun saveOrCreatePerson() {
+        var targetPersonDto: PersonDto? = null
+        var create = false
+        personDto?.let {
+            targetPersonDto = it
+            targetPersonDto?.firstName = firstNameEditText.text.toString()
+            targetPersonDto?.lastName = lastNameEditText.text.toString()
+            targetPersonDto?.resume = rteResumeEditor.toHtml()
+            targetPersonDto?.salary = salaryEditText.text.toString()
+        } ?: run {
+            create = true
+            targetPersonDto = PersonDto()
+            targetPersonDto?.firstName = firstNameEditText.text.toString()
+            targetPersonDto?.lastName = lastNameEditText.text.toString()
+            targetPersonDto?.resume = rteResumeEditor.toHtml()
+            targetPersonDto?.salary = salaryEditText.text.toString()
+            targetPersonDto?.orgId = orgId
+        }
+        targetPersonDto?.let {
+            val handler = Handler(Looper.getMainLooper())
+            val executor: ExecutorService = Executors.newSingleThreadExecutor()
+            val url = "$serverUrl" + Urls.SAVE_OR_CREATE_PERSON
+            executor.execute {
+                requestQueue.add(
+                    SaveOrCreateEntityRequest(
+                        url,
+                        it,
+                        { response ->
+                            response.data?.let {
+                                handler.post {
+                                    targetPersonDto = it
+                                    handler.post {
+                                        updateUi(it)
+                                    }
+                                    targetPersonDto?.id?.let {
+                                        if (create) sendLockRequest(
+                                            true, Constants.PERSONS_CACHE_NAME, it
+                                        ) else {
+                                            makeSnackBar(
+                                                this@CreateOrEditPersonActivity.getString(
+                                                    R.string.changes_saved_message
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        { error ->
+                            handler.post {
+                                makeErrorSnackBar(error)
+                            }
+                        },
+                        this@CreateOrEditPersonActivity,
+                        object : TypeToken<PageDataDto<PersonDto>>() {}.type
+                    ).also { it.tag = getRequestTag() })
+            }
+        }
+    }
+
     private fun validateResumeRteEditText() {
         val value = rteResumeEditor.toHtml().trim()
         if (value.isEmpty()) {
@@ -282,30 +355,26 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    override fun onToolbarCollapseButtonClicked() {
-
+    override fun onResume() {
+        super.onResume()
+        personDto?.id?.let {
+            sendLockRequest(true, Constants.PERSONS_CACHE_NAME, it)
+        }
     }
 
-    override fun onToolbarExpandButtonClicked() {
-
+    override fun onStop() {
+        super.onStop()
+        personDto?.id?.let {
+            sendLockRequest(false, Constants.PERSONS_CACHE_NAME, it)
+        }
     }
 
-    override fun onToolbarFormatButtonClicked(format: ITextFormat, isKeyboardShortcut: Boolean) {
-
-    }
-
-    override fun onToolbarHeadingButtonClicked() {
-
-    }
-
-    override fun onToolbarHtmlButtonClicked() {
-
-    }
-
-    override fun onToolbarListButtonClicked() {
-
-    }
-
+    override fun onToolbarCollapseButtonClicked() {}
+    override fun onToolbarExpandButtonClicked() {}
+    override fun onToolbarFormatButtonClicked(format: ITextFormat, isKeyboardShortcut: Boolean) {}
+    override fun onToolbarHeadingButtonClicked() {}
+    override fun onToolbarHtmlButtonClicked() {}
+    override fun onToolbarListButtonClicked() {}
     override fun onToolbarMediaButtonClicked(): Boolean {
         return false
     }

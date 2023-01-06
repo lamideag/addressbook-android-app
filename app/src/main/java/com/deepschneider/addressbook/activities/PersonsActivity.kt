@@ -47,6 +47,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
             val personDto: PersonDto =
                 parent.adapter.getItem(position) as PersonDto
             intent.putExtra("person", personDto)
+            intent.putExtra("orgId", organizationDto.id)
             startActivity(intent)
         }
         personsListView.setOnTouchListener(object :
@@ -142,7 +143,9 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     private fun prepareFloatingActionButton() {
         findViewById<FloatingActionButton>(R.id.persons_activity_fab).setOnClickListener {
-            startActivity(Intent(applicationContext, CreateOrEditPersonActivity::class.java))
+            val intent = Intent(applicationContext, CreateOrEditPersonActivity::class.java)
+            intent.putExtra("orgId", organizationDto.id)
+            startActivity(intent)
         }
     }
 
