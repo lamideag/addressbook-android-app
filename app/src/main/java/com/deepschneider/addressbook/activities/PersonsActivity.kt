@@ -42,6 +42,13 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         title = organizationDto.name
         setContentView(R.layout.activity_person)
         personsListView = findViewById(R.id.persons_activity_list_view)
+        personsListView.setOnItemClickListener { parent, _, position, _ ->
+            val intent = Intent(applicationContext, CreateOrEditPersonActivity::class.java)
+            val personDto: PersonDto =
+                parent.adapter.getItem(position) as PersonDto
+            intent.putExtra("person", personDto)
+            startActivity(intent)
+        }
         personsListView.setOnTouchListener(object :
             OnSwipeTouchListener(this@PersonsActivity) {
             override fun onSwipeTop() {
