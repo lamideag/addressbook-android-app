@@ -50,7 +50,8 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
         organizationsListView = findViewById(R.id.organizations_activity_list_view)
         organizationsListView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, PersonsActivity::class.java)
-            val organizationDto: OrganizationDto = parent.adapter.getItem(position) as OrganizationDto
+            val organizationDto: OrganizationDto =
+                parent.adapter.getItem(position) as OrganizationDto
             intent.putExtra("organization", organizationDto)
             startActivity(intent)
         }
@@ -80,7 +81,8 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     }
 
     private fun prepareOrganizationSearchButton() {
-        val organizationSearchButton = findViewById<Button>(R.id.organizations_activity_search_button)
+        val organizationSearchButton =
+            findViewById<Button>(R.id.organizations_activity_search_button)
         organizationSearchButton.setOnClickListener {
             mainDrawer.closeDrawer(GravityCompat.START)
             val filters = arrayListOf<FilterDto>()
@@ -116,7 +118,8 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     }
 
     private fun prepareSearchEditTextLastUpdated() {
-        searchEditTextLastUpdated = findViewById(R.id.organizations_activity_search_edit_text_date_last_updated)
+        searchEditTextLastUpdated =
+            findViewById(R.id.organizations_activity_search_edit_text_date_last_updated)
         searchEditTextLastUpdated.setOnClickListener {
             var isDataSet = false
             val dataPickerDialog = DatePickerDialog(
@@ -142,7 +145,8 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             }
             dataPickerDialog.show()
         }
-        searchEditTextLastComparator = findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
+        searchEditTextLastComparator =
+            findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
         searchEditTextLastComparator.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_date_comparator).setItems(
@@ -232,7 +236,8 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             .putString("organization_list_sort_order", sortOrder).commit()
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.organizations_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int =
+        R.id.organizations_activity_coordinator_layout
 
     override fun getRequestTag(): String = "ORGANIZATIONS_TAG"
 
@@ -248,9 +253,11 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
 
     override fun getTargetCache(): String = Constants.ORGANIZATIONS_CACHE_NAME
 
-    override fun getMainListType(): Type = object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
+    override fun getMainListType(): Type =
+        object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
 
-    override fun getListAdapter(list: List<OrganizationDto>): ListAdapter = OrganizationsListAdapter(list, this@OrganizationsActivity)
+    override fun getListAdapter(list: List<OrganizationDto>): ListAdapter =
+        OrganizationsListAdapter(list, this@OrganizationsActivity)
 
     override fun getFilter(): List<FilterDto> = currentFilter ?: emptyList()
 

@@ -67,7 +67,8 @@ class LoginActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_logout_main -> {
-                PreferenceManager.getDefaultSharedPreferences(this).edit().remove(Constants.TOKEN_KEY).commit()
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .remove(Constants.TOKEN_KEY).commit()
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -146,7 +147,10 @@ class LoginActivity : AppCompatActivity() {
     private fun getLoginDto(): JSONObject {
         val loginDto = JSONObject()
         loginDto.put("login", findViewById<EditText>(R.id.login_activity_edit_text_login).text)
-        loginDto.put("password", findViewById<EditText>(R.id.login_activity_edit_text_password).text)
+        loginDto.put(
+            "password",
+            findViewById<EditText>(R.id.login_activity_edit_text_password).text
+        )
         return loginDto
     }
 

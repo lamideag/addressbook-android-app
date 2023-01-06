@@ -99,7 +99,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         idEditText = findViewById(R.id.create_or_edit_person_activity_id)
         idEditTextLayout = findViewById(R.id.create_or_edit_person_activity_id_layout)
         firstNameEditText = findViewById(R.id.create_or_edit_person_activity_first_name)
-        firstNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_first_name_layout)
+        firstNameEditTextLayout =
+            findViewById(R.id.create_or_edit_person_activity_first_name_layout)
         lastNameEditText = findViewById(R.id.create_or_edit_person_activity_last_name)
         lastNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_last_name_layout)
         salaryEditText = findViewById(R.id.create_or_edit_person_activity_salary)
@@ -157,8 +158,10 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_unfocused)
             rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_unfocused)
         } else {
-            resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
-            rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
+            resumeEditTextLayout.background =
+                this.getDrawable(R.drawable.rte_background_error_unfocused)
+            rteToolbarContainer.background =
+                this.getDrawable(R.drawable.rte_background_error_unfocused)
         }
         updateSaveButtonState()
     }
@@ -291,7 +294,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.create_or_edit_person_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int =
+        R.id.create_or_edit_person_activity_coordinator_layout
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_PERSON_TAG"
 
@@ -304,7 +308,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             idEditText.setText(it.id)
             it.resume?.let { it1 -> rteResumeEditor.fromHtml(it1) }
             saveOrCreateButton.text = this.getString(R.string.action_save_changes)
-            title = this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
+            title =
+                this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
         } ?: run {
             saveOrCreateButton.text = this.getString(R.string.action_create)
         }
@@ -341,7 +346,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun highlightRteErrorUnfocused() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
+        resumeEditTextLayout.background =
+            this.getDrawable(R.drawable.rte_background_error_unfocused)
         rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
     }
 
