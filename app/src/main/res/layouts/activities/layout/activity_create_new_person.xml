@@ -95,19 +95,19 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="175dp"
-        android:hint="@string/search_person_resume"
-        app:backgroundColor="@color/purple_500"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:hint="@string/search_person_resume"
         app:errorEnabled="true">
 
         <org.wordpress.aztec.AztecText
             android:id="@+id/rte_resume_editor"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="165dp"
             android:fontFamily="sans-serif"
             android:imeOptions="flagNoExtractUi"
             android:scrollbars="vertical"
+            android:translationY="10dp"
             aztec:historyEnable="false"
             aztec:textColor="#ff1c1b1f"
             aztec:textColorHint="#757575" />

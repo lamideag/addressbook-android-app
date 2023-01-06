@@ -35,6 +35,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private lateinit var rteResumeEditor: AztecText
     private lateinit var resumeEditTextLayout: TextInputLayout
+    private lateinit var rteToolbarContainer: RelativeLayout
 
     private lateinit var rteToolbar: AztecToolbar
 
@@ -102,8 +103,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
         rteToolbar = findViewById(R.id.formatting_toolbar)
         resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
-        val rteToolbarContainer = findViewById<RelativeLayout>(R.id.rte_toolbar_container)
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_unfocused)
+        rteToolbarContainer = findViewById(R.id.rte_toolbar_container)
         rteToolbar.visibility = View.VISIBLE
         rteToolbar.enableMediaMode(false)
         rteToolbar.setToolbarItems(
@@ -123,13 +123,29 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         )
         rteResumeEditor.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_bckgrnd_focus)
-                rteToolbarContainer.background = this.getDrawable(R.drawable.rte_bckgrnd_focus)
+                if (fieldValidation[2]) {
+                    resumeEditTextLayout.background =
+                        this.getDrawable(R.drawable.rte_background_focus)
+                    rteToolbarContainer.background =
+                        this.getDrawable(R.drawable.rte_background_focus)
+                } else {
+                    resumeEditTextLayout.background =
+                        this.getDrawable(R.drawable.rte_background_error_focus)
+                    rteToolbarContainer.background =
+                        this.getDrawable(R.drawable.rte_background_error_focus)
+                }
             } else {
-                resumeEditTextLayout.background =
-                    this.getDrawable(R.drawable.rte_background_unfocused)
-                rteToolbarContainer.background =
-                    this.getDrawable(R.drawable.rte_background_unfocused)
+                if (fieldValidation[2]) {
+                    resumeEditTextLayout.background =
+                        this.getDrawable(R.drawable.rte_background_unfocused)
+                    rteToolbarContainer.background =
+                        this.getDrawable(R.drawable.rte_background_unfocused)
+                } else {
+                    resumeEditTextLayout.background =
+                        this.getDrawable(R.drawable.rte_background_error_unfocused)
+                    rteToolbarContainer.background =
+                        this.getDrawable(R.drawable.rte_background_error_unfocused)
+                }
             }
         }
         Aztec.with(rteResumeEditor, rteToolbar, this)
@@ -140,6 +156,15 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         validateLastNameEditText()
         validateSalaryEditText()
         validateResumeRteEditText()
+        if (fieldValidation[2]) {
+            resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_unfocused)
+            rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_unfocused)
+        } else {
+            resumeEditTextLayout.background =
+                this.getDrawable(R.drawable.rte_background_error_unfocused)
+            rteToolbarContainer.background =
+                this.getDrawable(R.drawable.rte_background_error_unfocused)
+        }
         updateSaveButtonState()
     }
 
@@ -201,12 +226,25 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         if (value.isEmpty()) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
+            resumeEditTextLayout.background =
+                this.getDrawable(R.drawable.rte_background_error_focus)
+            rteToolbarContainer.background =
+                this.getDrawable(R.drawable.rte_background_error_focus)
         } else if (value.length > 2000) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[2] = false
+            resumeEditTextLayout.background =
+                this.getDrawable(R.drawable.rte_background_error_focus)
+            rteToolbarContainer.background =
+                this.getDrawable(R.drawable.rte_background_error_focus)
         } else {
             resumeEditTextLayout.error = null
             fieldValidation[2] = true
+            resumeEditTextLayout.background =
+                this.getDrawable(R.drawable.rte_background_focus)
+            rteToolbarContainer.background =
+                this.getDrawable(R.drawable.rte_background_focus)
+
         }
     }
 
