@@ -55,9 +55,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         mainDrawer = findViewById(drawer)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        toggle = ActionBarDrawerToggle(
-            this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed
-        )
+        toggle = ActionBarDrawerToggle(this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed)
         mainDrawer.addDrawerListener(toggle)
         toggle.syncState()
     }
@@ -149,8 +147,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
     }
 
     protected fun logout() {
-        PreferenceManager.getDefaultSharedPreferences(this).edit()
-            .remove(Constants.TOKEN_KEY).commit()
+        PreferenceManager.getDefaultSharedPreferences(this).edit().remove(Constants.TOKEN_KEY).commit()
         val intent = Intent(applicationContext, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -162,15 +159,13 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         builderSortField.setTitle(R.string.choose_sort_field).setItems(
             getFieldListDisplayNames()
         ) { dialogField, whichField ->
-            sortName =
-                this.resources.getStringArray(getFieldListObjNames())[whichField]
+            sortName = this.resources.getStringArray(getFieldListObjNames())[whichField]
             dialogField.dismiss()
             val builderSortOrder = AlertDialog.Builder(this)
             builderSortOrder.setTitle(R.string.choose_sort_order).setItems(
                 R.array.list_sort_order_display_names
             ) { dialogOrder, whichOrder ->
-                sortOrder =
-                    this.resources.getStringArray(R.array.list_sort_order_obj_names)[whichOrder]
+                sortOrder = this.resources.getStringArray(R.array.list_sort_order_obj_names)[whichOrder]
                 dialogOrder.dismiss()
                 saveSortSettings()
                 updateList(getFilter())

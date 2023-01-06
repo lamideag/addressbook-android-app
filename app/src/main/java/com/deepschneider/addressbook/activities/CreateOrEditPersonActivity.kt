@@ -96,22 +96,15 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
 
         orgId = intent.getStringExtra("orgId").toString()
-
         idEditText = findViewById(R.id.create_or_edit_person_activity_id)
         idEditTextLayout = findViewById(R.id.create_or_edit_person_activity_id_layout)
-
         firstNameEditText = findViewById(R.id.create_or_edit_person_activity_first_name)
-        firstNameEditTextLayout =
-            findViewById(R.id.create_or_edit_person_activity_first_name_layout)
-
+        firstNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_first_name_layout)
         lastNameEditText = findViewById(R.id.create_or_edit_person_activity_last_name)
         lastNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_last_name_layout)
-
         salaryEditText = findViewById(R.id.create_or_edit_person_activity_salary)
         salaryEditTextLayout = findViewById(R.id.create_or_edit_person_activity_salary_layout)
-
-        saveOrCreateButton =
-            findViewById(R.id.create_or_edit_person_activity_save_create_button)
+        saveOrCreateButton = findViewById(R.id.create_or_edit_person_activity_save_create_button)
         saveOrCreateButton.setOnClickListener {
             saveOrCreatePerson()
         }
@@ -140,27 +133,15 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         rteResumeEditor.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 if (fieldValidation[2]) {
-                    resumeEditTextLayout.background =
-                        this.getDrawable(R.drawable.rte_background_focus)
-                    rteToolbarContainer.background =
-                        this.getDrawable(R.drawable.rte_background_focus)
+                    highlightRteFocus()
                 } else {
-                    resumeEditTextLayout.background =
-                        this.getDrawable(R.drawable.rte_background_error_focus)
-                    rteToolbarContainer.background =
-                        this.getDrawable(R.drawable.rte_background_error_focus)
+                    highlightRteErrorFocus()
                 }
             } else {
                 if (fieldValidation[2]) {
-                    resumeEditTextLayout.background =
-                        this.getDrawable(R.drawable.rte_background_unfocused)
-                    rteToolbarContainer.background =
-                        this.getDrawable(R.drawable.rte_background_unfocused)
+                    highlightRteUnfocused()
                 } else {
-                    resumeEditTextLayout.background =
-                        this.getDrawable(R.drawable.rte_background_error_unfocused)
-                    rteToolbarContainer.background =
-                        this.getDrawable(R.drawable.rte_background_error_unfocused)
+                    highlightRteErrorUnfocused()
                 }
             }
         }
@@ -176,10 +157,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_unfocused)
             rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_unfocused)
         } else {
-            resumeEditTextLayout.background =
-                this.getDrawable(R.drawable.rte_background_error_unfocused)
-            rteToolbarContainer.background =
-                this.getDrawable(R.drawable.rte_background_error_unfocused)
+            resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
+            rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
         }
         updateSaveButtonState()
     }
@@ -302,30 +281,17 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         if (value.isEmpty()) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
-            resumeEditTextLayout.background =
-                this.getDrawable(R.drawable.rte_background_error_focus)
-            rteToolbarContainer.background =
-                this.getDrawable(R.drawable.rte_background_error_focus)
+            highlightRteErrorFocus()
         } else if (value.length > 2000) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[2] = false
-            resumeEditTextLayout.background =
-                this.getDrawable(R.drawable.rte_background_error_focus)
-            rteToolbarContainer.background =
-                this.getDrawable(R.drawable.rte_background_error_focus)
+            highlightRteErrorFocus()
         } else {
-            resumeEditTextLayout.error = null
-            fieldValidation[2] = true
-            resumeEditTextLayout.background =
-                this.getDrawable(R.drawable.rte_background_focus)
-            rteToolbarContainer.background =
-                this.getDrawable(R.drawable.rte_background_focus)
-
+            highlightRteFocus()
         }
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int =
-        R.id.create_or_edit_person_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.create_or_edit_person_activity_coordinator_layout
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_PERSON_TAG"
 
@@ -338,8 +304,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             idEditText.setText(it.id)
             it.resume?.let { it1 -> rteResumeEditor.fromHtml(it1) }
             saveOrCreateButton.text = this.getString(R.string.action_save_changes)
-            title =
-                this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
+            title = this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
         } ?: run {
             saveOrCreateButton.text = this.getString(R.string.action_create)
         }
@@ -357,16 +322,32 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     override fun onResume() {
         super.onResume()
-        personDto?.id?.let {
-            sendLockRequest(true, Constants.PERSONS_CACHE_NAME, it)
-        }
+        personDto?.id?.let { sendLockRequest(true, Constants.PERSONS_CACHE_NAME, it) }
     }
 
     override fun onStop() {
         super.onStop()
-        personDto?.id?.let {
-            sendLockRequest(false, Constants.PERSONS_CACHE_NAME, it)
-        }
+        personDto?.id?.let { sendLockRequest(false, Constants.PERSONS_CACHE_NAME, it) }
+    }
+
+    private fun highlightRteErrorFocus() {
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_error_focus)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_error_focus)
+    }
+
+    private fun highlightRteUnfocused() {
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_unfocused)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_unfocused)
+    }
+
+    private fun highlightRteErrorUnfocused() {
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_error_unfocused)
+    }
+
+    private fun highlightRteFocus() {
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.rte_background_focus)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.rte_background_focus)
     }
 
     override fun onToolbarCollapseButtonClicked() {}

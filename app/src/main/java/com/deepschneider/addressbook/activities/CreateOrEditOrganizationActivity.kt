@@ -137,8 +137,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         zipEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_zip_layout)
 
         addressEditText = findViewById(R.id.create_or_edit_organization_activity_address)
-        addressEditTextLayout =
-            findViewById(R.id.create_or_edit_organization_activity_address_layout)
+        addressEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_address_layout)
 
         nameEditText = findViewById(R.id.create_or_edit_organization_activity_name)
         nameEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_name_layout)
@@ -146,8 +145,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         idEditText = findViewById(R.id.create_or_edit_organization_activity_id)
         lastUpdatedEditText = findViewById(R.id.create_or_edit_organization_activity_last_updated)
 
-        saveOrCreateButton =
-            findViewById(R.id.create_or_edit_organization_activity_save_create_button)
+        saveOrCreateButton = findViewById(R.id.create_or_edit_organization_activity_save_create_button)
         saveOrCreateButton.setOnClickListener {
             saveOrCreateOrganization()
         }
@@ -267,8 +265,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         }
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int =
-        R.id.create_or_edit_organization_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.create_or_edit_organization_activity_coordinator_layout
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_ORGANIZATION_TAG"
 
