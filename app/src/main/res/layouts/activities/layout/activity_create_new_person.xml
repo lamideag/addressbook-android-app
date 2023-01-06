@@ -109,7 +109,6 @@
             android:layout_margin="0dp"
             android:fontFamily="sans-serif"
             android:imeOptions="flagNoExtractUi"
-            app:backgroundColor="@color/teal_700"
             android:scrollbars="vertical"
             android:translationY="10dp"
             aztec:historyEnable="false"
