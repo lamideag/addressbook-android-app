@@ -26,6 +26,13 @@
         <item>@string/search_org_last_updated</item>
     </string-array>
 
+    <string-array name="contact_types">
+        <item>@string/contact_type_mobile_phone</item>
+        <item>@string/contact_type_home_phone</item>
+        <item>@string/contact_type_address</item>
+        <item>@string/contact_type_email</item>
+    </string-array>
+
     <string-array name="organizations_list_field_obj_names">
         <item>@string/search_org_obj_id</item>
         <item>@string/search_org_obj_name</item>

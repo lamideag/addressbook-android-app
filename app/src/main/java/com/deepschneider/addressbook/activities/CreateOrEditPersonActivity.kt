@@ -11,9 +11,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.dto.PageDataDto
-import com.deepschneider.addressbook.dto.PersonDto
+import com.deepschneider.addressbook.adapters.ContactsListAdapter
+import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.network.EntityGetRequest
 import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Urls
@@ -49,6 +53,9 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private lateinit var rteResumeEditor: AztecText
     private lateinit var resumeEditTextLayout: TextInputLayout
     private lateinit var rteToolbarContainer: RelativeLayout
+
+    private lateinit var contactsListView: RecyclerView
+    private lateinit var emptyContactsListTextView: TextView
 
     private lateinit var rteToolbar: AztecToolbar
 
@@ -111,7 +118,12 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         saveOrCreateButton.setOnClickListener {
             saveOrCreatePerson()
         }
-
+        contactsListView = findViewById(R.id.create_or_edit_person_activity_contacts_list_view)
+        contactsListView.setHasFixedSize(true)
+        contactsListView.layoutManager = LinearLayoutManager(this)
+        contactsListView.itemAnimator = DefaultItemAnimator()
+        emptyContactsListTextView =
+            findViewById(R.id.create_or_edit_person_activity_empty_contacts_list)
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
         rteToolbar = findViewById(R.id.formatting_toolbar)
         resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
@@ -175,6 +187,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             highlightRteErrorUnfocused()
         }
         updateSaveButtonState()
+        updateContactList()
     }
 
     private fun updateSaveButtonState() {
@@ -199,6 +212,46 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         } else {
             firstNameEditTextLayout.error = null
             fieldValidation[3] = true
+        }
+    }
+
+    private fun updateContactList() {
+        contactsListView.visibility = View.GONE
+        emptyContactsListTextView.visibility = View.VISIBLE
+        val executor: ExecutorService = Executors.newSingleThreadExecutor()
+        val handler = Handler(Looper.getMainLooper())
+        executor.execute {
+            requestQueue.add(
+                EntityGetRequest<TableDataDto<ContactDto>>(
+                    "$serverUrl" + Urls.GET_CONTACTS + "?personId=${personDto?.id}",
+                    { response ->
+                        if (response.data?.data?.isEmpty() == true) {
+                            handler.post {
+                                emptyContactsListTextView.visibility = View.VISIBLE
+                            }
+                        } else {
+                            response.data?.data?.let {
+                                handler.post {
+                                    contactsListView.adapter = ContactsListAdapter(
+                                        it,
+                                        this.resources.getStringArray(R.array.contact_types)
+                                    )
+                                    contactsListView.visibility = View.VISIBLE
+                                    emptyContactsListTextView.visibility = View.GONE
+                                }
+                            }
+                        }
+                    },
+                    { error ->
+                        handler.post {
+                            makeErrorSnackBar(error)
+                            emptyContactsListTextView.visibility = View.VISIBLE
+                            contactsListView.visibility = View.GONE
+                        }
+                    },
+                    this@CreateOrEditPersonActivity,
+                    object : TypeToken<PageDataDto<TableDataDto<ContactDto>>>() {}.type
+                ).also { it.tag = getRequestTag() })
         }
     }
 
@@ -376,7 +429,5 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     override fun onToolbarHeadingButtonClicked() {}
     override fun onToolbarHtmlButtonClicked() {}
     override fun onToolbarListButtonClicked() {}
-    override fun onToolbarMediaButtonClicked(): Boolean {
-        return false
-    }
+    override fun onToolbarMediaButtonClicked(): Boolean = false
 }

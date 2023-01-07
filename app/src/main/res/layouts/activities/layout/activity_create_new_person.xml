@@ -138,6 +138,44 @@
                 aztec:mediaToolbarAvailable="false" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/contacts_header"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dip"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/light_grey" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/create_or_edit_person_activity_contacts_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:nestedScrollingEnabled="false"
+                android:scrollbars="none" />
+
+            <TextView
+                android:id="@+id/create_or_edit_person_activity_empty_contacts_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:gravity="center"
+                android:text="@string/empty_contact_list_message"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
         <Button
             android:id="@+id/create_or_edit_person_activity_save_create_button"
             android:layout_width="match_parent"
