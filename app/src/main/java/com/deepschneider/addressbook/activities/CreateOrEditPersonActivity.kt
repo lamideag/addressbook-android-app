@@ -17,6 +17,7 @@ import com.deepschneider.addressbook.dto.PersonDto
 import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Urls
+import com.google.android.material.internal.CheckableImageButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.reflect.TypeToken
@@ -114,9 +115,19 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
         rteToolbar = findViewById(R.id.formatting_toolbar)
         resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
-        val errorTextView =  resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
+        val errorTextView =
+            resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
         val layoutParams = errorTextView.layoutParams as android.widget.FrameLayout.LayoutParams
-        layoutParams.bottomMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 10).toInt()
+        layoutParams.bottomMargin =
+            (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 10).toInt()
+
+        val errorButton =
+            resumeEditTextLayout.findViewById<CheckableImageButton>(com.google.android.material.R.id.text_input_error_icon)
+        val layoutParamsButton =
+            errorButton.layoutParams as android.widget.LinearLayout.LayoutParams
+        layoutParamsButton.topMargin =
+            (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 12).toInt()
+
         rteToolbarContainer = findViewById(R.id.rte_toolbar_container)
         rteToolbar.visibility = View.VISIBLE
         rteToolbar.enableMediaMode(false)
@@ -350,7 +361,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private fun highlightRteErrorUnfocused() {
         resumeEditTextLayout.background =
             this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+        rteToolbarContainer.background =
+            this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
     }
 
     private fun highlightRteFocus() {
