@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
 import android.view.View
-import android.widget.*
+import android.widget.ListAdapter
+import android.widget.ListView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -16,7 +18,8 @@ import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.dto.AlertDto
+import com.deepschneider.addressbook.dto.FilterDto
 import com.deepschneider.addressbook.network.ListRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
@@ -69,7 +72,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
     }
 
     protected fun makeErrorSnackBar(error: VolleyError) {
-        val snackBar = Snackbar.make(
+        Snackbar.make(
             findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()), when (error) {
                 is AuthFailureError -> this.getString(R.string.forbidden_message)
                 is TimeoutError -> this.getString(R.string.server_timeout_message)
@@ -83,15 +86,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                 }
                 else -> error.message.toString()
             }, Snackbar.LENGTH_LONG
-        )
-        val view: View = snackBar.view
-        val params = view.layoutParams as CoordinatorLayout.LayoutParams
-        params.gravity = Gravity.TOP
-        params.setMargins(
-            0, (this@AbstractListActivity.resources.displayMetrics.density * 100).toInt(), 0, 0
-        )
-        view.layoutParams = params
-        snackBar.show()
+        ).show()
     }
 
     protected fun updateList(filterDto: List<FilterDto>) {

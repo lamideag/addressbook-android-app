@@ -1,159 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:aztec="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_or_edit_person_activity_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    tools:context=".activities.CreateOrEditPersonActivity">
 
-    <LinearLayout
-        android:id="@+id/create_or_edit_person_activity_coordinator_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context=".activities.CreateOrEditPersonActivity">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/create_or_edit_person_activity_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_header_textview_background"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="@string/person_header"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/create_or_edit_person_activity_id_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_person_id"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/create_or_edit_person_activity_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/create_or_edit_person_activity_first_name_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_person_first_name"
-            android:paddingLeft="10dp"
-            android:paddingTop="20dp"
-            android:paddingRight="10dp"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/create_or_edit_person_activity_first_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/create_or_edit_person_activity_last_name_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_person_last_name"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/create_or_edit_person_activity_last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/create_or_edit_person_activity_salary_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_person_salary"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/create_or_edit_person_activity_salary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:inputType="text"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/create_or_edit_person_activity_resume_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:hint="@string/search_person_resume"
-            app:errorEnabled="true">
-
-            <org.wordpress.aztec.AztecText
-                android:id="@+id/rte_resume_editor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:imeOptions="flagNoExtractUi"
-                android:inputType="textCapSentences|textMultiLine"
-                android:minHeight="50dp"
-                android:scrollbars="none"
-                android:translationY="10dp"
-                aztec:historyEnable="false"
-                aztec:textColor="@color/rte_resume_text_color"
-                aztec:textColorHint="@color/rte_resume_hint_text_color" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <RelativeLayout
-            android:id="@+id/rte_toolbar_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
             android:orientation="vertical">
-
-            <org.wordpress.aztec.toolbar.AztecToolbar
-                android:id="@+id/formatting_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                aztec:mediaToolbarAvailable="false" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
@@ -163,36 +27,192 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/ic_header_textview_background"
                 android:paddingLeft="15dp"
+                android:paddingTop="5dp"
                 android:paddingRight="15dp"
-                android:text="@string/contacts_header"
+                android:paddingBottom="5dp"
+                android:text="@string/person_header"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/create_or_edit_person_activity_contacts_list_view"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/create_or_edit_person_activity_id_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:nestedScrollingEnabled="false"
-                android:scrollbars="none" />
+                android:hint="@string/search_person_id"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp">
 
-            <TextView
-                android:id="@+id/create_or_edit_person_activity_empty_contacts_list"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_or_edit_person_activity_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/create_or_edit_person_activity_first_name_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:gravity="center"
-                android:text="@string/empty_contact_list_message"
-                android:visibility="invisible" />
-        </RelativeLayout>
+                android:hint="@string/search_person_first_name"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingRight="10dp"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true">
 
-        <Button
-            android:id="@+id/create_or_edit_person_activity_save_create_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:height="60dp" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_or_edit_person_activity_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-</ScrollView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/create_or_edit_person_activity_last_name_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_person_last_name"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_or_edit_person_activity_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/create_or_edit_person_activity_salary_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_person_salary"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_or_edit_person_activity_salary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/create_or_edit_person_activity_resume_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:hint="@string/search_person_resume"
+                app:errorEnabled="true">
+
+                <org.wordpress.aztec.AztecText
+                    android:id="@+id/rte_resume_editor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minHeight="50dp"
+                    android:scrollbars="none"
+                    android:translationY="10dp"
+                    aztec:historyEnable="false"
+                    aztec:textColor="@color/rte_resume_text_color"
+                    aztec:textColorHint="@color/rte_resume_hint_text_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:id="@+id/rte_toolbar_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <org.wordpress.aztec.toolbar.AztecToolbar
+                    android:id="@+id/formatting_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    aztec:mediaToolbarAvailable="false" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ic_header_textview_background"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/contacts_header"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/create_or_edit_person_activity_contacts_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="45dp"
+                    android:nestedScrollingEnabled="false"
+                    android:scrollbars="none" />
+
+                <TextView
+                    android:id="@+id/create_or_edit_person_activity_empty_contacts_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
+                    android:text="@string/empty_contact_list_message"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/create_or_edit_person_activity_save_create_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:height="60dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/create_or_edit_person_activity_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="48dp"
+        android:contentDescription="@string/add_new_contact"
+        app:srcCompat="@android:drawable/ic_input_add" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
