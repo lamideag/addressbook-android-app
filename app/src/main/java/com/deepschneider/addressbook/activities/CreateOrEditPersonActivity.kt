@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.PersonDto
@@ -113,6 +114,9 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
         rteToolbar = findViewById(R.id.formatting_toolbar)
         resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
+        val errorTextView =  resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
+        val layoutParams = errorTextView.layoutParams as android.widget.FrameLayout.LayoutParams
+        layoutParams.bottomMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 10).toInt()
         rteToolbarContainer = findViewById(R.id.rte_toolbar_container)
         rteToolbar.visibility = View.VISIBLE
         rteToolbar.enableMediaMode(false)
@@ -155,13 +159,9 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         validateSalaryEditText()
         validateResumeRteEditText()
         if (fieldValidation[2]) {
-            resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
-            rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
+            highlightRteUnfocused()
         } else {
-            resumeEditTextLayout.background =
-                this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
-            rteToolbarContainer.background =
-                this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+            highlightRteErrorUnfocused()
         }
         updateSaveButtonState()
     }
@@ -290,6 +290,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             fieldValidation[2] = false
             highlightRteErrorFocus()
         } else {
+            resumeEditTextLayout.error = null
+            fieldValidation[2] = true
             highlightRteFocus()
         }
     }
