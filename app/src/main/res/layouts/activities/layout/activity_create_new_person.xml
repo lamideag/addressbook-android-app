@@ -18,17 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:background="@drawable/ic_header_textview_background"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="@string/person_header"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/white"
             android:textSize="20sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dip"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/purple_500" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/create_or_edit_person_activity_id_layout"
@@ -162,24 +159,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:background="@drawable/ic_header_textview_background"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="@string/contacts_header"
-                android:textColor="@color/purple_500"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dip"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/purple_500" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/create_or_edit_person_activity_contacts_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="35dp"
                 android:nestedScrollingEnabled="false"
                 android:scrollbars="none" />
 
