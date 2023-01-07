@@ -8,6 +8,7 @@
     <string name="action_create">CREATE</string>
     <string name="action_search">Search</string>
     <string name="action_filter">FILTER</string>
+    <string name="person_header">GENERAL INFORMATION</string>
     <string name="contacts_header">CONTACTS</string>
     <string name="action_save_changes">SAVE</string>
     <string name="login_action">LOGIN</string>
