@@ -1,6 +1,6 @@
 package com.deepschneider.addressbook.activities
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,11 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.ContactsListAdapter
-import com.deepschneider.addressbook.dto.*
+import com.deepschneider.addressbook.dto.ContactDto
+import com.deepschneider.addressbook.dto.PageDataDto
+import com.deepschneider.addressbook.dto.PersonDto
+import com.deepschneider.addressbook.dto.TableDataDto
 import com.deepschneider.addressbook.network.EntityGetRequest
 import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Urls
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.internal.CheckableImageButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -32,7 +36,6 @@ import org.wordpress.aztec.toolbar.AztecToolbar
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 import org.wordpress.aztec.toolbar.ToolbarAction
 import org.wordpress.aztec.toolbar.ToolbarItems
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -89,7 +92,12 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    private fun prepareFloatingActionButton() {
+        findViewById<FloatingActionButton>(R.id.create_or_edit_person_activity_fab).setOnClickListener {
+            startActivity(Intent(applicationContext, CreateOrEditContactActivity::class.java))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_person)
@@ -188,6 +196,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
         updateSaveButtonState()
         updateContactList()
+        prepareFloatingActionButton()
     }
 
     private fun updateSaveButtonState() {
@@ -391,8 +400,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         personDto?.id?.let { sendLockRequest(true, Constants.PERSONS_CACHE_NAME, it) }
     }
 

@@ -272,8 +272,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_ORGANIZATION_TAG"
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         organizationDto?.id?.let {
             sendLockRequest(true, Constants.ORGANIZATIONS_CACHE_NAME, it)
         }
