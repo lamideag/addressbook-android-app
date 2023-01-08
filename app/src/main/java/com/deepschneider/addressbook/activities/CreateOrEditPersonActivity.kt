@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +12,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,6 +74,10 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private val fieldValidation = BooleanArray(4)
 
+    private lateinit var startForResult: ActivityResultLauncher<Intent>
+
+    private lateinit var currentContactList: MutableList<ContactDto>
+
     inner class TextFieldValidation(private val view: View) : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -94,7 +102,12 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private fun prepareFloatingActionButton() {
         findViewById<FloatingActionButton>(R.id.create_or_edit_person_activity_fab).setOnClickListener {
-            startActivity(Intent(applicationContext, CreateOrEditContactActivity::class.java))
+            startForResult.launch(
+                Intent(
+                    applicationContext,
+                    CreateOrEditContactActivity::class.java
+                )
+            )
         }
     }
 
@@ -197,6 +210,28 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         updateSaveButtonState()
         updateContactList()
         prepareFloatingActionButton()
+
+        startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val resultContactDto = result.data?.extras?.get("contact") as ContactDto
+                    resultContactDto.id?.let {
+                        val originalContactDto =
+                            currentContactList.find { x -> x.id == resultContactDto.id }
+                        originalContactDto?.data = resultContactDto.data
+                        originalContactDto?.type = resultContactDto.type
+                        originalContactDto?.description = resultContactDto.description
+                    } ?: run {
+                        currentContactList.add(resultContactDto)
+                    }
+                    contactsListView.adapter = ContactsListAdapter(
+                        currentContactList,
+                        this.resources.getStringArray(R.array.contact_types),
+                        this@CreateOrEditPersonActivity,
+                        startForResult
+                    )
+                }
+            }
     }
 
     private fun updateSaveButtonState() {
@@ -225,43 +260,49 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun updateContactList() {
-        contactsListView.visibility = View.GONE
-        emptyContactsListTextView.visibility = View.VISIBLE
-        val executor: ExecutorService = Executors.newSingleThreadExecutor()
-        val handler = Handler(Looper.getMainLooper())
-        executor.execute {
-            requestQueue.add(
-                EntityGetRequest<TableDataDto<ContactDto>>(
-                    "$serverUrl" + Urls.GET_CONTACTS + "?personId=${personDto?.id}",
-                    { response ->
-                        if (response.data?.data?.isEmpty() == true) {
-                            handler.post {
-                                emptyContactsListTextView.visibility = View.VISIBLE
-                            }
-                        } else {
-                            response.data?.data?.let {
+        personDto?.let {
+            contactsListView.visibility = View.GONE
+            emptyContactsListTextView.visibility = View.VISIBLE
+            val executor: ExecutorService = Executors.newSingleThreadExecutor()
+            val handler = Handler(Looper.getMainLooper())
+            executor.execute {
+                requestQueue.add(
+                    EntityGetRequest<TableDataDto<ContactDto>>(
+                        "$serverUrl" + Urls.GET_CONTACTS + "?personId=${personDto?.id}",
+                        { response ->
+                            if (response.data?.data?.isEmpty() == true) {
                                 handler.post {
-                                    contactsListView.adapter = ContactsListAdapter(
-                                        it,
-                                        this.resources.getStringArray(R.array.contact_types),
-                                        this@CreateOrEditPersonActivity
-                                    )
-                                    contactsListView.visibility = View.VISIBLE
-                                    emptyContactsListTextView.visibility = View.GONE
+                                    emptyContactsListTextView.visibility = View.VISIBLE
+                                }
+                            } else {
+                                response.data?.data?.let {
+                                    handler.post {
+                                        currentContactList = it.toMutableList()
+                                        contactsListView.adapter = ContactsListAdapter(
+                                            it,
+                                            this.resources.getStringArray(R.array.contact_types),
+                                            this@CreateOrEditPersonActivity,
+                                            startForResult
+                                        )
+                                        contactsListView.visibility = View.VISIBLE
+                                        emptyContactsListTextView.visibility = View.GONE
+                                    }
                                 }
                             }
-                        }
-                    },
-                    { error ->
-                        handler.post {
-                            makeErrorSnackBar(error)
-                            emptyContactsListTextView.visibility = View.VISIBLE
-                            contactsListView.visibility = View.GONE
-                        }
-                    },
-                    this@CreateOrEditPersonActivity,
-                    object : TypeToken<PageDataDto<TableDataDto<ContactDto>>>() {}.type
-                ).also { it.tag = getRequestTag() })
+                        },
+                        { error ->
+                            handler.post {
+                                makeErrorSnackBar(error)
+                                emptyContactsListTextView.visibility = View.VISIBLE
+                                contactsListView.visibility = View.GONE
+                            }
+                        },
+                        this@CreateOrEditPersonActivity,
+                        object : TypeToken<PageDataDto<TableDataDto<ContactDto>>>() {}.type
+                    ).also { it.tag = getRequestTag() })
+            }
+        } ?: run {
+            currentContactList = arrayListOf()
         }
     }
 
@@ -328,6 +369,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                                         updateUi(it)
                                     }
                                     targetPersonDto?.id?.let {
+                                        personDto = targetPersonDto
                                         if (create) sendLockRequest(
                                             true, Constants.PERSONS_CACHE_NAME, it
                                         ) else {

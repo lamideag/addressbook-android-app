@@ -1,6 +1,7 @@
 package com.deepschneider.addressbook.activities
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,6 +28,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     private lateinit var descEditTextLayout: TextInputLayout
 
     private var contactDto: ContactDto? = null
+    private lateinit var personId: String
     private lateinit var contactTypes: Array<String>
 
     private val fieldValidation = BooleanArray(3)
@@ -81,6 +83,17 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         descEditTextLayout = findViewById(R.id.create_or_edit_contact_activity_desc_layout)
 
         applyOrAddButton = findViewById(R.id.create_or_edit_contact_activity_add_apply_button)
+        applyOrAddButton.setOnClickListener {
+            val targetContactDto = if (contactDto == null) ContactDto() else contactDto
+            targetContactDto?.data = dataEditText.text.toString()
+            targetContactDto?.description = descEditText.text.toString()
+            targetContactDto?.type = (this.resources.getStringArray(R.array.contact_types)
+                .indexOf(typeEditText.text.toString()) - 1).toString()
+            val data = Intent()
+            data.putExtra("contact", targetContactDto)
+            setResult(RESULT_OK, data)
+            finish()
+        }
 
         contactTypes = this.resources.getStringArray(R.array.contact_types)
         val extra = intent.extras?.get("contact")
@@ -93,6 +106,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
                 }
             }
         }
+        personId = intent.getStringExtra("personId").toString()
         updateUi(contactDto)
         setupListeners()
         validateDataEditText()

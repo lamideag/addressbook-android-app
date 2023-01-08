@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.activities.CreateOrEditContactActivity
@@ -14,7 +15,8 @@ import com.deepschneider.addressbook.dto.ContactDto
 class ContactsListAdapter(
     private val contacts: List<ContactDto>,
     private val contactTypes: Array<String>,
-    private val activity: Activity
+    private val activity: Activity,
+    private val startForResult: ActivityResultLauncher<Intent>
 ) :
     RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder>() {
 
@@ -28,7 +30,7 @@ class ContactsListAdapter(
             view.setOnClickListener {
                 val intent = Intent(activity, CreateOrEditContactActivity::class.java)
                 intent.putExtra("contact", currentItem)
-                activity.startActivity(intent)
+                startForResult.launch(intent)
             }
         }
     }
