@@ -218,17 +218,17 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
 
     private fun loadSortSettings() {
         sortName = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("organization_list_sort_field", this.getString(R.string.search_org_obj_id))
+            .getString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_FIELD, this.getString(R.string.search_org_obj_id))
             .toString()
         sortOrder = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("organization_list_sort_order", "desc").toString()
+            .getString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_ORDER, "desc").toString()
     }
 
     override fun saveSortSettings() {
         PreferenceManager.getDefaultSharedPreferences(this).edit()
-            .putString("organization_list_sort_field", sortName).commit()
+            .putString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_FIELD, sortName).commit()
         PreferenceManager.getDefaultSharedPreferences(this).edit()
-            .putString("organization_list_sort_order", sortOrder).commit()
+            .putString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_ORDER, sortOrder).commit()
     }
 
     override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.organizations_activity_coordinator_layout

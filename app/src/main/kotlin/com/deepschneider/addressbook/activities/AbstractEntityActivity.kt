@@ -11,6 +11,7 @@ import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.AlertDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.network.EntityGetRequest
+import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
 import com.google.android.material.snackbar.Snackbar
@@ -31,7 +32,7 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
         requestQueue = Volley.newRequestQueue(this)
         serverUrl = NetworkUtils.getServerUrl(this@AbstractEntityActivity)
         showLockNotifications = PreferenceManager.getDefaultSharedPreferences(this@AbstractEntityActivity)
-            .getBoolean("show_lock_notifications", true)
+            .getBoolean(Constants.SETTINGS_SHOW_LOCK_NOTIFICATIONS, true)
     }
 
     protected fun sendLockRequest(lock: Boolean, cache: String, id: String) {

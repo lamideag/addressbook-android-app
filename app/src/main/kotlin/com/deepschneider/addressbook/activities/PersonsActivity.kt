@@ -186,17 +186,17 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     override fun saveSortSettings() {
         PreferenceManager.getDefaultSharedPreferences(this).edit()
-            .putString("person_list_sort_field", sortName).commit()
+            .putString(Constants.SETTINGS_PERSON_LIST_SORT_FIELD, sortName).commit()
         PreferenceManager.getDefaultSharedPreferences(this).edit()
-            .putString("person_list_sort_order", sortOrder).commit()
+            .putString(Constants.SETTINGS_PERSON_LIST_SORT_ORDER, sortOrder).commit()
     }
 
     private fun loadSortSettings() {
         sortName = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("person_list_sort_field", this.getString(R.string.search_person_obj_id))
+            .getString(Constants.SETTINGS_PERSON_LIST_SORT_FIELD, this.getString(R.string.search_person_obj_id))
             .toString()
         sortOrder = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("person_list_sort_order", "desc").toString()
+            .getString(Constants.SETTINGS_PERSON_LIST_SORT_ORDER, "desc").toString()
     }
 
     override fun getRequestTag(): String = "PERSONS_TAG"

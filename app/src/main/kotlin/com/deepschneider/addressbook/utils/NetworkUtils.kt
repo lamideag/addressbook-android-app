@@ -20,10 +20,10 @@ object NetworkUtils {
 
     fun getServerUrl(context: Context): String? {
         val serverHost = PreferenceManager.getDefaultSharedPreferences(context)
-            .getString("server_url", Constants.NO_VALUE)
+            .getString(Constants.SETTINGS_SERVER_URL, Constants.NO_VALUE)
         if (serverHost == Constants.NO_VALUE) return serverHost
         val shouldUseHttp = PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean("should_use_http", false)
+            .getBoolean(Constants.SETTINGS_SHOULD_USE_HTTP, false)
         return (if (shouldUseHttp) "http://" else "https://") + serverHost
     }
 }
