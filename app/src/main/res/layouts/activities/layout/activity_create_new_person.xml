@@ -94,26 +94,71 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/create_or_edit_person_activity_salary_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_person_salary"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true">
+                android:baselineAligned="false">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_or_edit_person_activity_salary"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight=".75"
+                    android:orientation="vertical">
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/create_or_edit_person_activity_salary_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_person_salary"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        app:endIconMode="clear_text"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/create_or_edit_person_activity_salary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:inputType="number"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".25"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/create_or_edit_person_activity_salary_currency_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_person_salary_currency"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        app:endIconMode="clear_text"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/create_or_edit_person_activity_salary_currency"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:ellipsize="end"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textAlignment="center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/create_or_edit_person_activity_resume_layout"

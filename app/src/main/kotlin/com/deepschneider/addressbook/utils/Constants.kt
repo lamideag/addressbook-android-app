@@ -1,5 +1,7 @@
 package com.deepschneider.addressbook.utils
 
+import java.util.*
+
 object Constants {
     const val NO_VALUE = "no value"
     const val TOKEN_KEY = "token"
@@ -18,4 +20,18 @@ object Constants {
     const val SETTINGS_PERSON_LIST_SORT_ORDER = "person_list_sort_order"
 
     const val SETTINGS_SHOULD_USE_HTTP = "should_use_http"
+
+    const val DEFAULT_CURRENCY = "USD"
+
+    var currencies = TreeSet<String>()
+    init {
+        for (loc in Locale.getAvailableLocales()) {
+            try {
+                val res = Currency.getInstance(loc)
+                if (res != null) currencies.add(res.currencyCode)
+            } catch (exc: Exception) {
+                //Np-op
+            }
+        }
+    }
 }

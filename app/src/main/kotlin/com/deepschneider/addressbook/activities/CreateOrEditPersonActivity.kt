@@ -1,6 +1,7 @@
 package com.deepschneider.addressbook.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -53,6 +54,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private lateinit var lastNameEditTextLayout: TextInputLayout
     private lateinit var salaryEditText: TextInputEditText
     private lateinit var salaryEditTextLayout: TextInputLayout
+    private lateinit var currencyEditText: TextInputEditText
+    private lateinit var currencyEditTextLayout: TextInputLayout
     private lateinit var rteResumeEditor: AztecText
     private lateinit var resumeEditTextLayout: TextInputLayout
     private lateinit var rteToolbarContainer: RelativeLayout
@@ -127,6 +130,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         prepareExtras()
         prepareLayout()
         prepareResumeRichTextEditor()
+        prepareCurrencyEditText()
         updateUi(personDto)
         setupListeners()
         validateFirstNameEditText()
@@ -142,6 +146,21 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         updateContactList()
         prepareFloatingActionButton()
         prepareLauncher()
+    }
+
+    private fun prepareCurrencyEditText() {
+        currencyEditText = findViewById(R.id.create_or_edit_person_activity_salary_currency)
+        currencyEditTextLayout = findViewById(R.id.create_or_edit_person_activity_salary_currency_layout)
+        currencyEditText.setOnClickListener {
+            val builder = AlertDialog.Builder(this@CreateOrEditPersonActivity)
+            builder.setTitle(R.string.choose_salary_currency).setItems(
+                Constants.currencies.toTypedArray()
+            ) { dialog, which ->
+                currencyEditText.setText(Constants.currencies.toTypedArray()[which])
+                dialog.dismiss()
+            }
+            builder.create().show()
+        }
     }
 
     private fun prepareResumeRichTextEditor(){
@@ -350,14 +369,14 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             targetPersonDto?.firstName = firstNameEditText.text.toString()
             targetPersonDto?.lastName = lastNameEditText.text.toString()
             targetPersonDto?.resume = rteResumeEditor.toHtml()
-            targetPersonDto?.salary = salaryEditText.text.toString()
+            targetPersonDto?.salary = salaryEditText.text.toString() + " " + currencyEditText.text.toString()
         } ?: run {
             create = true
             targetPersonDto = PersonDto()
             targetPersonDto?.firstName = firstNameEditText.text.toString()
             targetPersonDto?.lastName = lastNameEditText.text.toString()
             targetPersonDto?.resume = rteResumeEditor.toHtml()
-            targetPersonDto?.salary = salaryEditText.text.toString()
+            targetPersonDto?.salary = salaryEditText.text.toString() + " " + currencyEditText.text.toString()
             targetPersonDto?.orgId = orgId
         }
         targetPersonDto?.let {
@@ -444,13 +463,15 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             idEditText.setText(it.id)
             firstNameEditText.setText(it.firstName)
             lastNameEditText.setText(it.lastName)
-            salaryEditText.setText(it.salary)
+            it.salary?.let { salary -> salaryEditText.setText(salary.substring(0, salary.length - 4)) }
             idEditText.setText(it.id)
             it.resume?.let { it1 -> rteResumeEditor.fromHtml(it1) }
             saveOrCreateButton.text = this.getString(R.string.action_save_changes)
             title = this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
+            it.salary?.let { salary -> currencyEditText.setText(salary.substring(salary.length - 3)) }
         } ?: run {
             saveOrCreateButton.text = this.getString(R.string.action_create)
+            currencyEditText.setText(Constants.DEFAULT_CURRENCY)
         }
     }
 

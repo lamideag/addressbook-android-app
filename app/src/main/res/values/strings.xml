@@ -46,6 +46,7 @@
     <string name="search_person_last_name">LAST NAME</string>
     <string name="search_person_resume">RESUME</string>
     <string name="search_person_salary">ANNUAL SALARY</string>
+    <string name="search_person_salary_currency">CURRENCY</string>
 
     <string name="search_person_obj_id">id</string>
     <string name="search_person_obj_first_name">firstName</string>
@@ -59,6 +60,7 @@
     <string name="add_new_contact">ADD NEW CONTACT</string>
     <string name="add_new_person">ADD NEW PERSON</string>
     <string name="choose_organization_type">CHOOSE ORGANIZATION TYPE</string>
+    <string name="choose_salary_currency">CHOOSE SALARY CURRENCY</string>
     <string name="choose_date_comparator">CHOOSE DATE COMPARATOR</string>
     <string name="choose_contact_type">CHOOSE CONTACT TYPE</string>
     <string name="choose_sort_field">CHOOSE SORTING FIELD</string>
