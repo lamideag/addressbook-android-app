@@ -44,7 +44,7 @@ class ContactsListAdapter(
         holder.contactData.text = contacts[position].data
         holder.contactDesc.text = contacts[position].description
         contacts[position].type?.let {
-            holder.contactType.text = contactTypes[it.toInt()]
+            holder.contactType.text = contactTypes[it.toInt() + 1]
         }
     }
 

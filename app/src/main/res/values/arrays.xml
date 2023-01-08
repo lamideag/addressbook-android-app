@@ -27,6 +27,7 @@
     </string-array>
 
     <string-array name="contact_types">
+        <item>@string/no_value_placeholder</item>
         <item>@string/contact_type_mobile_phone</item>
         <item>@string/contact_type_home_phone</item>
         <item>@string/contact_type_address</item>

@@ -6,6 +6,8 @@
     <string name="action_sort_settings">SORT SETTINGS</string>
     <string name="action_edit_organization">EDIT ORGANIZATION</string>
     <string name="action_create">CREATE</string>
+    <string name="action_add_contact">ADD CONTACT</string>
+    <string name="action_apply_contact_changes">APPLY CHANGES</string>
     <string name="action_search">Search</string>
     <string name="action_filter">FILTER</string>
     <string name="person_header">GENERAL INFORMATION</string>
@@ -22,6 +24,11 @@
     <string name="search_org_zip">ZIP</string>
     <string name="search_org_type">TYPE</string>
     <string name="search_org_last_updated">LAST UPDATED</string>
+
+    <string name="search_contact_id">ID</string>
+    <string name="search_contact_data">DATA</string>
+    <string name="search_contact_desc">DESCRIPTION</string>
+    <string name="search_contact_type">TYPE</string>
 
     <string name="search_org_obj_id">id</string>
     <string name="search_org_obj_name">name</string>
@@ -52,6 +59,7 @@
     <string name="add_new_person">ADD NEW PERSON</string>
     <string name="choose_organization_type">CHOOSE ORGANIZATION TYPE</string>
     <string name="choose_date_comparator">CHOOSE DATE COMPARATOR</string>
+    <string name="choose_contact_type">CHOOSE CONTACT TYPE</string>
     <string name="choose_sort_field">CHOOSE SORTING FIELD</string>
     <string name="choose_sort_order">CHOOSE SORTING ORDER</string>
     <string name="empty_list_message">NO DATA</string>
