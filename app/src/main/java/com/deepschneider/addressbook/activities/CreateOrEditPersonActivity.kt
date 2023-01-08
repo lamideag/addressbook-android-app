@@ -218,17 +218,27 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         "contact",
                         ContactDto::class.java
                     ) as ContactDto
+                    val shouldDelete = result.data?.extras?.getBoolean("delete")
                     resultContactDto.id?.let {
-                        val originalContactDto =
-                            currentContactList.find { x -> x.id == resultContactDto.id }
-                        originalContactDto?.data = resultContactDto.data
-                        originalContactDto?.type = resultContactDto.type
-                        originalContactDto?.description = resultContactDto.description
+                        if (shouldDelete == true) {
+                            currentContactList.removeIf { x -> x.id == resultContactDto.id }
+                        } else {
+                            val originalContactDto =
+                                currentContactList.find { x -> x.id == resultContactDto.id }
+                            originalContactDto?.data = resultContactDto.data
+                            originalContactDto?.type = resultContactDto.type
+                            originalContactDto?.description = resultContactDto.description
+                        }
                     } ?: run {
                         currentContactList.add(resultContactDto)
                     }
-                    emptyContactsListTextView.visibility = View.GONE
-                    contactsListView.visibility = View.VISIBLE
+                    if (currentContactList.isEmpty()) {
+                        emptyContactsListTextView.visibility = View.VISIBLE
+                        contactsListView.visibility = View.GONE
+                    } else {
+                        emptyContactsListTextView.visibility = View.GONE
+                        contactsListView.visibility = View.VISIBLE
+                    }
                     contactsListView.swapAdapter(
                         ContactsListAdapter(
                             currentContactList,

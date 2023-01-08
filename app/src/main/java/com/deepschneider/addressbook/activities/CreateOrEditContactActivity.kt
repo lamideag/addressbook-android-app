@@ -28,12 +28,12 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     private lateinit var descEditTextLayout: TextInputLayout
 
     private var contactDto: ContactDto? = null
-    private lateinit var personId: String
     private lateinit var contactTypes: Array<String>
 
     private val fieldValidation = BooleanArray(3)
 
     private lateinit var applyOrAddButton: Button
+    private lateinit var deleteContactButton: Button
 
     inner class TextFieldValidation(private val view: View) : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
@@ -94,7 +94,15 @@ class CreateOrEditContactActivity : AppCompatActivity() {
             setResult(RESULT_OK, data)
             finish()
         }
-
+        deleteContactButton =
+            findViewById(R.id.create_or_edit_contact_activity_delete_contact_button)
+        deleteContactButton.setOnClickListener {
+            val data = Intent()
+            data.putExtra("contact", contactDto)
+            data.putExtra("delete", true)
+            setResult(RESULT_OK, data)
+            finish()
+        }
         contactTypes = this.resources.getStringArray(R.array.contact_types)
         val extra = intent.extras?.get("contact")
         if (extra != null) {
@@ -103,10 +111,12 @@ class CreateOrEditContactActivity : AppCompatActivity() {
                 it.type?.let { contactType ->
                     title =
                         this.getString(R.string.edit_activity_header) + " " + contactTypes[contactType.toInt() + 1]
+                    deleteContactButton.visibility = View.VISIBLE
                 }
             }
+        } else {
+            deleteContactButton.visibility = View.GONE
         }
-        personId = intent.getStringExtra("personId").toString()
         updateUi(contactDto)
         setupListeners()
         validateDataEditText()

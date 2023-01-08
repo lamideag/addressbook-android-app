@@ -101,4 +101,14 @@
         android:layout_marginRight="10dp"
         android:height="60dp" />
 
+    <Button
+        android:id="@+id/create_or_edit_contact_activity_delete_contact_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:height="60dp"
+        android:backgroundTint="@color/mtrl_error"
+        android:text="@string/action_delete_contact" />
+
 </LinearLayout>

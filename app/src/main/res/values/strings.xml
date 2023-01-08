@@ -13,6 +13,7 @@
     <string name="person_header">GENERAL INFORMATION</string>
     <string name="contacts_header">CONTACTS</string>
     <string name="action_save_changes">SAVE</string>
+    <string name="action_delete_contact">DELETE CONTACT</string>
     <string name="login_action">LOGIN</string>
     <string name="password_action">PASSWORD</string>
 
