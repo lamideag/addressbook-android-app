@@ -22,21 +22,13 @@ import com.google.gson.Gson
 class ServiceInfoFragment : Fragment() {
 
     private lateinit var requestQueue: RequestQueue
-
     private lateinit var listener: FragmentActivity
-
     private var serverUrl: String? = null
-
     private val requestTag = "BUILD_INFO_TAG"
-
     private val gson = Gson()
-
     private var versionInfoTextView: TextView? = null
-
     private var buildInfoTextView: TextView? = null
-
     private var serverHostTextView: TextView? = null
-
     private var serverInfoTextView: TextView? = null
 
     override fun onAttach(context: Context) {

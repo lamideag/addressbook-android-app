@@ -36,9 +36,7 @@ class ContactsListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.contact_list_item, parent, false)
-        return ContactViewHolder(view)
+        return ContactViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.contact_list_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {

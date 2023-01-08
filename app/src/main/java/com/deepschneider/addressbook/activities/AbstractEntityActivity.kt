@@ -23,25 +23,21 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
 
     protected lateinit var requestQueue: RequestQueue
     private var showLockNotifications = true
-
     protected var serverUrl: String? = null
-
     protected val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestQueue = Volley.newRequestQueue(this)
         serverUrl = NetworkUtils.getServerUrl(this@AbstractEntityActivity)
-        showLockNotifications =
-            PreferenceManager.getDefaultSharedPreferences(this@AbstractEntityActivity)
-                .getBoolean("show_lock_notifications", true)
+        showLockNotifications = PreferenceManager.getDefaultSharedPreferences(this@AbstractEntityActivity)
+            .getBoolean("show_lock_notifications", true)
     }
 
     protected fun sendLockRequest(lock: Boolean, cache: String, id: String) {
         val handler = Handler(Looper.getMainLooper())
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
-        val url =
-            "$serverUrl" + (if (lock) Urls.LOCK_RECORD else Urls.UNLOCK_RECORD) + "?type=${cache}" + "&id=${id}"
+        val url = "$serverUrl" + (if (lock) Urls.LOCK_RECORD else Urls.UNLOCK_RECORD) + "?type=${cache}" + "&id=${id}"
         executor.execute {
             requestQueue.add(
                 EntityGetRequest<AlertDto>(

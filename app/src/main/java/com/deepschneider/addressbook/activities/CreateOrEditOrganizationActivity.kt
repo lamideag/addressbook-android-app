@@ -25,23 +25,17 @@ import java.util.concurrent.Executors
 class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
     private var organizationDto: OrganizationDto? = null
-
     private lateinit var typeEditText: TextInputEditText
     private lateinit var typeEditTextLayout: TextInputLayout
-
     private lateinit var zipEditText: TextInputEditText
     private lateinit var zipEditTextLayout: TextInputLayout
-
     private lateinit var addressEditText: TextInputEditText
     private lateinit var addressEditTextLayout: TextInputLayout
-
     private lateinit var nameEditText: TextInputEditText
     private lateinit var nameEditTextLayout: TextInputLayout
-
     private lateinit var idEditText: TextInputEditText
     private lateinit var lastUpdatedEditText: TextInputEditText
     private lateinit var saveOrCreateButton: Button
-
     private val fieldValidation = BooleanArray(4)
 
     inner class TextFieldValidation(private val view: View) : TextWatcher {
@@ -132,22 +126,15 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         }
         typeEditText = findViewById(R.id.create_or_edit_organization_activity_type)
         typeEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_type_layout)
-
         zipEditText = findViewById(R.id.create_or_edit_organization_activity_zip)
         zipEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_zip_layout)
-
         addressEditText = findViewById(R.id.create_or_edit_organization_activity_address)
-        addressEditTextLayout =
-            findViewById(R.id.create_or_edit_organization_activity_address_layout)
-
+        addressEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_address_layout)
         nameEditText = findViewById(R.id.create_or_edit_organization_activity_name)
         nameEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_name_layout)
-
         idEditText = findViewById(R.id.create_or_edit_organization_activity_id)
         lastUpdatedEditText = findViewById(R.id.create_or_edit_organization_activity_last_updated)
-
-        saveOrCreateButton =
-            findViewById(R.id.create_or_edit_organization_activity_save_create_button)
+        saveOrCreateButton = findViewById(R.id.create_or_edit_organization_activity_save_create_button)
         saveOrCreateButton.setOnClickListener {
             saveOrCreateOrganization()
         }
@@ -267,8 +254,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         }
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int =
-        R.id.create_or_edit_organization_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.create_or_edit_organization_activity_coordinator_layout
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_ORGANIZATION_TAG"
 

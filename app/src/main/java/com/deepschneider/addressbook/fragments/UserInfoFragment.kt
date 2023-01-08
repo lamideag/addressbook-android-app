@@ -25,17 +25,11 @@ import com.google.gson.Gson
 class UserInfoFragment : Fragment() {
 
     private lateinit var requestQueue: RequestQueue
-
     private lateinit var listener: FragmentActivity
-
     private var serverUrl: String? = null
-
     private val requestTag = "USER_INFO_TAG"
-
     private val gson = Gson()
-
     private var userNameTextView: TextView? = null
-
     private var userRolesListView: ListView? = null
 
     override fun onAttach(context: Context) {
@@ -73,9 +67,7 @@ class UserInfoFragment : Fragment() {
             JsonObjectRequest(Method.GET, serverUrl + Urls.USER_INFO, null, { response ->
                 val result = gson.fromJson(response.toString(), User::class.java)
                 userNameTextView?.text = result.login.uppercase()
-                userRolesListView?.adapter = ArrayAdapter(
-                    listener, android.R.layout.simple_list_item_1, result.roles
-                )
+                userRolesListView?.adapter = ArrayAdapter(listener, android.R.layout.simple_list_item_1, result.roles)
             }, { error ->
                 Log.d("USER INFO ERROR", error.toString())
             }) {

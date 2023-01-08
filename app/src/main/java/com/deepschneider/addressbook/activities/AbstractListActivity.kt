@@ -33,19 +33,12 @@ import java.util.concurrent.Executors
 abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected lateinit var toggle: ActionBarDrawerToggle
-
     protected lateinit var requestQueue: RequestQueue
-
     protected lateinit var mainDrawer: DrawerLayout
-
     protected var serverUrl: String? = null
-
     private val gson = Gson()
-
     protected var totalListSize: Int? = null
-
     protected var sortName: String = "id"
-
     protected var sortOrder: String = "asc"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +51,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         mainDrawer = findViewById(drawer)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        toggle =
-            ActionBarDrawerToggle(this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed)
+        toggle = ActionBarDrawerToggle(this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed)
         mainDrawer.addDrawerListener(toggle)
         toggle.syncState()
     }
@@ -112,8 +104,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                             handler.post {
                                 getMainList().adapter = getListAdapter(it)
                                 getMainList().visibility = View.VISIBLE
-                                findViewById<TextView>(getTotalListSizeTextView()).visibility =
-                                    View.VISIBLE
+                                findViewById<TextView>(getTotalListSizeTextView()).visibility = View.VISIBLE
                                 val totalListSize = response.data?.totalDataSize
                                 totalListSize?.let {
                                     var upperBound = getStartPage() * Constants.PAGE_SIZE
@@ -143,8 +134,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
     }
 
     protected fun logout() {
-        PreferenceManager.getDefaultSharedPreferences(this).edit().remove(Constants.TOKEN_KEY)
-            .commit()
+        PreferenceManager.getDefaultSharedPreferences(this).edit().remove(Constants.TOKEN_KEY).commit()
         val intent = Intent(applicationContext, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

@@ -28,9 +28,7 @@ import org.json.JSONObject
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-
     private lateinit var requestQueue: RequestQueue
-
     private val requestTag = "LOGIN_TAG"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,8 +120,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginButton() {
         findViewById<Button>(R.id.login_activity_login_button).visibility = View.VISIBLE
-        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility =
-            ProgressBar.INVISIBLE
+        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility = ProgressBar.INVISIBLE
     }
 
     private fun hideLoginButton() {
@@ -147,10 +144,7 @@ class LoginActivity : AppCompatActivity() {
     private fun getLoginDto(): JSONObject {
         val loginDto = JSONObject()
         loginDto.put("login", findViewById<EditText>(R.id.login_activity_edit_text_login).text)
-        loginDto.put(
-            "password",
-            findViewById<EditText>(R.id.login_activity_edit_text_password).text
-        )
+        loginDto.put("password", findViewById<EditText>(R.id.login_activity_edit_text_password).text)
         return loginDto
     }
 

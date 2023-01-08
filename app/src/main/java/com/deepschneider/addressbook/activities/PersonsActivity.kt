@@ -29,11 +29,8 @@ import java.util.concurrent.Executors
 class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     private lateinit var personsListView: ListView
-
     private var currentFilter: List<FilterDto>? = null
-
     private var start: Int = 1
-
     private lateinit var organizationDto: OrganizationDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,17 +38,24 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         organizationDto = intent.extras?.get("organization") as OrganizationDto
         title = organizationDto.name
         setContentView(R.layout.activity_person)
+        prepareListView()
+        prepareActionBar(R.id.persons_activity_drawer_layout)
+        prepareFloatingActionButton()
+        preparePersonSearchButton()
+    }
+
+    private fun prepareListView(){
         personsListView = findViewById(R.id.persons_activity_list_view)
         personsListView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, CreateOrEditPersonActivity::class.java)
-            val personDto: PersonDto =
-                parent.adapter.getItem(position) as PersonDto
+            val personDto: PersonDto = parent.adapter.getItem(position) as PersonDto
             intent.putExtra("person", personDto)
             intent.putExtra("orgId", organizationDto.id)
             startActivity(intent)
         }
         personsListView.setOnTouchListener(object :
             OnSwipeTouchListener(this@PersonsActivity) {
+
             override fun onSwipeTop() {
                 this@PersonsActivity.totalListSize?.let {
                     if (start * Constants.PAGE_SIZE < it) {
@@ -68,9 +72,6 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
                 }
             }
         })
-        prepareActionBar(R.id.persons_activity_drawer_layout)
-        prepareFloatingActionButton()
-        preparePersonSearchButton()
     }
 
     private fun preparePersonSearchButton() {
@@ -200,8 +201,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     override fun getRequestTag(): String = "PERSONS_TAG"
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int =
-        R.id.persons_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.persons_activity_coordinator_layout
 
     override fun getTargetCache(): String = Constants.PERSONS_CACHE_NAME
 
@@ -211,15 +211,13 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     override fun getEmptyListView(): Int = R.id.persons_activity_empty_list
 
-    override fun getListAdapter(list: List<PersonDto>): ListAdapter =
-        PersonsListAdapter(list, this@PersonsActivity)
+    override fun getListAdapter(list: List<PersonDto>): ListAdapter = PersonsListAdapter(list, this@PersonsActivity)
 
     override fun getProgressBar(): Int = R.id.persons_activity_progress_bar
 
     override fun getTotalListSizeTextView(): Int = R.id.persons_activity_list_total_size
 
-    override fun getMainListType(): Type =
-        object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
+    override fun getMainListType(): Type = object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
 
     override fun getFilter(): List<FilterDto> = currentFilter ?: listOf(getOrgIdFilterDto())
 

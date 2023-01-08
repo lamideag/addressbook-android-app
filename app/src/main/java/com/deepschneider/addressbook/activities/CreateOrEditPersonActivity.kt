@@ -47,35 +47,23 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private lateinit var idEditText: TextInputEditText
     private lateinit var idEditTextLayout: TextInputLayout
-
     private lateinit var firstNameEditText: TextInputEditText
     private lateinit var firstNameEditTextLayout: TextInputLayout
-
     private lateinit var lastNameEditText: TextInputEditText
     private lateinit var lastNameEditTextLayout: TextInputLayout
-
     private lateinit var salaryEditText: TextInputEditText
     private lateinit var salaryEditTextLayout: TextInputLayout
-
     private lateinit var rteResumeEditor: AztecText
     private lateinit var resumeEditTextLayout: TextInputLayout
     private lateinit var rteToolbarContainer: RelativeLayout
-
     private lateinit var contactsListView: RecyclerView
     private lateinit var emptyContactsListTextView: TextView
-
     private lateinit var rteToolbar: AztecToolbar
-
     private lateinit var saveOrCreateButton: Button
-
     private var personDto: PersonDto? = null
-
     private lateinit var orgId: String
-
     private val fieldValidation = BooleanArray(4)
-
     private lateinit var startForResult: ActivityResultLauncher<Intent>
-
     private lateinit var currentContactList: MutableList<ContactDto>
 
     inner class TextFieldValidation(private val view: View) : TextWatcher {
@@ -83,18 +71,10 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             when (view.id) {
-                R.id.create_or_edit_person_activity_first_name -> {
-                    validateFirstNameEditText()
-                }
-                R.id.create_or_edit_person_activity_last_name -> {
-                    validateLastNameEditText()
-                }
-                R.id.create_or_edit_person_activity_salary -> {
-                    validateSalaryEditText()
-                }
-                R.id.rte_resume_editor -> {
-                    validateResumeRteEditText()
-                }
+                R.id.create_or_edit_person_activity_first_name -> validateFirstNameEditText()
+                R.id.create_or_edit_person_activity_last_name -> validateLastNameEditText()
+                R.id.create_or_edit_person_activity_salary -> validateSalaryEditText()
+                R.id.rte_resume_editor -> validateResumeRteEditText()
             }
             updateSaveButtonState()
         }
@@ -129,8 +109,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         idEditText = findViewById(R.id.create_or_edit_person_activity_id)
         idEditTextLayout = findViewById(R.id.create_or_edit_person_activity_id_layout)
         firstNameEditText = findViewById(R.id.create_or_edit_person_activity_first_name)
-        firstNameEditTextLayout =
-            findViewById(R.id.create_or_edit_person_activity_first_name_layout)
+        firstNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_first_name_layout)
         lastNameEditText = findViewById(R.id.create_or_edit_person_activity_last_name)
         lastNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_last_name_layout)
         salaryEditText = findViewById(R.id.create_or_edit_person_activity_salary)
@@ -143,24 +122,61 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         contactsListView.setHasFixedSize(true)
         contactsListView.layoutManager = LinearLayoutManager(this)
         contactsListView.itemAnimator = DefaultItemAnimator()
-        emptyContactsListTextView =
-            findViewById(R.id.create_or_edit_person_activity_empty_contacts_list)
+        emptyContactsListTextView = findViewById(R.id.create_or_edit_person_activity_empty_contacts_list)
+
+        prepareResumeRichTextEditor()
+        updateUi(personDto)
+        setupListeners()
+        validateFirstNameEditText()
+        validateLastNameEditText()
+        validateSalaryEditText()
+        validateResumeRteEditText()
+        if (fieldValidation[2]) {
+            highlightRteUnfocused()
+        } else {
+            highlightRteErrorUnfocused()
+        }
+        updateSaveButtonState()
+        updateContactList()
+        prepareFloatingActionButton()
+        prepareLauncher()
+    }
+
+
+    private fun prepareResumeRichTextEditor(){
+        prepareAztecTextEditor()
+        prepareAztecToolbar()
+        Aztec.with(rteResumeEditor, rteToolbar, this)
+    }
+
+    private fun prepareAztecTextEditor(){
         rteResumeEditor = findViewById(R.id.rte_resume_editor)
-        rteToolbar = findViewById(R.id.formatting_toolbar)
         resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
-        val errorTextView =
-            resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
+        val errorTextView = resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
         val layoutParams = errorTextView.layoutParams as android.widget.FrameLayout.LayoutParams
-        layoutParams.bottomMargin =
-            (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 10).toInt()
+        layoutParams.bottomMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 10).toInt()
+        val errorButton = resumeEditTextLayout.findViewById<CheckableImageButton>(com.google.android.material.R.id.text_input_error_icon)
+        val layoutParamsButton = errorButton.layoutParams as android.widget.LinearLayout.LayoutParams
+        layoutParamsButton.topMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 12).toInt()
+        rteResumeEditor.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                if (fieldValidation[2]) {
+                    highlightRteFocus()
+                } else {
+                    highlightRteErrorFocus()
+                }
+            } else {
+                if (fieldValidation[2]) {
+                    highlightRteUnfocused()
+                } else {
+                    highlightRteErrorUnfocused()
+                }
+            }
+        }
+    }
 
-        val errorButton =
-            resumeEditTextLayout.findViewById<CheckableImageButton>(com.google.android.material.R.id.text_input_error_icon)
-        val layoutParamsButton =
-            errorButton.layoutParams as android.widget.LinearLayout.LayoutParams
-        layoutParamsButton.topMargin =
-            (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 12).toInt()
-
+    private fun prepareAztecToolbar(){
+        rteToolbar = findViewById(R.id.formatting_toolbar)
         rteToolbarContainer = findViewById(R.id.rte_toolbar_container)
         rteToolbar.visibility = View.VISIBLE
         rteToolbar.enableMediaMode(false)
@@ -179,38 +195,9 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                 ToolbarAction.HORIZONTAL_RULE
             )
         )
-        rteResumeEditor.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (fieldValidation[2]) {
-                    highlightRteFocus()
-                } else {
-                    highlightRteErrorFocus()
-                }
-            } else {
-                if (fieldValidation[2]) {
-                    highlightRteUnfocused()
-                } else {
-                    highlightRteErrorUnfocused()
-                }
-            }
-        }
-        Aztec.with(rteResumeEditor, rteToolbar, this)
+    }
 
-        updateUi(personDto)
-        setupListeners()
-        validateFirstNameEditText()
-        validateLastNameEditText()
-        validateSalaryEditText()
-        validateResumeRteEditText()
-        if (fieldValidation[2]) {
-            highlightRteUnfocused()
-        } else {
-            highlightRteErrorUnfocused()
-        }
-        updateSaveButtonState()
-        updateContactList()
-        prepareFloatingActionButton()
-
+    private fun prepareLauncher(){
         startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -223,8 +210,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         if (shouldDelete == true) {
                             currentContactList.removeIf { x -> x.id == resultContactDto.id }
                         } else {
-                            val originalContactDto =
-                                currentContactList.find { x -> x.id == resultContactDto.id }
+                            val originalContactDto = currentContactList.find { x -> x.id == resultContactDto.id }
                             originalContactDto?.data = resultContactDto.data
                             originalContactDto?.type = resultContactDto.type
                             originalContactDto?.description = resultContactDto.description
@@ -448,8 +434,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int =
-        R.id.create_or_edit_person_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.create_or_edit_person_activity_coordinator_layout
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_PERSON_TAG"
 
@@ -462,8 +447,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             idEditText.setText(it.id)
             it.resume?.let { it1 -> rteResumeEditor.fromHtml(it1) }
             saveOrCreateButton.text = this.getString(R.string.action_save_changes)
-            title =
-                this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
+            title = this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
         } ?: run {
             saveOrCreateButton.text = this.getString(R.string.action_create)
         }
@@ -500,10 +484,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun highlightRteErrorUnfocused() {
-        resumeEditTextLayout.background =
-            this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
-        rteToolbarContainer.background =
-            this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
     }
 
     private fun highlightRteFocus() {
