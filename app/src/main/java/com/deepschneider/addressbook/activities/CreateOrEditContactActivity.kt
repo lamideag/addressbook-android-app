@@ -47,26 +47,10 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_new_contact)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
+        prepareExtras()
         prepareTypeEditText()
-        idEditText = findViewById(R.id.create_or_edit_contact_activity_id)
-        dataEditText = findViewById(R.id.create_or_edit_contact_activity_data)
-        dataEditTextLayout = findViewById(R.id.create_or_edit_contact_activity_data_layout)
-        descEditText = findViewById(R.id.create_or_edit_contact_activity_desc)
-        descEditTextLayout = findViewById(R.id.create_or_edit_contact_activity_desc_layout)
-        contactTypes = this.resources.getStringArray(R.array.contact_types)
+        prepareLayout()
         prepareDeleteContactButton()
-        val extra = intent.extras?.get("contact")
-        if (extra != null) {
-            contactDto = extra as ContactDto
-            contactDto?.let {
-                it.type?.let { contactType ->
-                    title = this.getString(R.string.edit_activity_header) + " " + contactTypes[contactType.toInt() + 1]
-                    deleteContactButton.visibility = View.VISIBLE
-                }
-            }
-        } else {
-            deleteContactButton.visibility = View.GONE
-        }
         prepareAddOrApplyButton()
         updateUi(contactDto)
         setupListeners()
@@ -76,7 +60,21 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         updateSaveButtonState()
     }
 
-    private fun prepareTypeEditText(){
+    private fun prepareLayout() {
+        idEditText = findViewById(R.id.create_or_edit_contact_activity_id)
+        dataEditText = findViewById(R.id.create_or_edit_contact_activity_data)
+        dataEditTextLayout = findViewById(R.id.create_or_edit_contact_activity_data_layout)
+        descEditText = findViewById(R.id.create_or_edit_contact_activity_desc)
+        descEditTextLayout = findViewById(R.id.create_or_edit_contact_activity_desc_layout)
+        contactTypes = this.resources.getStringArray(R.array.contact_types)
+    }
+
+    private fun prepareExtras() {
+        val extra = intent.extras?.get("contact")
+        if (extra != null) contactDto = extra as ContactDto
+    }
+
+    private fun prepareTypeEditText() {
         typeEditText = findViewById(R.id.create_or_edit_contact_activity_type)
         typeEditText.setOnClickListener {
             val builder = AlertDialog.Builder(this@CreateOrEditContactActivity)
@@ -92,7 +90,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         typeEditTextLayout = findViewById(R.id.create_or_edit_contact_activity_type_layout)
     }
 
-    private fun prepareDeleteContactButton(){
+    private fun prepareDeleteContactButton() {
         deleteContactButton = findViewById(R.id.create_or_edit_contact_activity_delete_contact_button)
         deleteContactButton.setOnClickListener {
             val data = Intent()
@@ -103,7 +101,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareAddOrApplyButton(){
+    private fun prepareAddOrApplyButton() {
         applyOrAddButton = findViewById(R.id.create_or_edit_contact_activity_add_apply_button)
         applyOrAddButton.setOnClickListener {
             val targetContactDto = if (contactDto == null) ContactDto() else contactDto
@@ -181,9 +179,14 @@ class CreateOrEditContactActivity : AppCompatActivity() {
             contact.type?.let { typeEditText.setText(contactTypes[it.toInt() + 1]) }
             dataEditText.setText(contact.data)
             descEditText.setText(contact.description)
+            contact.type?.let { contactType ->
+                title = this.getString(R.string.edit_activity_header) + " " + contactTypes[contactType.toInt() + 1]
+                deleteContactButton.visibility = View.VISIBLE
+            }
             applyOrAddButton.text = this.getString(R.string.action_apply_contact_changes)
         } ?: run {
             applyOrAddButton.text = this.getString(R.string.action_add_contact)
+            deleteContactButton.visibility = View.GONE
         }
     }
 }

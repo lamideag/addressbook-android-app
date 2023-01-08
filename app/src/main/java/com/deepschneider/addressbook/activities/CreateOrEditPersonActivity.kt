@@ -91,20 +91,14 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_new_person)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
+    private fun prepareExtras() {
         val extra = intent.extras?.get("person")
         if (extra != null) {
             personDto = extra as PersonDto
-            personDto?.let {
-                title =
-                    this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
-            }
         }
+    }
 
+    private fun prepareLayout() {
         orgId = intent.getStringExtra("orgId").toString()
         idEditText = findViewById(R.id.create_or_edit_person_activity_id)
         idEditTextLayout = findViewById(R.id.create_or_edit_person_activity_id_layout)
@@ -123,7 +117,15 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         contactsListView.layoutManager = LinearLayoutManager(this)
         contactsListView.itemAnimator = DefaultItemAnimator()
         emptyContactsListTextView = findViewById(R.id.create_or_edit_person_activity_empty_contacts_list)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_create_new_person)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        prepareExtras()
+        prepareLayout()
         prepareResumeRichTextEditor()
         updateUi(personDto)
         setupListeners()
@@ -141,7 +143,6 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         prepareFloatingActionButton()
         prepareLauncher()
     }
-
 
     private fun prepareResumeRichTextEditor(){
         prepareAztecTextEditor()

@@ -112,20 +112,14 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_new_organization)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
+    private fun prepareExtras() {
         val extra = intent.extras?.get("organization")
         if (extra != null) {
             organizationDto = extra as OrganizationDto
-            organizationDto?.let {
-                title = this.getString(R.string.edit_activity_header) + " " + it.name
-            }
         }
-        typeEditText = findViewById(R.id.create_or_edit_organization_activity_type)
-        typeEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_type_layout)
+    }
+
+    private fun prepareLayout() {
         zipEditText = findViewById(R.id.create_or_edit_organization_activity_zip)
         zipEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_zip_layout)
         addressEditText = findViewById(R.id.create_or_edit_organization_activity_address)
@@ -138,6 +132,11 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         saveOrCreateButton.setOnClickListener {
             saveOrCreateOrganization()
         }
+    }
+
+    private fun prepareTypeEditText() {
+        typeEditText = findViewById(R.id.create_or_edit_organization_activity_type)
+        typeEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_type_layout)
         typeEditText.setOnClickListener {
             val builder = AlertDialog.Builder(this@CreateOrEditOrganizationActivity)
             builder.setTitle(R.string.choose_organization_type).setItems(
@@ -149,6 +148,16 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
             }
             builder.create().show()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_create_new_organization)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        prepareExtras()
+        prepareLayout()
+        prepareTypeEditText()
         updateUi(organizationDto)
         setupListeners()
         validateTypeEditText()
