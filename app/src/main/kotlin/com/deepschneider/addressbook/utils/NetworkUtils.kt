@@ -12,8 +12,7 @@ object NetworkUtils {
         if (headers == null || headers == emptyMap<String, String>()) {
             headers = HashMap()
         }
-        headers["authorization"] =
-            "Bearer " + PreferenceManager.getDefaultSharedPreferences(context)
+        headers["authorization"] = "Bearer " + PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(Constants.TOKEN_KEY, Constants.NO_VALUE)
         return headers
     }

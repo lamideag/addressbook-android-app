@@ -167,8 +167,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
                 return true
             }
             R.id.action_edit_organization -> {
-                val intent =
-                    Intent(applicationContext, CreateOrEditOrganizationActivity::class.java)
+                val intent = Intent(applicationContext, CreateOrEditOrganizationActivity::class.java)
                 intent.putExtra("organization", organizationDto)
                 startActivity(intent)
                 return true
