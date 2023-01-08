@@ -1,1 +1,1 @@
-# addressbook-android-app
+# Addressbook Android Application Client
