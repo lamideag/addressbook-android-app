@@ -45,7 +45,7 @@
     <string name="search_person_first_name">FIRST NAME</string>
     <string name="search_person_last_name">LAST NAME</string>
     <string name="search_person_resume">RESUME</string>
-    <string name="search_person_salary">SALARY</string>
+    <string name="search_person_salary">ANNUAL SALARY</string>
 
     <string name="search_person_obj_id">id</string>
     <string name="search_person_obj_first_name">firstName</string>
