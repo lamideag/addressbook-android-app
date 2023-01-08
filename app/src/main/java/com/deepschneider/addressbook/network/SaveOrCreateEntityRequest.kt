@@ -12,7 +12,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import java.io.UnsupportedEncodingException
 import java.lang.reflect.Type
-import java.nio.charset.Charset
 
 class SaveOrCreateEntityRequest<T>(
     url: String,
@@ -31,10 +30,7 @@ class SaveOrCreateEntityRequest<T>(
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<PageDataDto<T>> {
         return try {
-            val json = String(
-                response?.data ?: ByteArray(0),
-                Charset.forName(HttpHeaderParser.parseCharset(response?.headers))
-            )
+            val json = String(response?.data ?: ByteArray(0), Charsets.UTF_8)
             Response.success(
                 gson.fromJson(json, typeToken),
                 HttpHeaderParser.parseCacheHeaders(response)
