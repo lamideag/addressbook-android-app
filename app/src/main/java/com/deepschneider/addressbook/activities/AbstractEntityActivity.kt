@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
@@ -21,6 +22,7 @@ import java.util.concurrent.Executors
 abstract class AbstractEntityActivity : AppCompatActivity() {
 
     protected lateinit var requestQueue: RequestQueue
+    private var showLockNotifications = true
 
     protected var serverUrl: String? = null
 
@@ -30,6 +32,9 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestQueue = Volley.newRequestQueue(this)
         serverUrl = NetworkUtils.getServerUrl(this@AbstractEntityActivity)
+        showLockNotifications =
+            PreferenceManager.getDefaultSharedPreferences(this@AbstractEntityActivity)
+                .getBoolean("show_lock_notifications", true)
     }
 
     protected fun sendLockRequest(lock: Boolean, cache: String, id: String) {
@@ -43,8 +48,10 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
                     url,
                     { response ->
                         response.data?.let {
-                            handler.post {
-                                it.headline?.let { headline -> makeSnackBar(headline) }
+                            if (showLockNotifications) {
+                                handler.post {
+                                    it.headline?.let { headline -> makeSnackBar(headline) }
+                                }
                             }
                         }
                     },

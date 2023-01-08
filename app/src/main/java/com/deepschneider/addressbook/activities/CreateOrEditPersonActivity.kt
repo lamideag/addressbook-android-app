@@ -214,7 +214,10 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    val resultContactDto = result.data?.extras?.get("contact") as ContactDto
+                    val resultContactDto = result.data?.extras?.getSerializable(
+                        "contact",
+                        ContactDto::class.java
+                    ) as ContactDto
                     resultContactDto.id?.let {
                         val originalContactDto =
                             currentContactList.find { x -> x.id == resultContactDto.id }
@@ -224,11 +227,15 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                     } ?: run {
                         currentContactList.add(resultContactDto)
                     }
-                    contactsListView.adapter = ContactsListAdapter(
-                        currentContactList,
-                        this.resources.getStringArray(R.array.contact_types),
-                        this@CreateOrEditPersonActivity,
-                        startForResult
+                    emptyContactsListTextView.visibility = View.GONE
+                    contactsListView.visibility = View.VISIBLE
+                    contactsListView.swapAdapter(
+                        ContactsListAdapter(
+                            currentContactList,
+                            this.resources.getStringArray(R.array.contact_types),
+                            this@CreateOrEditPersonActivity,
+                            startForResult
+                        ), false
                     )
                 }
             }
@@ -273,16 +280,19 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                             if (response.data?.data?.isEmpty() == true) {
                                 handler.post {
                                     emptyContactsListTextView.visibility = View.VISIBLE
+                                    currentContactList = arrayListOf()
                                 }
                             } else {
                                 response.data?.data?.let {
                                     handler.post {
                                         currentContactList = it.toMutableList()
-                                        contactsListView.adapter = ContactsListAdapter(
-                                            it,
-                                            this.resources.getStringArray(R.array.contact_types),
-                                            this@CreateOrEditPersonActivity,
-                                            startForResult
+                                        contactsListView.swapAdapter(
+                                            ContactsListAdapter(
+                                                it,
+                                                this.resources.getStringArray(R.array.contact_types),
+                                                this@CreateOrEditPersonActivity,
+                                                startForResult
+                                            ), false
                                         )
                                         contactsListView.visibility = View.VISIBLE
                                         emptyContactsListTextView.visibility = View.GONE
@@ -303,6 +313,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             }
         } ?: run {
             currentContactList = arrayListOf()
+            emptyContactsListTextView.visibility = View.VISIBLE
         }
     }
 
@@ -362,25 +373,40 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         url,
                         it,
                         { response ->
-                            response.data?.let {
-                                handler.post {
-                                    targetPersonDto = it
-                                    handler.post {
-                                        updateUi(it)
-                                    }
-                                    targetPersonDto?.id?.let {
-                                        personDto = targetPersonDto
-                                        if (create) sendLockRequest(
-                                            true, Constants.PERSONS_CACHE_NAME, it
-                                        ) else {
-                                            makeSnackBar(
-                                                this@CreateOrEditPersonActivity.getString(
-                                                    R.string.changes_saved_message
-                                                )
-                                            )
+                            response.data?.let { savedPersonDto ->
+                                requestQueue.add(SaveOrCreateEntityRequest(
+                                    "$serverUrl" + Urls.SAVE_OR_CREATE_CONTACTS + "?personId=" + savedPersonDto.id,
+                                    currentContactList,
+                                    { response ->
+                                        response.data?.let {
+                                            handler.post {
+                                                personDto = savedPersonDto
+                                                handler.post {
+                                                    updateUi(personDto)
+                                                    updateContactList()
+                                                }
+                                                personDto?.id?.let {
+                                                    if (create) sendLockRequest(
+                                                        true, Constants.PERSONS_CACHE_NAME, it
+                                                    ) else {
+                                                        makeSnackBar(
+                                                            this@CreateOrEditPersonActivity.getString(
+                                                                R.string.changes_saved_message
+                                                            )
+                                                        )
+                                                    }
+                                                }
+                                            }
                                         }
-                                    }
-                                }
+                                    },
+                                    { error ->
+                                        handler.post {
+                                            makeErrorSnackBar(error)
+                                        }
+                                    },
+                                    this@CreateOrEditPersonActivity,
+                                    object : TypeToken<PageDataDto<List<ContactDto>>>() {}.type
+                                ).also { it.tag = getRequestTag() })
                             }
                         },
                         { error ->

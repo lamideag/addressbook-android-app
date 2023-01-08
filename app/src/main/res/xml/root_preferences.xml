@@ -12,6 +12,12 @@
             app:defaultValue="false"
             app:title="@string/should_use_http"
             />
+
+        <CheckBoxPreference
+            app:key="show_lock_notifications"
+            app:defaultValue="true"
+            app:title="@string/show_lock_notifications"
+            />
     </PreferenceCategory>
 
 </PreferenceScreen>
