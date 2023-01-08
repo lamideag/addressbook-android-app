@@ -243,7 +243,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                                 handler.post {
                                     contactsListView.adapter = ContactsListAdapter(
                                         it,
-                                        this.resources.getStringArray(R.array.contact_types)
+                                        this.resources.getStringArray(R.array.contact_types),
+                                        this@CreateOrEditPersonActivity
                                     )
                                     contactsListView.visibility = View.VISIBLE
                                     emptyContactsListTextView.visibility = View.GONE
