@@ -21,7 +21,8 @@
             <ListView
                 android:id="@+id/organizations_activity_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:divider="@null" />
 
             <ProgressBar
                 android:id="@+id/organizations_activity_progress_bar"

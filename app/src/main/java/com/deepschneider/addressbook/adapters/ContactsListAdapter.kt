@@ -18,7 +18,7 @@ class ContactsListAdapter(
 ) :
     RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder>() {
 
-    inner class ContactViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var currentItem: ContactDto? = null
         var contactData: TextView = view.findViewById(R.id.contact_item_data)
         var contactDesc: TextView = view.findViewById(R.id.contact_item_desc)
@@ -35,9 +35,8 @@ class ContactsListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.contact_list_item, parent, false);
-        val contactViewHolder = ContactViewHolder(view);
-        return contactViewHolder;
+            LayoutInflater.from(parent.context).inflate(R.layout.contact_list_item, parent, false)
+        return ContactViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
@@ -50,6 +49,6 @@ class ContactsListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return contacts.size;
+        return contacts.size
     }
 }

@@ -7,5 +7,5 @@ object Constants {
     const val ORGANIZATIONS_CACHE_NAME = "com.addressbook.model.Organization"
     const val PERSONS_CACHE_NAME = "com.addressbook.model.Person"
 
-    const val PAGE_SIZE = 15
+    const val PAGE_SIZE = 10
 }
