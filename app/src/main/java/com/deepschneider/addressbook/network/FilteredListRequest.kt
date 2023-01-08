@@ -15,7 +15,7 @@ import com.google.gson.JsonSyntaxException
 import java.io.UnsupportedEncodingException
 import java.lang.reflect.Type
 
-class ListRequest<T>(
+class FilteredListRequest<T>(
     url: String,
     private val filterDto: List<FilterDto>,
     private val responseListener: Response.Listener<PageDataDto<TableDataDto<T>>>,

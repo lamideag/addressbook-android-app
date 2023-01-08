@@ -20,7 +20,7 @@ import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.AlertDto
 import com.deepschneider.addressbook.dto.FilterDto
-import com.deepschneider.addressbook.network.ListRequest
+import com.deepschneider.addressbook.network.FilteredListRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
@@ -90,7 +90,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
-            requestQueue.add(ListRequest(
+            requestQueue.add(FilteredListRequest(
                 "$serverUrl" + Urls.GET_LIST + "?start=${getStartPage()}" + "&pageSize=${Constants.PAGE_SIZE}" + "&sortName=${sortName}" + "&sortOrder=${sortOrder}" + "&cache=${getTargetCache()}",
                 filterDto,
                 { response ->
