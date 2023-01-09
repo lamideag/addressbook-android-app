@@ -69,6 +69,7 @@
             android:layout_marginStart="162dp"
             android:layout_marginTop="495dp"
             android:layout_marginEnd="161dp"
+            android:stateListAnimator="@animator/button_state_list_anim_material"
             android:text="@string/login_action"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

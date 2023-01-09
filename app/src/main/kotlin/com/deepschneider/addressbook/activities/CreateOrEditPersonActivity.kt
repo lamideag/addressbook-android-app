@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,7 +61,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private lateinit var resumeEditTextLayout: TextInputLayout
     private lateinit var rteToolbarContainer: RelativeLayout
     private lateinit var contactsListView: RecyclerView
-    private lateinit var emptyContactsListTextView: TextView
+    private lateinit var emptyContactsListTextView: CardView
     private lateinit var rteToolbar: AztecToolbar
     private lateinit var saveOrCreateButton: Button
     private var personDto: PersonDto? = null
