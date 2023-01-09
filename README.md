@@ -2,6 +2,5 @@
 
 ### Android client application for [Addressbook project](https://github.com/dredwardhyde/addressbook)
 
-
-https://user-images.githubusercontent.com/8986329/211299788-647daebb-1024-4f1b-bcc2-8e1e1d54209e.mp4
+https://user-images.githubusercontent.com/8986329/211306526-433767d4-6b4c-4bd9-a66f-5ca4d597f070.mp4
 
