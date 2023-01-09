@@ -36,5 +36,5 @@
     <ListView
         android:id="@+id/user_info_fragment_roles_list_view"
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="100dp" />
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:id="@+id/persons_activity_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         tools:openDrawer="start">
 
         <RelativeLayout
@@ -56,30 +56,27 @@
             android:id="@+id/persons_activity_navigation_view"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:layout_gravity="start">
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
+                android:layout_height="match_parent">
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/persons_activity_user_info_fragment"
                     android:name="com.deepschneider.addressbook.fragments.UserInfoFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="80dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_alignParentTop="true" />
 
                 <LinearLayout
+                    android:id="@+id/persons_activity_filter_header_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="245dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/persons_activity_user_info_fragment"
                     android:baselineAligned="false"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -110,15 +107,14 @@
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/persons_activity_search_edit_text_id_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/persons_activity_filter_header_layout"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginTop="300dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_id"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:hint="@string/search_person_id">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/persons_activity_search_edit_text_id"
@@ -134,15 +130,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/persons_activity_search_edit_first_name_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/persons_activity_search_edit_text_id_layout"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginTop="352dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_first_name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:hint="@string/search_person_first_name">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/persons_activity_search_edit_first_name"
@@ -158,15 +153,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/persons_activity_search_edit_text_last_name_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/persons_activity_search_edit_first_name_layout"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginTop="404dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_last_name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:hint="@string/search_person_last_name">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/persons_activity_search_edit_text_last_name"
@@ -182,15 +176,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/persons_activity_search_edit_text_resume_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/persons_activity_search_edit_text_last_name_layout"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginTop="456dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_resume"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:hint="@string/search_person_resume">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/persons_activity_search_edit_text_resume"
@@ -206,15 +199,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/persons_activity_search_edit_text_salary_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/persons_activity_search_edit_text_resume_layout"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginTop="508dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_salary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:hint="@string/search_person_salary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/persons_activity_search_edit_text_salary"
@@ -231,28 +223,22 @@
 
                 <Button
                     android:id="@+id/persons_activity_search_button"
+                    android:layout_below="@id/persons_activity_search_edit_text_salary_layout"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginStart="3dp"
-                    android:layout_marginTop="560dp"
                     android:layout_marginEnd="3dp"
-                    android:text="@string/action_search"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:text="@string/action_search" />
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/organizations_activity_service_info_fragment"
                     android:name="com.deepschneider.addressbook.fragments.ServiceInfoFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </RelativeLayout>
 
         </com.google.android.material.navigation.NavigationView>
 

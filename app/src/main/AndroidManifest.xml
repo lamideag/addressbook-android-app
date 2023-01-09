@@ -54,7 +54,8 @@
             android:name=".activities.OrganizationsActivity"
             android:exported="false"
             android:label="@string/organizations"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -63,7 +64,8 @@
             android:name=".activities.PersonsActivity"
             android:exported="false"
             android:label="@string/persons"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
