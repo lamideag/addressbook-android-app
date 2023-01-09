@@ -13,7 +13,7 @@ import com.deepschneider.addressbook.activities.CreateOrEditContactActivity
 import com.deepschneider.addressbook.dto.ContactDto
 
 class ContactsListAdapter(
-    private val contacts: List<ContactDto>,
+    var contacts: List<ContactDto>,
     private val contactTypes: Array<String>,
     private val activity: Activity,
     private val startForResult: ActivityResultLauncher<Intent>

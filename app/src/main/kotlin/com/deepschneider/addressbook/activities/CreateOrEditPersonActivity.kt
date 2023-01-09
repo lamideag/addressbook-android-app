@@ -246,16 +246,26 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         emptyContactsListTextView.visibility = View.GONE
                         contactsListView.visibility = View.VISIBLE
                     }
-                    contactsListView.swapAdapter(
-                        ContactsListAdapter(
-                            currentContactList,
-                            this.resources.getStringArray(R.array.contact_types),
-                            this@CreateOrEditPersonActivity,
-                            startForResult
-                        ), false
-                    )
+                    updateContactAdapter()
                 }
             }
+    }
+
+    private fun updateContactAdapter() {
+        val adapter = contactsListView.adapter
+        if (adapter != null) {
+            (contactsListView.adapter as ContactsListAdapter).contacts = currentContactList
+            (contactsListView.adapter as ContactsListAdapter).notifyDataSetChanged()
+        } else {
+            contactsListView.swapAdapter(
+                ContactsListAdapter(
+                    currentContactList,
+                    this.resources.getStringArray(R.array.contact_types),
+                    this@CreateOrEditPersonActivity,
+                    startForResult
+                ), false
+            )
+        }
     }
 
     private fun updateSaveButtonState() {
@@ -303,14 +313,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                                 response.data?.data?.let {
                                     handler.post {
                                         currentContactList = it.toMutableList()
-                                        contactsListView.swapAdapter(
-                                            ContactsListAdapter(
-                                                it,
-                                                this.resources.getStringArray(R.array.contact_types),
-                                                this@CreateOrEditPersonActivity,
-                                                startForResult
-                                            ), false
-                                        )
+                                        updateContactAdapter()
                                         contactsListView.visibility = View.VISIBLE
                                         emptyContactsListTextView.visibility = View.GONE
                                     }
