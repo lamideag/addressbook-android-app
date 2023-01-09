@@ -41,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         findViewById<Button>(R.id.login_activity_login_button).setOnClickListener {
             createOrRotateLoginToken(true)
         }
+        Constants.PAGE_SIZE = (((resources.displayMetrics.run { heightPixels / density } - 50) / 90)).toInt()
     }
 
     override fun onResume() {

@@ -9,7 +9,7 @@ object Constants {
     const val ORGANIZATIONS_CACHE_NAME = "com.addressbook.model.Organization"
     const val PERSONS_CACHE_NAME = "com.addressbook.model.Person"
 
-    const val PAGE_SIZE = 10
+    var PAGE_SIZE = 10
 
     const val SETTINGS_SERVER_URL = "server_url"
     const val SETTINGS_ORGANIZATION_LIST_SORT_FIELD = "organization_list_sort_field"
