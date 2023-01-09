@@ -103,11 +103,17 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
                 this.getString(R.string.search_org_obj_type),
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_type).text.toString()
             )?.let { it1 -> filters.add(it1) }
-            Utils.getDateFilterDto(
-                this.getString(R.string.search_org_obj_last_updated),
-                findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_last_updated).text.toString(),
+            val comparatorEnglish =
                 findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_comparator).text.toString()
-            )?.let { it1 -> filters.add(it1) }
+            if (comparatorEnglish.isNotBlank() && comparatorEnglish != this.getString(R.string.no_value_placeholder)) {
+                val actualComparatorIndex = this.resources.getStringArray(R.array.date_comparators_english).indexOf(comparatorEnglish)
+                val actualComparator = this.resources.getStringArray(R.array.date_comparators)[actualComparatorIndex]
+                Utils.getDateFilterDto(
+                    this.getString(R.string.search_org_obj_last_updated),
+                    findViewById<EditText>(R.id.organizations_activity_search_edit_text_date_last_updated).text.toString(),
+                    actualComparator
+                )?.let { it1 -> filters.add(it1) }
+            }
             currentFilter = filters
             start = 1
             updateList(filters)
@@ -145,13 +151,13 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
         searchEditTextLastComparator.setOnClickListener {
             val builder = AlertDialog.Builder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_date_comparator).setItems(
-                R.array.date_comparators
+                R.array.date_comparators_english
             ) { dialog, which ->
                 if (which == 0) {
                     searchEditTextLastComparator.text = null
                     searchEditTextLastComparator.gravity = Gravity.LEFT
                 } else {
-                    searchEditTextLastComparator.setText(resources.getStringArray(R.array.date_comparators)[which])
+                    searchEditTextLastComparator.setText(resources.getStringArray(R.array.date_comparators_english)[which])
                     searchEditTextLastComparator.gravity = Gravity.CENTER
                 }
                 dialog.dismiss()

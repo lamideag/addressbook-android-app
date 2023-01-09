@@ -295,8 +295,6 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private fun updateContactList() {
         personDto?.let {
-            contactsListView.visibility = View.GONE
-            emptyContactsListTextView.visibility = View.VISIBLE
             val executor: ExecutorService = Executors.newSingleThreadExecutor()
             val handler = Handler(Looper.getMainLooper())
             executor.execute {

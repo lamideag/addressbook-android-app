@@ -17,6 +17,16 @@
         <item>!=</item>
     </string-array>
 
+    <string-array name="date_comparators_english">
+        <item>@string/no_value_placeholder</item>
+        <item>Equal</item>
+        <item>More</item>
+        <item>More Or Equal</item>
+        <item>Less</item>
+        <item>Less Or Equal</item>
+        <item>Not Equal</item>
+    </string-array>
+
     <string-array name="organizations_list_field_display_names">
         <item>@string/search_org_id</item>
         <item>@string/search_org_name</item>
