@@ -1,6 +1,4 @@
-# Addressbook Android Client Application
-
-### Android client application for [Addressbook project](https://github.com/dredwardhyde/addressbook)
+# [Addressbook](https://github.com/dredwardhyde/addressbook) Android Client Application
 
 <img src="https://raw.githubusercontent.com/dredwardhyde/addressbook-android-app/master/screenshots/all_panels.png" width="1000"/>  
 
