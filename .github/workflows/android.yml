@@ -22,11 +22,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Decode Keystore
-          id: decode_keystore
-          uses: timheuer/base64-to-file@v1
-          with:
-            fileName: 'addressbook-android-app/addressbook-android-app/app/keystore/android_keystore.jks'
-            encodedString: ${{ secrets.KEYSTORE }}
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: 'addressbook-android-app/addressbook-android-app/app/keystore/android_keystore.jks'
+          encodedString: ${{ secrets.KEYSTORE }}
       - name: Build APK
         run: ./gradlew :app:assembleRelease
         env:
