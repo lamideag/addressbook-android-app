@@ -23,9 +23,10 @@ jobs:
         run: chmod +x gradlew
       - name: Decode Keystore
         id: decode_keystore
-        uses: timheuer/base64-to-file@v1
+        uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: 'addressbook-android-app/addressbook-android-app/app/keystore/android_keystore.jks'
+          fileName: 'android_keystore.jks'
+          fileDir: '/home/runner/work/addressbook-android-app/addressbook-android-app/app/keystore/'
           encodedString: ${{ secrets.KEYSTORE }}
       - name: Build APK
         run: ./gradlew :app:assembleRelease
