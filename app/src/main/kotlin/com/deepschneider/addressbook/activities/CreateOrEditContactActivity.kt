@@ -96,7 +96,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         deleteContactButton.setOnClickListener {
             MaterialAlertDialogBuilder(this@CreateOrEditContactActivity)
                 .setTitle(this.getString(R.string.delete_contact_confirmation))
-                .setPositiveButton("OK") { _, _ ->
+                .setPositiveButton("DELETE") { _, _ ->
                     val data = Intent()
                     data.putExtra("contact", contactDto)
                     data.putExtra("delete", true)
