@@ -94,7 +94,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     private fun prepareDeleteContactButton() {
         deleteContactButton = findViewById(R.id.create_or_edit_contact_activity_delete_contact_button)
         deleteContactButton.setOnClickListener {
-            val dialog = MaterialAlertDialogBuilder(this@CreateOrEditContactActivity)
+            MaterialAlertDialogBuilder(this@CreateOrEditContactActivity)
                 .setTitle(this.getString(R.string.delete_contact_confirmation))
                 .setPositiveButton("DELETE") { _, _ ->
                     val data = Intent()
@@ -103,10 +103,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
                     setResult(RESULT_OK, data)
                     finish()
                 }
-                .setNegativeButton("CANCEL", null).create()
-            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setBackgroundColor(R.color.purple_500)
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(R.color.red_error)
-            dialog.show()
+                .setNegativeButton("CANCEL", null).show()
         }
     }
 
