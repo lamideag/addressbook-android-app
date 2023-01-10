@@ -1,10 +1,15 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_dispatch:
+      inputs:
+        version:
+          description: 'Application version'     
+          required: true
+          default: '1.0'
 jobs:
   build:
+    name: Build APK
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -23,5 +28,34 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v1
       with:
-        name: Addressbook_1.0.apk
-        path: app/build/outputs/apk/release/Addressbook_1.0.apk
+        name: addressbook
+        path: app/build/outputs/apk/release/Addressbook_${{ github.event.inputs.version }}.apk
+  release:
+      name: Release APK
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Download APK from build
+          uses: actions/download-artifact@v1
+          with:
+            name: addressbook 
+        - name: Create Release
+          id: create_release
+          uses: actions/create-release@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          with:
+            tag_name: v_${{ ${{ github.event.inputs.version }} }}
+            release_name: Release ${{ ${{ github.event.inputs.version }} }} 
+            draft: false
+            prerelease: false
+        - name: Upload Release APK
+          id: upload_release_asset
+          uses: actions/upload-release-asset@v1.0.1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: addressbook/Addressbook_${{ github.event.inputs.version }}.apk
+            asset_name: Addressbook_${{ github.event.inputs.version }}.apk
+            asset_content_type: application/zip
