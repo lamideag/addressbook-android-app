@@ -1,6 +1,5 @@
 package com.deepschneider.addressbook.activities
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +14,7 @@ import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Urls
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.reflect.TypeToken
@@ -138,7 +138,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         typeEditText = findViewById(R.id.create_or_edit_organization_activity_type)
         typeEditTextLayout = findViewById(R.id.create_or_edit_organization_activity_type_layout)
         typeEditText.setOnClickListener {
-            val builder = AlertDialog.Builder(this@CreateOrEditOrganizationActivity)
+            val builder = MaterialAlertDialogBuilder(this@CreateOrEditOrganizationActivity)
             builder.setTitle(R.string.choose_organization_type).setItems(
                 R.array.org_types
             ) { dialog, which ->
@@ -238,9 +238,16 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
                                     updateUi(it)
                                 }
                                 organizationDto?.id?.let {
-                                    if (create) sendLockRequest(
-                                        true, Constants.ORGANIZATIONS_CACHE_NAME, it
-                                    ) else {
+                                    if (create) {
+                                        sendLockRequest(
+                                            true, Constants.ORGANIZATIONS_CACHE_NAME, it
+                                        )
+                                        makeSnackBar(
+                                            this@CreateOrEditOrganizationActivity.getString(
+                                                R.string.organization_created_message
+                                            )
+                                        )
+                                    } else {
                                         makeSnackBar(
                                             this@CreateOrEditOrganizationActivity.getString(
                                                 R.string.changes_saved_message

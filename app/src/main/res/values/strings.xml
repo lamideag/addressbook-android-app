@@ -93,6 +93,9 @@
     <string name="validation_error_value_too_long">Value is too long!</string>
 
     <string name="changes_saved_message">Changes saved!</string>
+    <string name="person_created_message">Person created!</string>
+    <string name="organization_created_message">Organization created!</string>
+    <string name="delete_contact_confirmation">Delete this contact?</string>
     <string name="edit_activity_header">Edit</string>
 
     <string name="contact_type_mobile_phone">Mobile phone</string>

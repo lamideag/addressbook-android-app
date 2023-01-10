@@ -1,6 +1,6 @@
 package com.deepschneider.addressbook.activities
 
-import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +11,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.dto.ContactDto
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -77,7 +78,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     private fun prepareTypeEditText() {
         typeEditText = findViewById(R.id.create_or_edit_contact_activity_type)
         typeEditText.setOnClickListener {
-            val builder = AlertDialog.Builder(this@CreateOrEditContactActivity)
+            val builder = MaterialAlertDialogBuilder(this@CreateOrEditContactActivity)
             builder.setTitle(R.string.choose_contact_type).setItems(
                 R.array.contact_types
             ) { dialog, which ->
@@ -93,11 +94,17 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     private fun prepareDeleteContactButton() {
         deleteContactButton = findViewById(R.id.create_or_edit_contact_activity_delete_contact_button)
         deleteContactButton.setOnClickListener {
-            val data = Intent()
-            data.putExtra("contact", contactDto)
-            data.putExtra("delete", true)
-            setResult(RESULT_OK, data)
-            finish()
+            MaterialAlertDialogBuilder(this@CreateOrEditContactActivity)
+                .setTitle(this.getString(R.string.delete_contact_confirmation))
+                .setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
+                    val data = Intent()
+                    data.putExtra("contact", contactDto)
+                    data.putExtra("delete", true)
+                    setResult(RESULT_OK, data)
+                    finish()
+                })
+                .setNegativeButton("CANCEL", null)
+                .show();
         }
     }
 

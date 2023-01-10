@@ -1,7 +1,6 @@
 package com.deepschneider.addressbook.activities
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -30,6 +29,7 @@ import com.deepschneider.addressbook.network.EntityGetRequest
 import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Urls
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.internal.CheckableImageButton
 import com.google.android.material.textfield.TextInputEditText
@@ -153,7 +153,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         currencyEditText = findViewById(R.id.create_or_edit_person_activity_salary_currency)
         currencyEditTextLayout = findViewById(R.id.create_or_edit_person_activity_salary_currency_layout)
         currencyEditText.setOnClickListener {
-            val builder = AlertDialog.Builder(this@CreateOrEditPersonActivity)
+            val builder = MaterialAlertDialogBuilder(this@CreateOrEditPersonActivity)
             builder.setTitle(R.string.choose_salary_currency).setItems(
                 Constants.currencies.toTypedArray()
             ) { dialog, which ->
@@ -404,9 +404,16 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                                                     updateContactList()
                                                 }
                                                 personDto?.id?.let {
-                                                    if (create) sendLockRequest(
-                                                        true, Constants.PERSONS_CACHE_NAME, it
-                                                    ) else {
+                                                    if (create) {
+                                                        sendLockRequest(
+                                                            true, Constants.PERSONS_CACHE_NAME, it
+                                                        )
+                                                        makeSnackBar(
+                                                            this@CreateOrEditPersonActivity.getString(
+                                                                R.string.person_created_message
+                                                            )
+                                                        )
+                                                    } else {
                                                         makeSnackBar(
                                                             this@CreateOrEditPersonActivity.getString(
                                                                 R.string.changes_saved_message

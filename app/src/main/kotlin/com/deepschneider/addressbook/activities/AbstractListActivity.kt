@@ -1,6 +1,5 @@
 package com.deepschneider.addressbook.activities
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -24,6 +23,7 @@ import com.deepschneider.addressbook.network.FilteredListRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import java.lang.reflect.Type
@@ -145,13 +145,13 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
     }
 
     protected fun showSortSettingsDialogs() {
-        val builderSortField = AlertDialog.Builder(this)
+        val builderSortField = MaterialAlertDialogBuilder(this)
         builderSortField.setTitle(R.string.choose_sort_field).setItems(
             getFieldListDisplayNames()
         ) { dialogField, whichField ->
             sortName = this.resources.getStringArray(getFieldListObjNames())[whichField]
             dialogField.dismiss()
-            val builderSortOrder = AlertDialog.Builder(this)
+            val builderSortOrder = MaterialAlertDialogBuilder(this)
             builderSortOrder.setTitle(R.string.choose_sort_order).setItems(
                 R.array.list_sort_order_display_names
             ) { dialogOrder, whichOrder ->

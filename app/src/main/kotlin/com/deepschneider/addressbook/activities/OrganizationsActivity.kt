@@ -1,6 +1,5 @@
 package com.deepschneider.addressbook.activities
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -22,6 +21,7 @@ import com.deepschneider.addressbook.dto.TableDataDto
 import com.deepschneider.addressbook.listeners.OnSwipeTouchListener
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Utils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -149,7 +149,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
         }
         searchEditTextLastComparator = findViewById(R.id.organizations_activity_search_edit_text_date_comparator)
         searchEditTextLastComparator.setOnClickListener {
-            val builder = AlertDialog.Builder(this@OrganizationsActivity)
+            val builder = MaterialAlertDialogBuilder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_date_comparator).setItems(
                 R.array.date_comparators_english
             ) { dialog, which ->
@@ -169,7 +169,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     private fun prepareSearchEditTextType() {
         searchEditTextType = findViewById(R.id.organizations_activity_search_edit_text_type)
         searchEditTextType.setOnClickListener {
-            val builder = AlertDialog.Builder(this@OrganizationsActivity)
+            val builder = MaterialAlertDialogBuilder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_organization_type).setItems(
                 R.array.org_types
             ) { dialog, which ->
