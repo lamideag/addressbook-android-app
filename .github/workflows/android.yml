@@ -12,12 +12,6 @@ jobs:
     name: Build Signed APK
     runs-on: ubuntu-latest
     steps:
-      - name: Decode Keystore
-        id: decode_keystore
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileName: 'keystore/android_keystore.jks'
-          encodedString: ${{ secrets.KEYSTORE }}
       - uses: actions/checkout@v3
       - name: set up JDK 11
         uses: actions/setup-java@v3
@@ -27,6 +21,12 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Decode Keystore
+          id: decode_keystore
+          uses: timheuer/base64-to-file@v1
+          with:
+            fileName: 'addressbook-android-app/addressbook-android-app/app/keystore/android_keystore.jks'
+            encodedString: ${{ secrets.KEYSTORE }}
       - name: Build APK
         run: ./gradlew :app:assembleRelease
         env:
