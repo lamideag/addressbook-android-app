@@ -94,7 +94,8 @@ class CreateOrEditContactActivity : AppCompatActivity() {
             val targetContactDto = if (contactDto == null) ContactDto() else contactDto
             targetContactDto?.data = binding.data.text.toString()
             targetContactDto?.description = binding.desc.text.toString()
-            targetContactDto?.type = (this.resources.getStringArray(R.array.contact_types).indexOf(binding.type.text.toString()) - 1).toString()
+            targetContactDto?.type = (this.resources.getStringArray(R.array.contact_types)
+                .indexOf(binding.type.text.toString()) - 1).toString()
             val data = Intent()
             data.putExtra("contact", targetContactDto)
             setResult(RESULT_OK, data)

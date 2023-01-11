@@ -48,10 +48,10 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
         prepareOrganizationSearchButton()
     }
 
-    private fun prepareListView(){
+    private fun prepareListView() {
         binding.listView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, PersonsActivity::class.java)
-            val organizationDto: OrganizationDto = parent.adapter.getItem(position) as OrganizationDto
+            val organizationDto = parent.adapter.getItem(position) as OrganizationDto
             intent.putExtra("organization", organizationDto)
             startActivity(intent)
         }
@@ -216,7 +216,10 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
 
     private fun loadSortSettings() {
         sortName = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_FIELD, this.getString(R.string.search_org_obj_id))
+            .getString(
+                Constants.SETTINGS_ORGANIZATION_LIST_SORT_FIELD,
+                this.getString(R.string.search_org_obj_id)
+            )
             .toString()
         sortOrder = PreferenceManager.getDefaultSharedPreferences(this)
             .getString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_ORDER, "desc").toString()

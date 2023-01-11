@@ -38,7 +38,10 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         super.onCreate(savedInstanceState)
         binding = ActivityPersonBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        organizationDto = intent.extras?.getSerializable("organization", OrganizationDto::class.java) as OrganizationDto
+        organizationDto = intent.extras?.getSerializable(
+            "organization",
+            OrganizationDto::class.java
+        ) as OrganizationDto
         title = organizationDto.name
         prepareListView()
         prepareActionBar(binding.drawerLayout)
@@ -191,7 +194,10 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     private fun loadSortSettings() {
         sortName = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(Constants.SETTINGS_PERSON_LIST_SORT_FIELD, this.getString(R.string.search_person_obj_id))
+            .getString(
+                Constants.SETTINGS_PERSON_LIST_SORT_FIELD,
+                this.getString(R.string.search_person_obj_id)
+            )
             .toString()
         sortOrder = PreferenceManager.getDefaultSharedPreferences(this)
             .getString(Constants.SETTINGS_PERSON_LIST_SORT_ORDER, "desc").toString()

@@ -42,7 +42,11 @@ class UserInfoFragment : Fragment() {
         serverUrl = NetworkUtils.getServerUrl(listener)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = UserInfoFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

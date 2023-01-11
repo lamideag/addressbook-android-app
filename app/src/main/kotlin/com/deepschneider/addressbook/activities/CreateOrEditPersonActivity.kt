@@ -126,13 +126,13 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    private fun prepareResumeRichTextEditor(){
+    private fun prepareResumeRichTextEditor() {
         prepareAztecTextEditor()
         prepareAztecToolbar()
         Aztec.with(binding.rteResumeEditor, binding.formattingToolbar, this)
     }
 
-    private fun prepareAztecTextEditor(){
+    private fun prepareAztecTextEditor() {
         val resumeEditTextLayout = binding.resumeLayout
         val errorTextView = resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
         val layoutParams = errorTextView.layoutParams as android.widget.FrameLayout.LayoutParams
@@ -157,7 +157,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    private fun prepareAztecToolbar(){
+    private fun prepareAztecToolbar() {
         binding.formattingToolbar.visibility = View.VISIBLE
         binding.formattingToolbar.enableMediaMode(false)
         binding.formattingToolbar.setToolbarItems(
@@ -177,7 +177,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         )
     }
 
-    private fun prepareLauncher(){
+    private fun prepareLauncher() {
         startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
