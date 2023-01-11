@@ -56,8 +56,8 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun prepareExtras() {
-        val extra = intent.extras?.get("contact")
-        if (extra != null) contactDto = extra as ContactDto
+        val extra = intent.extras?.getSerializable("contact", ContactDto::class.java)
+        if (extra != null) contactDto = extra
     }
 
     private fun prepareTypeEditText() {

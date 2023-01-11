@@ -107,7 +107,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/search_edit_text_id_layout"
+                    android:id="@+id/search_id_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:hint="@string/search_person_id">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/search_edit_text_id"
+                        android:id="@+id/search_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -134,13 +134,13 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/search_edit_text_id_layout"
+                    android:layout_below="@id/search_id_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_person_first_name">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/search_edit_first_name"
+                        android:id="@+id/search_first_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -153,7 +153,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/search_edit_text_last_name_layout"
+                    android:id="@+id/search_last_name_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                     android:hint="@string/search_person_last_name">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/search_edit_text_last_name"
+                        android:id="@+id/search_last_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -176,17 +176,17 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/search_edit_text_resume_layout"
+                    android:id="@+id/search_resume_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/search_edit_text_last_name_layout"
+                    android:layout_below="@id/search_last_name_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_person_resume">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/search_edit_text_resume"
+                        android:id="@+id/search_resume"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -199,17 +199,17 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/search_edit_text_salary_layout"
+                    android:id="@+id/search_salary_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/search_edit_text_resume_layout"
+                    android:layout_below="@id/search_resume_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_person_salary">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/search_edit_text_salary"
+                        android:id="@+id/search_salary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -223,7 +223,7 @@
 
                 <Button
                     android:id="@+id/search_button"
-                    android:layout_below="@id/search_edit_text_salary_layout"
+                    android:layout_below="@id/search_salary_layout"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginStart="3dp"

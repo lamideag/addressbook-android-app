@@ -109,10 +109,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun prepareExtras() {
-        val extra = intent.extras?.get("organization")
-        if (extra != null) {
-            organizationDto = extra as OrganizationDto
-        }
+        val extra = intent.extras?.getSerializable("organization", OrganizationDto::class.java)
+        if (extra != null) organizationDto = extra
     }
 
     private fun prepareLayout() {

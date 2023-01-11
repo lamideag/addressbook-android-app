@@ -74,10 +74,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun prepareExtras() {
-        val extra = intent.extras?.get("person")
-        if (extra != null) {
-            personDto = extra as PersonDto
-        }
+        val extra = intent.extras?.getSerializable("person", PersonDto::class.java)
+        if (extra != null) personDto = extra
     }
 
     private fun prepareLayout() {
@@ -219,7 +217,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         val adapter = binding.contactsListView.adapter
         if (adapter != null) {
             (adapter as ContactsListAdapter).contacts = currentContactList
-            (adapter as ContactsListAdapter).notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         } else {
             binding.contactsListView.swapAdapter(
                 ContactsListAdapter(

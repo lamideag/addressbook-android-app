@@ -38,7 +38,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         super.onCreate(savedInstanceState)
         binding = ActivityPersonBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        organizationDto = intent.extras?.get("organization") as OrganizationDto
+        organizationDto = intent.extras?.getSerializable("organization", OrganizationDto::class.java) as OrganizationDto
         title = organizationDto.name
         prepareListView()
         prepareActionBar(binding.drawerLayout)
@@ -81,23 +81,23 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_id),
-                this@PersonsActivity.binding.searchEditTextId.text.toString()
+                this@PersonsActivity.binding.searchId.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_first_name),
-                this@PersonsActivity.binding.searchEditFirstName.text.toString()
+                this@PersonsActivity.binding.searchFirstName.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_last_name),
-                this@PersonsActivity.binding.searchEditTextLastName.text.toString()
+                this@PersonsActivity.binding.searchLastName.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_resume),
-                this@PersonsActivity.binding.searchEditTextResume.text.toString()
+                this@PersonsActivity.binding.searchResume.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_salary),
-                this@PersonsActivity.binding.searchEditTextSalary.text.toString()
+                this@PersonsActivity.binding.searchSalary.text.toString()
             )?.let { it1 -> filters.add(it1) }
             filters.add(getOrgIdFilterDto())
             currentFilter = filters

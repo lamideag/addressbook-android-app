@@ -81,31 +81,31 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
                 this.getString(R.string.search_org_obj_id),
-                binding.searchEditTextId.text.toString()
+                binding.searchId.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_org_obj_name),
-                binding.searchEditTextName.text.toString()
+                binding.searchName.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_org_obj_address),
-                binding.searchEditTextAddress.text.toString()
+                binding.searchAddress.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_org_obj_zip),
-                binding.searchEditTextZip.text.toString()
+                binding.searchZip.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_org_obj_type),
-                binding.searchEditTextType.text.toString()
+                binding.searchType.text.toString()
             )?.let { it1 -> filters.add(it1) }
-            val comparatorEnglish = binding.searchEditTextDateComparator.text.toString()
+            val comparatorEnglish = binding.searchDateComparator.text.toString()
             if (comparatorEnglish.isNotBlank() && comparatorEnglish != this.getString(R.string.no_value_placeholder)) {
                 val actualComparatorIndex = this.resources.getStringArray(R.array.date_comparators_english).indexOf(comparatorEnglish)
                 val actualComparator = this.resources.getStringArray(R.array.date_comparators)[actualComparatorIndex]
                 Utils.getDateFilterDto(
                     this.getString(R.string.search_org_obj_last_updated),
-                    binding.searchEditTextDateLastUpdated.text.toString(),
+                    binding.searchDateLastUpdated.text.toString(),
                     actualComparator
                 )?.let { it1 -> filters.add(it1) }
             }
@@ -116,7 +116,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     }
 
     private fun prepareSearchEditTextLastUpdated() {
-        binding.searchEditTextDateLastUpdated.setOnClickListener {
+        binding.searchDateLastUpdated.setOnClickListener {
             var isDataSet = false
             val dataPickerDialog = DatePickerDialog(
                 this@OrganizationsActivity,
@@ -135,23 +135,23 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             )
             dataPickerDialog.setOnDismissListener {
                 if (!isDataSet) {
-                    binding.searchEditTextDateLastUpdated.text = null
-                    binding.searchEditTextDateLastUpdated.gravity = Gravity.LEFT
+                    binding.searchDateLastUpdated.text = null
+                    binding.searchDateLastUpdated.gravity = Gravity.LEFT
                 }
             }
             dataPickerDialog.show()
         }
-        binding.searchEditTextDateComparator.setOnClickListener {
+        binding.searchDateComparator.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_date_comparator).setItems(
                 R.array.date_comparators_english
             ) { dialog, which ->
                 if (which == 0) {
-                    binding.searchEditTextDateComparator.text = null
-                    binding.searchEditTextDateComparator.gravity = Gravity.LEFT
+                    binding.searchDateComparator.text = null
+                    binding.searchDateComparator.gravity = Gravity.LEFT
                 } else {
-                    binding.searchEditTextDateComparator.setText(resources.getStringArray(R.array.date_comparators_english)[which])
-                    binding.searchEditTextDateComparator.gravity = Gravity.CENTER
+                    binding.searchDateComparator.setText(resources.getStringArray(R.array.date_comparators_english)[which])
+                    binding.searchDateComparator.gravity = Gravity.CENTER
                 }
                 dialog.dismiss()
             }
@@ -160,13 +160,13 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     }
 
     private fun prepareSearchEditTextType() {
-        binding.searchEditTextType.setOnClickListener {
+        binding.searchType.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(this@OrganizationsActivity)
             builder.setTitle(R.string.choose_organization_type).setItems(
                 R.array.org_types
             ) { dialog, which ->
-                if (which == 0) binding.searchEditTextType.text = null
-                else binding.searchEditTextType.setText(resources.getStringArray(R.array.org_types)[which])
+                if (which == 0) binding.searchType.text = null
+                else binding.searchType.setText(resources.getStringArray(R.array.org_types)[which])
                 dialog.dismiss()
             }
             builder.create().show()
@@ -180,12 +180,12 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     }
 
     private fun updateLabel() {
-        binding.searchEditTextDateLastUpdated.setText(
+        binding.searchDateLastUpdated.setText(
             SimpleDateFormat(
                 "MM/dd/yy", Locale.US
             ).format(lastUpdatedCalendar.time)
         )
-        binding.searchEditTextDateLastUpdated.gravity = Gravity.CENTER
+        binding.searchDateLastUpdated.gravity = Gravity.CENTER
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
