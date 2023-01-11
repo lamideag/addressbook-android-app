@@ -31,16 +31,16 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             when (view.id) {
-                R.id.create_or_edit_organization_activity_zip -> {
+                R.id.zip -> {
                     validateZipEditText()
                 }
-                R.id.create_or_edit_organization_activity_address -> {
+                R.id.address -> {
                     validateAddressEditText()
                 }
-                R.id.create_or_edit_organization_activity_type -> {
+                R.id.type -> {
                     validateTypeEditText()
                 }
-                R.id.create_or_edit_organization_activity_name -> {
+                R.id.name -> {
                     validateNameEditText()
                 }
             }
@@ -49,8 +49,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateNameEditText() {
-        val nameEditText = binding.createOrEditOrganizationActivityName
-        val nameEditTextLayout = binding.createOrEditOrganizationActivityNameLayout
+        val nameEditText = binding.name
+        val nameEditTextLayout = binding.nameLayout
         val value = nameEditText.text.toString().trim()
         if (value.isEmpty()) {
             nameEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -65,8 +65,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateAddressEditText() {
-        val addressEditText = binding.createOrEditOrganizationActivityAddress
-        val addressEditTextLayout = binding.createOrEditOrganizationActivityAddressLayout
+        val addressEditText = binding.address
+        val addressEditTextLayout = binding.addressLayout
         val value = addressEditText.text.toString().trim()
         if (value.isEmpty()) {
             addressEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -81,8 +81,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateZipEditText() {
-        val zipEditText = binding.createOrEditOrganizationActivityZip
-        val zipEditTextLayout = binding.createOrEditOrganizationActivityZipLayout
+        val zipEditText = binding.zip
+        val zipEditTextLayout = binding.zipLayout
         val value = zipEditText.text.toString().trim()
         if (value.isEmpty()) {
             zipEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -97,8 +97,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateTypeEditText() {
-        val typeEditText = binding.createOrEditOrganizationActivityType
-        val typeEditTextLayout = binding.createOrEditOrganizationActivityTypeLayout
+        val typeEditText = binding.type
+        val typeEditTextLayout = binding.typeLayout
         if (typeEditText.text.toString().trim().isEmpty()) {
             typeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
@@ -116,19 +116,19 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun prepareLayout() {
-        binding.createOrEditOrganizationActivitySaveCreateButton.setOnClickListener {
+        binding.saveCreateButton.setOnClickListener {
             saveOrCreateOrganization()
         }
     }
 
     private fun prepareTypeEditText() {
-        binding.createOrEditOrganizationActivityType.setOnClickListener {
+        binding.type.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(this@CreateOrEditOrganizationActivity)
             builder.setTitle(R.string.choose_organization_type).setItems(
                 R.array.org_types
             ) { dialog, which ->
-                if (which == 0) binding.createOrEditOrganizationActivityType.text = null
-                else binding.createOrEditOrganizationActivityType.setText(resources.getStringArray(R.array.org_types)[which])
+                if (which == 0) binding.type.text = null
+                else binding.type.setText(resources.getStringArray(R.array.org_types)[which])
                 dialog.dismiss()
             }
             builder.create().show()
@@ -154,24 +154,24 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun setupListeners() {
-        binding.createOrEditOrganizationActivityType.addTextChangedListener(TextFieldValidation(binding.createOrEditOrganizationActivityType))
-        binding.createOrEditOrganizationActivityZip.addTextChangedListener(TextFieldValidation(binding.createOrEditOrganizationActivityZip))
-        binding.createOrEditOrganizationActivityAddress.addTextChangedListener(TextFieldValidation(binding.createOrEditOrganizationActivityAddress))
-        binding.createOrEditOrganizationActivityName.addTextChangedListener(TextFieldValidation(binding.createOrEditOrganizationActivityName))
+        binding.type.addTextChangedListener(TextFieldValidation(binding.type))
+        binding.zip.addTextChangedListener(TextFieldValidation(binding.zip))
+        binding.address.addTextChangedListener(TextFieldValidation(binding.address))
+        binding.name.addTextChangedListener(TextFieldValidation(binding.name))
     }
 
     private fun updateUi(organizationDto: OrganizationDto?) {
         organizationDto?.let {
-            binding.createOrEditOrganizationActivityType.setText(it.type)
-            binding.createOrEditOrganizationActivityZip.setText(it.zip)
-            binding.createOrEditOrganizationActivityAddress.setText(it.street)
-            binding.createOrEditOrganizationActivityName.setText(it.name)
-            binding.createOrEditOrganizationActivityId.setText(it.id)
-            binding.createOrEditOrganizationActivityLastUpdated.setText(it.lastUpdated)
-            binding.createOrEditOrganizationActivitySaveCreateButton.text = this.getString(R.string.action_save_changes)
+            binding.type.setText(it.type)
+            binding.zip.setText(it.zip)
+            binding.address.setText(it.street)
+            binding.name.setText(it.name)
+            binding.id.setText(it.id)
+            binding.lastUpdated.setText(it.lastUpdated)
+            binding.saveCreateButton.text = this.getString(R.string.action_save_changes)
             title = this.getString(R.string.edit_activity_header) + " " + it.name
         } ?: run {
-            binding.createOrEditOrganizationActivitySaveCreateButton.text = this.getString(R.string.action_create)
+            binding.saveCreateButton.text = this.getString(R.string.action_create)
         }
     }
 
@@ -184,7 +184,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun updateSaveButtonState() {
-        binding.createOrEditOrganizationActivitySaveCreateButton.isEnabled = fieldValidation.all { it }
+        binding.saveCreateButton.isEnabled = fieldValidation.all { it }
     }
 
     private fun saveOrCreateOrganization() {
@@ -192,18 +192,18 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         var create = false
         organizationDto?.let {
             targetOrganizationDto = it
-            targetOrganizationDto?.name = binding.createOrEditOrganizationActivityName.text.toString()
-            targetOrganizationDto?.street = binding.createOrEditOrganizationActivityAddress.text.toString()
-            targetOrganizationDto?.zip = binding.createOrEditOrganizationActivityZip.text.toString()
-            targetOrganizationDto?.type = convertTypeToIndex(binding.createOrEditOrganizationActivityType.text.toString())
+            targetOrganizationDto?.name = binding.name.text.toString()
+            targetOrganizationDto?.street = binding.address.text.toString()
+            targetOrganizationDto?.zip = binding.zip.text.toString()
+            targetOrganizationDto?.type = convertTypeToIndex(binding.type.text.toString())
         } ?: run {
             create = true
             targetOrganizationDto = OrganizationDto()
             targetOrganizationDto?.id = UUID.randomUUID().toString()
-            targetOrganizationDto?.name = binding.createOrEditOrganizationActivityName.text.toString()
-            targetOrganizationDto?.street = binding.createOrEditOrganizationActivityAddress.text.toString()
-            targetOrganizationDto?.zip = binding.createOrEditOrganizationActivityZip.text.toString()
-            targetOrganizationDto?.type = convertTypeToIndex(binding.createOrEditOrganizationActivityType.text.toString())
+            targetOrganizationDto?.name = binding.name.text.toString()
+            targetOrganizationDto?.street = binding.address.text.toString()
+            targetOrganizationDto?.zip = binding.zip.text.toString()
+            targetOrganizationDto?.type = convertTypeToIndex(binding.type.text.toString())
         }
         targetOrganizationDto?.let {
             val handler = Handler(Looper.getMainLooper())
@@ -256,7 +256,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         }
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): View = binding.createOrEditOrganizationActivityCoordinatorLayout
+    override fun getParentCoordinatorLayoutForSnackBar(): View = binding.coordinatorLayout
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_ORGANIZATION_TAG"
 

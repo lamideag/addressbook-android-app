@@ -20,21 +20,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/contact_item_type"
+                android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/contact_item_data"
+                android:id="@+id/data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp" />
 
             <TextView
-                android:id="@+id/contact_item_desc"
+                android:id="@+id/desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"

@@ -24,9 +24,9 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             when (view.id) {
-                R.id.create_or_edit_contact_activity_data -> validateDataEditText()
-                R.id.create_or_edit_contact_activity_type -> validateTypeEditText()
-                R.id.create_or_edit_contact_activity_desc -> validateDescEditText()
+                R.id.data -> validateDataEditText()
+                R.id.type -> validateTypeEditText()
+                R.id.desc -> validateDescEditText()
             }
             updateSaveButtonState()
         }
@@ -61,13 +61,13 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun prepareTypeEditText() {
-        binding.createOrEditContactActivityType.setOnClickListener {
+        binding.type.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(this@CreateOrEditContactActivity)
             builder.setTitle(R.string.choose_contact_type).setItems(
                 R.array.contact_types
             ) { dialog, which ->
-                if (which == 0) binding.createOrEditContactActivityType.text = null
-                else binding.createOrEditContactActivityType.setText(resources.getStringArray(R.array.contact_types)[which])
+                if (which == 0) binding.type.text = null
+                else binding.type.setText(resources.getStringArray(R.array.contact_types)[which])
                 dialog.dismiss()
             }
             builder.create().show()
@@ -75,7 +75,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun prepareDeleteContactButton() {
-        binding.createOrEditContactActivityDeleteContactButton.setOnClickListener {
+        binding.deleteContactButton.setOnClickListener {
             MaterialAlertDialogBuilder(this@CreateOrEditContactActivity)
                 .setTitle(this.getString(R.string.delete_contact_confirmation))
                 .setPositiveButton("DELETE") { _, _ ->
@@ -90,11 +90,11 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun prepareAddOrApplyButton() {
-        binding.createOrEditContactActivityAddApplyButton.setOnClickListener {
+        binding.addApplyButton.setOnClickListener {
             val targetContactDto = if (contactDto == null) ContactDto() else contactDto
-            targetContactDto?.data = binding.createOrEditContactActivityData.text.toString()
-            targetContactDto?.description = binding.createOrEditContactActivityDesc.text.toString()
-            targetContactDto?.type = (this.resources.getStringArray(R.array.contact_types).indexOf(binding.createOrEditContactActivityType.text.toString()) - 1).toString()
+            targetContactDto?.data = binding.data.text.toString()
+            targetContactDto?.description = binding.desc.text.toString()
+            targetContactDto?.type = (this.resources.getStringArray(R.array.contact_types).indexOf(binding.type.text.toString()) - 1).toString()
             val data = Intent()
             data.putExtra("contact", targetContactDto)
             setResult(RESULT_OK, data)
@@ -103,8 +103,8 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun validateDataEditText() {
-        val dataEditText = binding.createOrEditContactActivityData
-        val dataEditTextLayout = binding.createOrEditContactActivityDataLayout
+        val dataEditText = binding.data
+        val dataEditTextLayout = binding.dataLayout
         val value = dataEditText.text.toString().trim()
         if (value.isEmpty()) {
             dataEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -119,8 +119,8 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun validateDescEditText() {
-        val descEditText = binding.createOrEditContactActivityDesc
-        val descEditTextLayout = binding.createOrEditContactActivityDescLayout
+        val descEditText = binding.desc
+        val descEditTextLayout = binding.descLayout
         val value = descEditText.text.toString().trim()
         if (value.isEmpty()) {
             descEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -135,8 +135,8 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun validateTypeEditText() {
-        val typeEditText = binding.createOrEditContactActivityType
-        val typeEditTextLayout = binding.createOrEditContactActivityTypeLayout
+        val typeEditText = binding.type
+        val typeEditTextLayout = binding.typeLayout
         if (typeEditText.text.toString().trim().isEmpty()) {
             typeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
@@ -147,13 +147,13 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun updateSaveButtonState() {
-        binding.createOrEditContactActivityAddApplyButton.isEnabled = fieldValidation.all { it }
+        binding.addApplyButton.isEnabled = fieldValidation.all { it }
     }
 
     private fun setupListeners() {
-        binding.createOrEditContactActivityType.addTextChangedListener(TextFieldValidation(binding.createOrEditContactActivityType))
-        binding.createOrEditContactActivityData.addTextChangedListener(TextFieldValidation(binding.createOrEditContactActivityData))
-        binding.createOrEditContactActivityDesc.addTextChangedListener(TextFieldValidation(binding.createOrEditContactActivityDesc))
+        binding.type.addTextChangedListener(TextFieldValidation(binding.type))
+        binding.data.addTextChangedListener(TextFieldValidation(binding.data))
+        binding.desc.addTextChangedListener(TextFieldValidation(binding.desc))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -168,18 +168,18 @@ class CreateOrEditContactActivity : AppCompatActivity() {
 
     private fun updateUi(contactDto: ContactDto?) {
         contactDto?.let { contact ->
-            binding.createOrEditContactActivityId.setText(contact.id)
-            contact.type?.let { binding.createOrEditContactActivityType.setText(contactTypes[it.toInt() + 1]) }
-            binding.createOrEditContactActivityData.setText(contact.data)
-            binding.createOrEditContactActivityDesc.setText(contact.description)
+            binding.id.setText(contact.id)
+            contact.type?.let { binding.type.setText(contactTypes[it.toInt() + 1]) }
+            binding.data.setText(contact.data)
+            binding.desc.setText(contact.description)
             contact.type?.let { contactType ->
                 title = this.getString(R.string.edit_activity_header) + " " + contactTypes[contactType.toInt() + 1]
-                binding.createOrEditContactActivityDeleteContactButton.visibility = View.VISIBLE
+                binding.deleteContactButton.visibility = View.VISIBLE
             }
-            binding.createOrEditContactActivityAddApplyButton.text = this.getString(R.string.action_apply_contact_changes)
+            binding.addApplyButton.text = this.getString(R.string.action_apply_contact_changes)
         } ?: run {
-            binding.createOrEditContactActivityAddApplyButton.text = this.getString(R.string.action_add_contact)
-            binding.createOrEditContactActivityDeleteContactButton.visibility = View.GONE
+            binding.addApplyButton.text = this.getString(R.string.action_add_contact)
+            binding.deleteContactButton.visibility = View.GONE
         }
     }
 }

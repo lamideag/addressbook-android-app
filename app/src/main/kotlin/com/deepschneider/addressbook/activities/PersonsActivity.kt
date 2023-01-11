@@ -41,20 +41,20 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         organizationDto = intent.extras?.get("organization") as OrganizationDto
         title = organizationDto.name
         prepareListView()
-        prepareActionBar(binding.personsActivityDrawerLayout)
+        prepareActionBar(binding.drawerLayout)
         prepareFloatingActionButton()
         preparePersonSearchButton()
     }
 
     private fun prepareListView() {
-        binding.personsActivityListView.setOnItemClickListener { parent, _, position, _ ->
+        binding.listView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, CreateOrEditPersonActivity::class.java)
             val personDto: PersonDto = parent.adapter.getItem(position) as PersonDto
             intent.putExtra("person", personDto)
             intent.putExtra("orgId", organizationDto.id)
             startActivity(intent)
         }
-        binding.personsActivityListView.setOnTouchListener(object :
+        binding.listView.setOnTouchListener(object :
             OnSwipeTouchListener(this@PersonsActivity) {
 
             override fun onSwipeTop() {
@@ -76,28 +76,28 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
     }
 
     private fun preparePersonSearchButton() {
-        binding.personsActivitySearchButton.setOnClickListener {
+        binding.searchButton.setOnClickListener {
             mainDrawer.closeDrawer(GravityCompat.START)
             val filters = arrayListOf<FilterDto>()
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_id),
-                this@PersonsActivity.binding.personsActivitySearchEditTextId.text.toString()
+                this@PersonsActivity.binding.searchEditTextId.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_first_name),
-                this@PersonsActivity.binding.personsActivitySearchEditFirstName.text.toString()
+                this@PersonsActivity.binding.searchEditFirstName.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_last_name),
-                this@PersonsActivity.binding.personsActivitySearchEditTextLastName.text.toString()
+                this@PersonsActivity.binding.searchEditTextLastName.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_resume),
-                this@PersonsActivity.binding.personsActivitySearchEditTextResume.text.toString()
+                this@PersonsActivity.binding.searchEditTextResume.text.toString()
             )?.let { it1 -> filters.add(it1) }
             Utils.getTextFilterDto(
                 this.getString(R.string.search_person_obj_salary),
-                this@PersonsActivity.binding.personsActivitySearchEditTextSalary.text.toString()
+                this@PersonsActivity.binding.searchEditTextSalary.text.toString()
             )?.let { it1 -> filters.add(it1) }
             filters.add(getOrgIdFilterDto())
             currentFilter = filters
@@ -142,7 +142,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
     }
 
     private fun prepareFloatingActionButton() {
-        binding.personsActivityFab.setOnClickListener {
+        binding.fab.setOnClickListener {
             val intent = Intent(applicationContext, CreateOrEditPersonActivity::class.java)
             intent.putExtra("orgId", organizationDto.id)
             startActivity(intent)
@@ -199,21 +199,21 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     override fun getRequestTag(): String = "PERSONS_TAG"
 
-    override fun getParentCoordinatorLayoutForSnackBar(): CoordinatorLayout = binding.personsActivityCoordinatorLayout
+    override fun getParentCoordinatorLayoutForSnackBar(): CoordinatorLayout = binding.coordinatorLayout
 
     override fun getTargetCache(): String = Constants.PERSONS_CACHE_NAME
 
-    override fun getMainList(): ListView = binding.personsActivityListView
+    override fun getMainList(): ListView = binding.listView
 
     override fun getStartPage(): Int = start
 
-    override fun getEmptyListView(): TextView = binding.personsActivityEmptyList
+    override fun getEmptyListView(): TextView = binding.emptyList
 
     override fun getListAdapter(list: List<PersonDto>): ListAdapter = PersonsListAdapter(list, this@PersonsActivity)
 
-    override fun getProgressBar(): ProgressBar = binding.personsActivityProgressBar
+    override fun getProgressBar(): ProgressBar = binding.progressBar
 
-    override fun getTotalListSizeTextView(): TextView = binding.personsActivityListTotalSize
+    override fun getTotalListSizeTextView(): TextView = binding.listTotalSize
 
     override fun getMainListType(): Type = object : TypeToken<PageDataDto<TableDataDto<PersonDto>>>() {}.type
 

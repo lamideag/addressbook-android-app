@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/organizations_activity_coordinator_layout"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.OrganizationsActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/organizations_activity_drawer_layout"
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
@@ -20,14 +20,14 @@
             android:layout_height="match_parent">
 
             <ListView
-                android:id="@+id/organizations_activity_list_view"
+                android:id="@+id/list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@null"
                 android:dividerHeight="0dp" />
 
             <ProgressBar
-                android:id="@+id/organizations_activity_progress_bar"
+                android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -35,7 +35,7 @@
                 android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/organizations_activity_empty_list"
+                android:id="@+id/empty_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -44,7 +44,7 @@
                 android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/organizations_activity_list_total_size"
+                android:id="@+id/list_total_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -53,7 +53,7 @@
         </RelativeLayout>
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/organizations_activity_navigation_view"
+            android:id="@+id/navigation_view"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
@@ -64,17 +64,17 @@
                 android:layout_height="match_parent">
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/organizations_activity_user_info_fragment"
+                    android:id="@+id/user_info_fragment"
                     android:name="com.deepschneider.addressbook.fragments.UserInfoFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true" />
 
                 <LinearLayout
-                    android:id="@+id/organizations_activity_filter_header_layout"
+                    android:id="@+id/filter_header_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/organizations_activity_user_info_fragment"
+                    android:layout_below="@id/user_info_fragment"
                     android:baselineAligned="false"
                     android:orientation="vertical">
 
@@ -107,17 +107,17 @@
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/organizations_activity_search_edit_text_id_layout"
+                    android:id="@+id/search_edit_text_id_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/organizations_activity_filter_header_layout"
+                    android:layout_below="@id/filter_header_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_org_id">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/organizations_activity_search_edit_text_id"
+                        android:id="@+id/search_edit_text_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -130,17 +130,17 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/organizations_activity_search_edit_text_name_layout"
+                    android:id="@+id/search_edit_text_name_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/organizations_activity_search_edit_text_id_layout"
+                    android:layout_below="@id/search_edit_text_id_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_org_name">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/organizations_activity_search_edit_text_name"
+                        android:id="@+id/search_edit_text_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -153,17 +153,17 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/organizations_activity_search_edit_text_address_layout"
+                    android:id="@+id/search_edit_text_address_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/organizations_activity_search_edit_text_name_layout"
+                    android:layout_below="@id/search_edit_text_name_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_org_address">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/organizations_activity_search_edit_text_address"
+                        android:id="@+id/search_edit_text_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -175,17 +175,17 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/organizations_activity_search_edit_text_zip_layout"
+                    android:id="@+id/search_edit_text_zip_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/organizations_activity_search_edit_text_address_layout"
+                    android:layout_below="@id/search_edit_text_address_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_org_zip">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/organizations_activity_search_edit_text_zip"
+                        android:id="@+id/search_edit_text_zip"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -198,17 +198,17 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/organizations_activity_search_edit_text_type_layout"
+                    android:id="@+id/search_edit_text_type_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/organizations_activity_search_edit_text_zip_layout"
+                    android:layout_below="@id/search_edit_text_zip_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:hint="@string/search_org_type">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/organizations_activity_search_edit_text_type"
+                        android:id="@+id/search_edit_text_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clickable="false"
@@ -225,10 +225,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
-                    android:id="@+id/organizations_activity_search_edit_text_date_last_updated_layout"
+                    android:id="@+id/search_edit_text_date_last_updated_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/organizations_activity_search_edit_text_type_layout"
+                    android:layout_below="@id/search_edit_text_type_layout"
                     android:baselineAligned="false">
 
                     <LinearLayout
@@ -246,7 +246,7 @@
                             android:hint="@string/search_org_last_updated_comp">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/organizations_activity_search_edit_text_date_comparator"
+                                android:id="@+id/search_edit_text_date_comparator"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:clickable="false"
@@ -279,7 +279,7 @@
                             android:hint="@string/search_org_last_updated">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/organizations_activity_search_edit_text_date_last_updated"
+                                android:id="@+id/search_edit_text_date_last_updated"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:clickable="false"
@@ -298,16 +298,16 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/organizations_activity_search_button"
+                    android:id="@+id/search_button"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_below="@+id/organizations_activity_search_edit_text_date_last_updated_layout"
+                    android:layout_below="@+id/search_edit_text_date_last_updated_layout"
                     android:layout_marginStart="3dp"
                     android:layout_marginEnd="3dp"
                     android:text="@string/action_search" />
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/organizations_activity_service_info_fragment"
+                    android:id="@+id/service_info_fragment"
                     android:name="com.deepschneider.addressbook.fragments.ServiceInfoFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -321,7 +321,7 @@
     </androidx.drawerlayout.widget.DrawerLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/organizations_activity_fab"
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

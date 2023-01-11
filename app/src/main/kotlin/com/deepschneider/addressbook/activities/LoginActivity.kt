@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
         supportActionBar?.elevation = 0F
         requestQueue = Volley.newRequestQueue(this)
-        binding.loginActivityLoginButton.setOnClickListener {
+        binding.loginButton.setOnClickListener {
             createOrRotateLoginToken(true)
         }
         Constants.PAGE_SIZE = (((resources.displayMetrics.run { heightPixels / density } - 50) / 90)).toInt()
@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
-            binding.loginActivityCoordinatorLayout, when (error) {
+            binding.coordinatorLayout, when (error) {
                 is AuthFailureError -> this.getString(R.string.auth_failure_message)
                 is TimeoutError -> this.getString(R.string.server_timeout_message)
                 else -> error.message.toString()
@@ -120,13 +120,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showLoginButton() {
-        binding.loginActivityLoginButton.visibility = View.VISIBLE
-        binding.loginActivityProgressBar.visibility = ProgressBar.INVISIBLE
+        binding.loginButton.visibility = View.VISIBLE
+        binding.progressBar.visibility = ProgressBar.INVISIBLE
     }
 
     private fun hideLoginButton() {
-        binding.loginActivityLoginButton.visibility = View.GONE
-        binding.loginActivityProgressBar.visibility = ProgressBar.VISIBLE
+        binding.loginButton.visibility = View.GONE
+        binding.progressBar.visibility = ProgressBar.VISIBLE
     }
 
     private fun startOrganizationActivity() {
@@ -144,8 +144,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getLoginDto(): JSONObject {
         val loginDto = JSONObject()
-        loginDto.put("login", binding.loginActivityEditTextLogin.text)
-        loginDto.put("password", binding.loginActivityEditTextPassword.text)
+        loginDto.put("login", binding.editTextLogin.text)
+        loginDto.put("password", binding.editTextPassword.text)
         return loginDto
     }
 

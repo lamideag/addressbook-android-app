@@ -21,9 +21,9 @@ class ContactsListAdapter(
     inner class ContactViewHolder(binding: ContactListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         var currentItem: ContactDto? = null
-        var contactData = binding.contactItemData
-        var contactDesc = binding.contactItemDesc
-        var contactType = binding.contactItemType
+        var contactData = binding.data
+        var contactDesc = binding.desc
+        var contactType = binding.type
 
         init {
             binding.root.setOnClickListener {

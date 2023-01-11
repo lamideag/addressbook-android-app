@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/build_info_fragment_version_info"
+        android:id="@+id/version_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -17,7 +17,7 @@
         android:textColor="@color/light_grey" />
 
     <TextView
-        android:id="@+id/build_info_fragment_build_info"
+        android:id="@+id/build_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -28,7 +28,7 @@
         android:textColor="@color/light_grey" />
 
     <TextView
-        android:id="@+id/build_info_fragment_server_host"
+        android:id="@+id/server_host"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -39,7 +39,7 @@
         android:textColor="@color/light_grey" />
 
     <TextView
-        android:id="@+id/build_info_fragment_server_info"
+        android:id="@+id/server_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

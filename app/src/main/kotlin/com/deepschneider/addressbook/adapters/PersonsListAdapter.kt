@@ -17,10 +17,10 @@ class PersonsListAdapter(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = PersonsListItemBinding.inflate(LayoutInflater.from(activity), parent, false)
-        binding.personItemFirstNameAndLastName.text = persons[position].firstName + " " + persons[position].lastName
-        binding.personItemResume.text = Html.fromHtml(persons[position].resume, Html.FROM_HTML_MODE_COMPACT)
-        binding.personItemId.text = persons[position].id
-        binding.personItemSalary.text = persons[position].salary
+        binding.firstNameAndLastName.text = persons[position].firstName + " " + persons[position].lastName
+        binding.resume.text = Html.fromHtml(persons[position].resume, Html.FROM_HTML_MODE_COMPACT)
+        binding.id.text = persons[position].id
+        binding.salary.text = persons[position].salary
         return binding.root
     }
 }

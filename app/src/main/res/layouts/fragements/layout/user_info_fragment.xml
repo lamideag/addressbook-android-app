@@ -17,7 +17,7 @@
         card_view:cardElevation="5dp">
 
         <TextView
-            android:id="@+id/user_info_fragment_username_text_view"
+            android:id="@+id/username_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="1"
@@ -34,7 +34,7 @@
     </androidx.cardview.widget.CardView>
 
     <ListView
-        android:id="@+id/user_info_fragment_roles_list_view"
+        android:id="@+id/roles_list_view"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 </LinearLayout>
