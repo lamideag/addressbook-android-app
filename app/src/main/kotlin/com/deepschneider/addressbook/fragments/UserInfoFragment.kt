@@ -56,8 +56,8 @@ class UserInfoFragment : Fragment() {
         requestQueue.add(object :
             JsonObjectRequest(Method.GET, serverUrl + Urls.USER_INFO, null, { response ->
                 val result = gson.fromJson(response.toString(), User::class.java)
-                binding.usernameTextView.text = result.login.uppercase()
-                binding.rolesListView.adapter = ArrayAdapter(listener, android.R.layout.simple_list_item_1, result.roles)
+                binding.username.text = result.login.uppercase()
+                binding.roles.adapter = ArrayAdapter(listener, android.R.layout.simple_list_item_1, result.roles)
             }, { error ->
                 Log.d("USER INFO ERROR", error.toString())
             }) {
