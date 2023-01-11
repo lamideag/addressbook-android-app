@@ -30,7 +30,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.internal.CheckableImageButton
 import com.google.gson.reflect.TypeToken
 import org.wordpress.aztec.Aztec
-import org.wordpress.aztec.AztecText
 import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 import org.wordpress.aztec.toolbar.ToolbarAction
@@ -41,7 +40,6 @@ import java.util.concurrent.Executors
 class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickListener {
 
     private lateinit var binding: ActivityCreateOrEditPersonBinding
-    private lateinit var rteResumeEditor: AztecText
     private var personDto: PersonDto? = null
     private lateinit var orgId: String
     private val fieldValidation = BooleanArray(4)
@@ -131,11 +129,10 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private fun prepareResumeRichTextEditor(){
         prepareAztecTextEditor()
         prepareAztecToolbar()
-        Aztec.with(rteResumeEditor, binding.formattingToolbar, this)
+        Aztec.with(binding.rteResumeEditor, binding.formattingToolbar, this)
     }
 
     private fun prepareAztecTextEditor(){
-        rteResumeEditor = binding.rteResumeEditor
         val resumeEditTextLayout = binding.resumeLayout
         val errorTextView = resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
         val layoutParams = errorTextView.layoutParams as android.widget.FrameLayout.LayoutParams
@@ -143,7 +140,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         val errorButton = resumeEditTextLayout.findViewById<CheckableImageButton>(com.google.android.material.R.id.text_input_error_icon)
         val layoutParamsButton = errorButton.layoutParams as android.widget.LinearLayout.LayoutParams
         layoutParamsButton.topMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 12).toInt()
-        rteResumeEditor.setOnFocusChangeListener { _, hasFocus ->
+        binding.rteResumeEditor.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 if (fieldValidation[2]) {
                     highlightRteFocus()
@@ -237,7 +234,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private fun setupListeners() {
         binding.lastName.addTextChangedListener(TextFieldValidation(binding.lastName))
         binding.firstName.addTextChangedListener(TextFieldValidation(binding.firstName))
-        rteResumeEditor.addTextChangedListener(TextFieldValidation(rteResumeEditor))
+        binding.rteResumeEditor.addTextChangedListener(TextFieldValidation(binding.rteResumeEditor))
         binding.salary.addTextChangedListener(TextFieldValidation(binding.salary))
     }
 
@@ -338,14 +335,14 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             targetPersonDto = it
             targetPersonDto?.firstName = binding.firstName.text.toString()
             targetPersonDto?.lastName = binding.lastName.text.toString()
-            targetPersonDto?.resume = rteResumeEditor.toHtml()
+            targetPersonDto?.resume = binding.rteResumeEditor.toHtml()
             targetPersonDto?.salary = binding.salary.text.toString() + " " + binding.salaryCurrency.text.toString()
         } ?: run {
             create = true
             targetPersonDto = PersonDto()
             targetPersonDto?.firstName = binding.firstName.text.toString()
             targetPersonDto?.lastName = binding.lastName.text.toString()
-            targetPersonDto?.resume = rteResumeEditor.toHtml()
+            targetPersonDto?.resume = binding.rteResumeEditor.toHtml()
             targetPersonDto?.salary = binding.salary.text.toString() + " " + binding.salaryCurrency.text.toString()
             targetPersonDto?.orgId = orgId
         }
@@ -416,7 +413,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private fun validateResumeRteEditText() {
         val resumeEditTextLayout = binding.resumeLayout
-        val value = rteResumeEditor.toHtml().trim()
+        val value = binding.rteResumeEditor.toHtml().trim()
         if (value.isEmpty()) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
@@ -442,7 +439,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             binding.firstName.setText(it.firstName)
             binding.lastName.setText(it.lastName)
             it.salary?.let { salary -> binding.salary.setText(salary.substring(0, salary.length - 4)) }
-            it.resume?.let { it1 -> rteResumeEditor.fromHtml(it1) }
+            it.resume?.let { it1 -> binding.rteResumeEditor.fromHtml(it1) }
             binding.saveCreateButton.text = this.getString(R.string.action_save_changes)
             title = this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
             it.salary?.let { salary -> binding.salaryCurrency.setText(salary.substring(salary.length - 3)) }
