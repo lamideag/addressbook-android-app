@@ -11,7 +11,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.android.volley.*
@@ -47,8 +46,8 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         serverUrl = NetworkUtils.getServerUrl(this@AbstractListActivity)
     }
 
-    protected fun prepareActionBar(drawer: Int) {
-        mainDrawer = findViewById(drawer)
+    protected fun prepareActionBar(drawer: DrawerLayout) {
+        mainDrawer = drawer
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         toggle = ActionBarDrawerToggle(this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed)
@@ -65,7 +64,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected fun makeErrorSnackBar(error: VolleyError) {
         Snackbar.make(
-            findViewById<CoordinatorLayout>(getParentCoordinatorLayoutForSnackBar()), when (error) {
+            getParentCoordinatorLayoutForSnackBar(), when (error) {
                 is AuthFailureError -> this.getString(R.string.forbidden_message)
                 is TimeoutError -> this.getString(R.string.server_timeout_message)
                 is ServerError -> {
@@ -83,9 +82,9 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected fun updateList(filterDto: List<FilterDto>) {
         getMainList().visibility = View.GONE
-        findViewById<TextView>(getTotalListSizeTextView()).visibility = View.GONE
-        findViewById<TextView>(getEmptyListView()).visibility = View.GONE
-        val progressBar = findViewById<ProgressBar>(getProgressBar())
+        getTotalListSizeTextView().visibility = View.GONE
+        getEmptyListView().visibility = View.GONE
+        val progressBar = getProgressBar()
         progressBar.visibility = ProgressBar.VISIBLE
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
@@ -97,14 +96,14 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                     if (response.data?.data?.isEmpty() == true) {
                         handler.post {
                             progressBar.visibility = ProgressBar.INVISIBLE
-                            findViewById<TextView>(getEmptyListView()).visibility = View.VISIBLE
+                            getEmptyListView().visibility = View.VISIBLE
                         }
                     } else {
                         response.data?.data?.let {
                             handler.post {
                                 getMainList().adapter = getListAdapter(it)
                                 getMainList().visibility = View.VISIBLE
-                                findViewById<TextView>(getTotalListSizeTextView()).visibility = View.VISIBLE
+                                getTotalListSizeTextView().visibility = View.VISIBLE
                                 val totalListSize = response.data?.totalDataSize
                                 totalListSize?.let {
                                     var upperBound = getStartPage() * Constants.PAGE_SIZE
@@ -112,7 +111,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                                     val total: String =
                                         "From " + ((getStartPage() - 1) * Constants.PAGE_SIZE + 1) +
                                                 " to " + upperBound + " total " + totalListSize
-                                    findViewById<TextView>(getTotalListSizeTextView()).text = total
+                                    getTotalListSizeTextView().text = total
                                     this.totalListSize = totalListSize
                                 }
                                 progressBar.visibility = ProgressBar.INVISIBLE
@@ -123,7 +122,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                 { error ->
                     handler.post {
                         makeErrorSnackBar(error)
-                        findViewById<TextView>(getEmptyListView()).visibility = View.VISIBLE
+                        getEmptyListView().visibility = View.VISIBLE
                         progressBar.visibility = ProgressBar.INVISIBLE
                     }
                 },
@@ -166,17 +165,17 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         builderSortField.create().show()
     }
 
-    abstract fun getParentCoordinatorLayoutForSnackBar(): Int
+    abstract fun getParentCoordinatorLayoutForSnackBar(): View
 
-    abstract fun getEmptyListView(): Int
+    abstract fun getEmptyListView(): TextView
 
     abstract fun getMainList(): ListView
 
-    abstract fun getProgressBar(): Int
+    abstract fun getProgressBar(): ProgressBar
 
     abstract fun getStartPage(): Int
 
-    abstract fun getTotalListSizeTextView(): Int
+    abstract fun getTotalListSizeTextView(): TextView
 
     abstract fun getTargetCache(): String
 

@@ -7,13 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.deepschneider.addressbook.R
+import com.deepschneider.addressbook.databinding.ServiceInfoFragmentBinding
 import com.deepschneider.addressbook.dto.BuildInfoDto
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
@@ -21,15 +20,12 @@ import com.google.gson.Gson
 
 class ServiceInfoFragment : Fragment() {
 
+    private lateinit var binding: ServiceInfoFragmentBinding
     private lateinit var requestQueue: RequestQueue
     private lateinit var listener: FragmentActivity
     private var serverUrl: String? = null
     private val requestTag = "BUILD_INFO_TAG"
     private val gson = Gson()
-    private var versionInfoTextView: TextView? = null
-    private var buildInfoTextView: TextView? = null
-    private var serverHostTextView: TextView? = null
-    private var serverInfoTextView: TextView? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,10 +40,9 @@ class ServiceInfoFragment : Fragment() {
         serverUrl = NetworkUtils.getServerUrl(listener)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.service_info_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = ServiceInfoFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
@@ -55,22 +50,14 @@ class ServiceInfoFragment : Fragment() {
         updateBuildInfo()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        versionInfoTextView = view.findViewById(R.id.build_info_fragment_version_info)
-        buildInfoTextView = view.findViewById(R.id.build_info_fragment_build_info)
-        serverHostTextView = view.findViewById(R.id.build_info_fragment_server_host)
-        serverInfoTextView = view.findViewById(R.id.build_info_fragment_server_info)
-    }
-
     private fun updateBuildInfo() {
         requestQueue.add(object :
             JsonObjectRequest(Method.GET, serverUrl + Urls.BUILD_INFO, null, { response ->
                 val buildInfo = gson.fromJson(response.toString(), BuildInfoDto::class.java)
-                versionInfoTextView?.text = "version: " + buildInfo.version?.uppercase()
-                buildInfoTextView?.text = "build: " + buildInfo.time?.uppercase()
-                serverHostTextView?.text = "server host: " + buildInfo.serverHost?.uppercase()
-                serverInfoTextView?.text = "server: $serverUrl"
+                binding.buildInfoFragmentVersionInfo.text = "version: " + buildInfo.version?.uppercase()
+                binding.buildInfoFragmentBuildInfo.text = "build: " + buildInfo.time?.uppercase()
+                binding.buildInfoFragmentServerHost.text = "server host: " + buildInfo.serverHost?.uppercase()
+                binding.buildInfoFragmentServerInfo.text = "server: $serverUrl"
             }, { error ->
                 Log.d("SERVICE INFO ERROR", error.toString())
             }) {

@@ -9,18 +9,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.ContactsListAdapter
+import com.deepschneider.addressbook.databinding.ActivityCreateNewPersonBinding
 import com.deepschneider.addressbook.dto.ContactDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.PersonDto
@@ -30,15 +27,11 @@ import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Urls
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.internal.CheckableImageButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.reflect.TypeToken
 import org.wordpress.aztec.Aztec
 import org.wordpress.aztec.AztecText
 import org.wordpress.aztec.ITextFormat
-import org.wordpress.aztec.toolbar.AztecToolbar
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 import org.wordpress.aztec.toolbar.ToolbarAction
 import org.wordpress.aztec.toolbar.ToolbarItems
@@ -47,23 +40,8 @@ import java.util.concurrent.Executors
 
 class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickListener {
 
-    private lateinit var idEditText: TextInputEditText
-    private lateinit var idEditTextLayout: TextInputLayout
-    private lateinit var firstNameEditText: TextInputEditText
-    private lateinit var firstNameEditTextLayout: TextInputLayout
-    private lateinit var lastNameEditText: TextInputEditText
-    private lateinit var lastNameEditTextLayout: TextInputLayout
-    private lateinit var salaryEditText: TextInputEditText
-    private lateinit var salaryEditTextLayout: TextInputLayout
-    private lateinit var currencyEditText: TextInputEditText
-    private lateinit var currencyEditTextLayout: TextInputLayout
+    private lateinit var binding: ActivityCreateNewPersonBinding
     private lateinit var rteResumeEditor: AztecText
-    private lateinit var resumeEditTextLayout: TextInputLayout
-    private lateinit var rteToolbarContainer: RelativeLayout
-    private lateinit var contactsListView: RecyclerView
-    private lateinit var emptyContactsListTextView: CardView
-    private lateinit var rteToolbar: AztecToolbar
-    private lateinit var saveOrCreateButton: Button
     private var personDto: PersonDto? = null
     private lateinit var orgId: String
     private val fieldValidation = BooleanArray(4)
@@ -85,7 +63,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun prepareFloatingActionButton() {
-        findViewById<FloatingActionButton>(R.id.create_or_edit_person_activity_fab).setOnClickListener {
+        binding.createOrEditPersonActivityFab.setOnClickListener {
             startForResult.launch(
                 Intent(
                     applicationContext,
@@ -104,28 +82,18 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private fun prepareLayout() {
         orgId = intent.getStringExtra("orgId").toString()
-        idEditText = findViewById(R.id.create_or_edit_person_activity_id)
-        idEditTextLayout = findViewById(R.id.create_or_edit_person_activity_id_layout)
-        firstNameEditText = findViewById(R.id.create_or_edit_person_activity_first_name)
-        firstNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_first_name_layout)
-        lastNameEditText = findViewById(R.id.create_or_edit_person_activity_last_name)
-        lastNameEditTextLayout = findViewById(R.id.create_or_edit_person_activity_last_name_layout)
-        salaryEditText = findViewById(R.id.create_or_edit_person_activity_salary)
-        salaryEditTextLayout = findViewById(R.id.create_or_edit_person_activity_salary_layout)
-        saveOrCreateButton = findViewById(R.id.create_or_edit_person_activity_save_create_button)
-        saveOrCreateButton.setOnClickListener {
+        binding.createOrEditPersonActivitySaveCreateButton.setOnClickListener {
             saveOrCreatePerson()
         }
-        contactsListView = findViewById(R.id.create_or_edit_person_activity_contacts_list_view)
-        contactsListView.setHasFixedSize(true)
-        contactsListView.layoutManager = LinearLayoutManager(this)
-        contactsListView.itemAnimator = DefaultItemAnimator()
-        emptyContactsListTextView = findViewById(R.id.create_or_edit_person_activity_empty_contacts_list)
+        binding.createOrEditPersonActivityContactsListView.setHasFixedSize(true)
+        binding.createOrEditPersonActivityContactsListView.layoutManager = LinearLayoutManager(this)
+        binding.createOrEditPersonActivityContactsListView.itemAnimator = DefaultItemAnimator()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_new_person)
+        binding = ActivityCreateNewPersonBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         prepareExtras()
@@ -150,14 +118,12 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun prepareCurrencyEditText() {
-        currencyEditText = findViewById(R.id.create_or_edit_person_activity_salary_currency)
-        currencyEditTextLayout = findViewById(R.id.create_or_edit_person_activity_salary_currency_layout)
-        currencyEditText.setOnClickListener {
+        binding.createOrEditPersonActivitySalaryCurrency.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(this@CreateOrEditPersonActivity)
             builder.setTitle(R.string.choose_salary_currency).setItems(
                 Constants.currencies.toTypedArray()
             ) { dialog, which ->
-                currencyEditText.setText(Constants.currencies.toTypedArray()[which])
+                binding.createOrEditPersonActivitySalaryCurrency.setText(Constants.currencies.toTypedArray()[which])
                 dialog.dismiss()
             }
             builder.create().show()
@@ -167,12 +133,12 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private fun prepareResumeRichTextEditor(){
         prepareAztecTextEditor()
         prepareAztecToolbar()
-        Aztec.with(rteResumeEditor, rteToolbar, this)
+        Aztec.with(rteResumeEditor, binding.formattingToolbar, this)
     }
 
     private fun prepareAztecTextEditor(){
-        rteResumeEditor = findViewById(R.id.rte_resume_editor)
-        resumeEditTextLayout = findViewById(R.id.create_or_edit_person_activity_resume_layout)
+        rteResumeEditor = binding.rteResumeEditor
+        val resumeEditTextLayout = binding.createOrEditPersonActivityResumeLayout
         val errorTextView = resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
         val layoutParams = errorTextView.layoutParams as android.widget.FrameLayout.LayoutParams
         layoutParams.bottomMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 10).toInt()
@@ -197,11 +163,9 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun prepareAztecToolbar(){
-        rteToolbar = findViewById(R.id.formatting_toolbar)
-        rteToolbarContainer = findViewById(R.id.rte_toolbar_container)
-        rteToolbar.visibility = View.VISIBLE
-        rteToolbar.enableMediaMode(false)
-        rteToolbar.setToolbarItems(
+        binding.formattingToolbar.visibility = View.VISIBLE
+        binding.formattingToolbar.enableMediaMode(false)
+        binding.formattingToolbar.setToolbarItems(
             ToolbarItems.BasicLayout(
                 ToolbarAction.LIST,
                 ToolbarAction.QUOTE,
@@ -240,11 +204,11 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         currentContactList.add(resultContactDto)
                     }
                     if (currentContactList.isEmpty()) {
-                        emptyContactsListTextView.visibility = View.VISIBLE
-                        contactsListView.visibility = View.GONE
+                        binding.createOrEditPersonActivityEmptyContactsList.visibility = View.VISIBLE
+                        binding.createOrEditPersonActivityContactsListView.visibility = View.GONE
                     } else {
-                        emptyContactsListTextView.visibility = View.GONE
-                        contactsListView.visibility = View.VISIBLE
+                        binding.createOrEditPersonActivityEmptyContactsList.visibility = View.GONE
+                        binding.createOrEditPersonActivityContactsListView.visibility = View.VISIBLE
                     }
                     updateContactAdapter()
                 }
@@ -252,12 +216,12 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun updateContactAdapter() {
-        val adapter = contactsListView.adapter
+        val adapter = binding.createOrEditPersonActivityContactsListView.adapter
         if (adapter != null) {
-            (contactsListView.adapter as ContactsListAdapter).contacts = currentContactList
-            (contactsListView.adapter as ContactsListAdapter).notifyDataSetChanged()
+            (adapter as ContactsListAdapter).contacts = currentContactList
+            (adapter as ContactsListAdapter).notifyDataSetChanged()
         } else {
-            contactsListView.swapAdapter(
+            binding.createOrEditPersonActivityContactsListView.swapAdapter(
                 ContactsListAdapter(
                     currentContactList,
                     this.resources.getStringArray(R.array.contact_types),
@@ -269,17 +233,19 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun updateSaveButtonState() {
-        saveOrCreateButton.isEnabled = fieldValidation.all { it }
+        binding.createOrEditPersonActivitySaveCreateButton.isEnabled = fieldValidation.all { it }
     }
 
     private fun setupListeners() {
-        lastNameEditText.addTextChangedListener(TextFieldValidation(lastNameEditText))
-        firstNameEditText.addTextChangedListener(TextFieldValidation(firstNameEditText))
+        binding.createOrEditPersonActivityLastName.addTextChangedListener(TextFieldValidation(binding.createOrEditPersonActivityLastName))
+        binding.createOrEditPersonActivityFirstName.addTextChangedListener(TextFieldValidation(binding.createOrEditPersonActivityFirstName))
         rteResumeEditor.addTextChangedListener(TextFieldValidation(rteResumeEditor))
-        salaryEditText.addTextChangedListener(TextFieldValidation(salaryEditText))
+        binding.createOrEditPersonActivitySalary.addTextChangedListener(TextFieldValidation(binding.createOrEditPersonActivitySalary))
     }
 
     private fun validateFirstNameEditText() {
+        val firstNameEditText = binding.createOrEditPersonActivityFirstName
+        val firstNameEditTextLayout = binding.createOrEditPersonActivityFirstNameLayout
         val value = firstNameEditText.text.toString().trim()
         if (value.isEmpty()) {
             firstNameEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -304,7 +270,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         { response ->
                             if (response.data?.data?.isEmpty() == true) {
                                 handler.post {
-                                    emptyContactsListTextView.visibility = View.VISIBLE
+                                    binding.createOrEditPersonActivityEmptyContactsList.visibility = View.VISIBLE
                                     currentContactList = arrayListOf()
                                 }
                             } else {
@@ -312,8 +278,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                                     handler.post {
                                         currentContactList = it.toMutableList()
                                         updateContactAdapter()
-                                        contactsListView.visibility = View.VISIBLE
-                                        emptyContactsListTextView.visibility = View.GONE
+                                        binding.createOrEditPersonActivityContactsListView.visibility = View.VISIBLE
+                                        binding.createOrEditPersonActivityEmptyContactsList.visibility = View.GONE
                                     }
                                 }
                             }
@@ -321,8 +287,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         { error ->
                             handler.post {
                                 makeErrorSnackBar(error)
-                                emptyContactsListTextView.visibility = View.VISIBLE
-                                contactsListView.visibility = View.GONE
+                                binding.createOrEditPersonActivityEmptyContactsList.visibility = View.VISIBLE
+                                binding.createOrEditPersonActivityContactsListView.visibility = View.GONE
                             }
                         },
                         this@CreateOrEditPersonActivity,
@@ -331,11 +297,13 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             }
         } ?: run {
             currentContactList = arrayListOf()
-            emptyContactsListTextView.visibility = View.VISIBLE
+            binding.createOrEditPersonActivityEmptyContactsList.visibility = View.VISIBLE
         }
     }
 
     private fun validateLastNameEditText() {
+        val lastNameEditText = binding.createOrEditPersonActivityLastName
+        val lastNameEditTextLayout = binding.createOrEditPersonActivityLastNameLayout
         val value = lastNameEditText.text.toString().trim()
         if (value.isEmpty()) {
             lastNameEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -350,6 +318,8 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun validateSalaryEditText() {
+        val salaryEditText = binding.createOrEditPersonActivitySalary
+        val salaryEditTextLayout = binding.createOrEditPersonActivitySalaryLayout
         val value = salaryEditText.text.toString().trim()
         if (value.isEmpty()) {
             salaryEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -368,17 +338,17 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         var create = false
         personDto?.let {
             targetPersonDto = it
-            targetPersonDto?.firstName = firstNameEditText.text.toString()
-            targetPersonDto?.lastName = lastNameEditText.text.toString()
+            targetPersonDto?.firstName = binding.createOrEditPersonActivityFirstName.text.toString()
+            targetPersonDto?.lastName = binding.createOrEditPersonActivityLastName.text.toString()
             targetPersonDto?.resume = rteResumeEditor.toHtml()
-            targetPersonDto?.salary = salaryEditText.text.toString() + " " + currencyEditText.text.toString()
+            targetPersonDto?.salary = binding.createOrEditPersonActivitySalary.text.toString() + " " + binding.createOrEditPersonActivitySalaryCurrency.text.toString()
         } ?: run {
             create = true
             targetPersonDto = PersonDto()
-            targetPersonDto?.firstName = firstNameEditText.text.toString()
-            targetPersonDto?.lastName = lastNameEditText.text.toString()
+            targetPersonDto?.firstName = binding.createOrEditPersonActivityFirstName.text.toString()
+            targetPersonDto?.lastName = binding.createOrEditPersonActivityLastName.text.toString()
             targetPersonDto?.resume = rteResumeEditor.toHtml()
-            targetPersonDto?.salary = salaryEditText.text.toString() + " " + currencyEditText.text.toString()
+            targetPersonDto?.salary = binding.createOrEditPersonActivitySalary.text.toString() + " " + binding.createOrEditPersonActivitySalaryCurrency.text.toString()
             targetPersonDto?.orgId = orgId
         }
         targetPersonDto?.let {
@@ -447,6 +417,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun validateResumeRteEditText() {
+        val resumeEditTextLayout = binding.createOrEditPersonActivityResumeLayout
         val value = rteResumeEditor.toHtml().trim()
         if (value.isEmpty()) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
@@ -463,24 +434,23 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
-    override fun getParentCoordinatorLayoutForSnackBar(): Int = R.id.create_or_edit_person_activity_coordinator_layout
+    override fun getParentCoordinatorLayoutForSnackBar(): View = binding.createOrEditPersonActivityCoordinatorLayout
 
     override fun getRequestTag(): String = "CREATE_OR_EDIT_PERSON_TAG"
 
     private fun updateUi(personDto: PersonDto?) {
         personDto?.let {
-            idEditText.setText(it.id)
-            firstNameEditText.setText(it.firstName)
-            lastNameEditText.setText(it.lastName)
-            it.salary?.let { salary -> salaryEditText.setText(salary.substring(0, salary.length - 4)) }
-            idEditText.setText(it.id)
+            binding.createOrEditPersonActivityId.setText(it.id)
+            binding.createOrEditPersonActivityFirstName.setText(it.firstName)
+            binding.createOrEditPersonActivityLastName.setText(it.lastName)
+            it.salary?.let { salary -> binding.createOrEditPersonActivitySalary.setText(salary.substring(0, salary.length - 4)) }
             it.resume?.let { it1 -> rteResumeEditor.fromHtml(it1) }
-            saveOrCreateButton.text = this.getString(R.string.action_save_changes)
+            binding.createOrEditPersonActivitySaveCreateButton.text = this.getString(R.string.action_save_changes)
             title = this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
-            it.salary?.let { salary -> currencyEditText.setText(salary.substring(salary.length - 3)) }
+            it.salary?.let { salary -> binding.createOrEditPersonActivitySalaryCurrency.setText(salary.substring(salary.length - 3)) }
         } ?: run {
-            saveOrCreateButton.text = this.getString(R.string.action_create)
-            currencyEditText.setText(Constants.DEFAULT_CURRENCY)
+            binding.createOrEditPersonActivitySaveCreateButton.text = this.getString(R.string.action_create)
+            binding.createOrEditPersonActivitySalaryCurrency.setText(Constants.DEFAULT_CURRENCY)
         }
     }
 
@@ -505,23 +475,23 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun highlightRteErrorFocus() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
+        binding.createOrEditPersonActivityResumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
+        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
     }
 
     private fun highlightRteUnfocused() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
+        binding.createOrEditPersonActivityResumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
+        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
     }
 
     private fun highlightRteErrorUnfocused() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+        binding.createOrEditPersonActivityResumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
     }
 
     private fun highlightRteFocus() {
-        resumeEditTextLayout.background = this.getDrawable(R.drawable.ic_rte_background_focus)
-        rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_focus)
+        binding.createOrEditPersonActivityResumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_focus)
+        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_focus)
     }
 
     override fun onToolbarCollapseButtonClicked() {}

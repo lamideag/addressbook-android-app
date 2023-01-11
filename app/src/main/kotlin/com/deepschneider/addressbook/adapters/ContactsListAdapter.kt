@@ -3,13 +3,11 @@ package com.deepschneider.addressbook.adapters
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
-import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.activities.CreateOrEditContactActivity
+import com.deepschneider.addressbook.databinding.ContactListItemBinding
 import com.deepschneider.addressbook.dto.ContactDto
 
 class ContactsListAdapter(
@@ -20,14 +18,15 @@ class ContactsListAdapter(
 ) :
     RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder>() {
 
-    inner class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ContactViewHolder(binding: ContactListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         var currentItem: ContactDto? = null
-        var contactData: TextView = view.findViewById(R.id.contact_item_data)
-        var contactDesc: TextView = view.findViewById(R.id.contact_item_desc)
-        var contactType: TextView = view.findViewById(R.id.contact_item_type)
+        var contactData = binding.contactItemData
+        var contactDesc = binding.contactItemDesc
+        var contactType = binding.contactItemType
 
         init {
-            view.setOnClickListener {
+            binding.root.setOnClickListener {
                 val intent = Intent(activity, CreateOrEditContactActivity::class.java)
                 intent.putExtra("contact", currentItem)
                 startForResult.launch(intent)
@@ -36,7 +35,13 @@ class ContactsListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        return ContactViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.contact_list_item, parent, false))
+        return ContactViewHolder(
+            ContactListItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {

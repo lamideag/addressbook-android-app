@@ -8,8 +8,6 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -38,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
         supportActionBar?.elevation = 0F
         requestQueue = Volley.newRequestQueue(this)
-        findViewById<Button>(R.id.login_activity_login_button).setOnClickListener {
+        binding.loginActivityLoginButton.setOnClickListener {
             createOrRotateLoginToken(true)
         }
         Constants.PAGE_SIZE = (((resources.displayMetrics.run { heightPixels / density } - 50) / 90)).toInt()
@@ -108,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun makeErrorSnackBar(error: VolleyError) {
         val snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(R.id.login_activity_coordinator_layout), when (error) {
+            binding.loginActivityCoordinatorLayout, when (error) {
                 is AuthFailureError -> this.getString(R.string.auth_failure_message)
                 is TimeoutError -> this.getString(R.string.server_timeout_message)
                 else -> error.message.toString()
@@ -122,13 +120,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showLoginButton() {
-        findViewById<Button>(R.id.login_activity_login_button).visibility = View.VISIBLE
-        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility = ProgressBar.INVISIBLE
+        binding.loginActivityLoginButton.visibility = View.VISIBLE
+        binding.loginActivityProgressBar.visibility = ProgressBar.INVISIBLE
     }
 
     private fun hideLoginButton() {
-        findViewById<Button>(R.id.login_activity_login_button).visibility = View.GONE
-        findViewById<ProgressBar>(R.id.login_activity_progress_bar).visibility = ProgressBar.VISIBLE
+        binding.loginActivityLoginButton.visibility = View.GONE
+        binding.loginActivityProgressBar.visibility = ProgressBar.VISIBLE
     }
 
     private fun startOrganizationActivity() {
@@ -146,8 +144,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getLoginDto(): JSONObject {
         val loginDto = JSONObject()
-        loginDto.put("login", findViewById<EditText>(R.id.login_activity_edit_text_login).text)
-        loginDto.put("password", findViewById<EditText>(R.id.login_activity_edit_text_password).text)
+        loginDto.put("login", binding.loginActivityEditTextLogin.text)
+        loginDto.put("password", binding.loginActivityEditTextPassword.text)
         return loginDto
     }
 

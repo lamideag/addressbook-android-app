@@ -3,6 +3,7 @@ package com.deepschneider.addressbook.activities
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.android.volley.*
@@ -65,7 +66,7 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
 
     protected fun makeSnackBar(message: String) {
         Snackbar.make(
-            findViewById(getParentCoordinatorLayoutForSnackBar()),
+            getParentCoordinatorLayoutForSnackBar(),
             message,
             Snackbar.LENGTH_LONG
         ).show()
@@ -87,7 +88,7 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
         }
     }
 
-    abstract fun getParentCoordinatorLayoutForSnackBar(): Int
+    abstract fun getParentCoordinatorLayoutForSnackBar(): View
 
     abstract fun getRequestTag(): String
 }
