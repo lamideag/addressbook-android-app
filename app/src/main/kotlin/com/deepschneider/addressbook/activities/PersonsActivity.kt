@@ -38,7 +38,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         super.onCreate(savedInstanceState)
         binding = ActivityPersonBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        organizationDto = intent.extras?.getSerializable(
+        organizationDto = Utils.getSerializable(this,
             "organization",
             OrganizationDto::class.java
         ) as OrganizationDto

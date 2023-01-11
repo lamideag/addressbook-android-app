@@ -14,6 +14,7 @@ import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.Urls
+import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.*
@@ -109,7 +110,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun prepareExtras() {
-        val extra = intent.extras?.getSerializable("organization", OrganizationDto::class.java)
+        val extra = Utils.getSerializable(this, "organization", OrganizationDto::class.java)
         if (extra != null) organizationDto = extra
     }
 

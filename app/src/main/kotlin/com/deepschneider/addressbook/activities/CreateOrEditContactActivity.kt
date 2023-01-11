@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityCreateOrEditContactBinding
 import com.deepschneider.addressbook.dto.ContactDto
+import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CreateOrEditContactActivity : AppCompatActivity() {
@@ -56,7 +57,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun prepareExtras() {
-        val extra = intent.extras?.getSerializable("contact", ContactDto::class.java)
+        val extra = Utils.getSerializable(this, "contact", ContactDto::class.java)
         if (extra != null) contactDto = extra
     }
 
