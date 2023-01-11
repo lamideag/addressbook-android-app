@@ -8,13 +8,13 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.databinding.ActivityCreateNewContactBinding
+import com.deepschneider.addressbook.databinding.ActivityCreateOrEditContactBinding
 import com.deepschneider.addressbook.dto.ContactDto
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CreateOrEditContactActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityCreateNewContactBinding
+    private lateinit var binding: ActivityCreateOrEditContactBinding
     private var contactDto: ContactDto? = null
     private lateinit var contactTypes: Array<String>
     private val fieldValidation = BooleanArray(3)
@@ -34,7 +34,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateNewContactBinding.inflate(layoutInflater)
+        binding = ActivityCreateOrEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)

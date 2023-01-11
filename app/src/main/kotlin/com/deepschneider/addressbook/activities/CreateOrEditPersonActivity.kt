@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.adapters.ContactsListAdapter
-import com.deepschneider.addressbook.databinding.ActivityCreateNewPersonBinding
+import com.deepschneider.addressbook.databinding.ActivityCreateOrEditPersonBinding
 import com.deepschneider.addressbook.dto.ContactDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.dto.PersonDto
@@ -40,7 +40,7 @@ import java.util.concurrent.Executors
 
 class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickListener {
 
-    private lateinit var binding: ActivityCreateNewPersonBinding
+    private lateinit var binding: ActivityCreateOrEditPersonBinding
     private lateinit var rteResumeEditor: AztecText
     private var personDto: PersonDto? = null
     private lateinit var orgId: String
@@ -92,7 +92,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateNewPersonBinding.inflate(layoutInflater)
+        binding = ActivityCreateOrEditPersonBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)

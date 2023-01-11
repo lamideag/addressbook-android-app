@@ -8,7 +8,7 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.databinding.ActivityCreateNewOrganizationBinding
+import com.deepschneider.addressbook.databinding.ActivityCreateOrEditOrganizationBinding
 import com.deepschneider.addressbook.dto.OrganizationDto
 import com.deepschneider.addressbook.dto.PageDataDto
 import com.deepschneider.addressbook.network.SaveOrCreateEntityRequest
@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
 
 class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
-    private lateinit var binding: ActivityCreateNewOrganizationBinding
+    private lateinit var binding: ActivityCreateOrEditOrganizationBinding
     private var organizationDto: OrganizationDto? = null
     private val fieldValidation = BooleanArray(4)
 
@@ -137,7 +137,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateNewOrganizationBinding.inflate(layoutInflater)
+        binding = ActivityCreateOrEditOrganizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
