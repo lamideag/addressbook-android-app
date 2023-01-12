@@ -8,6 +8,6 @@
         android:topRightRadius="4dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/purple_500" />
+        android:color="?attr/colorPrimary" />
 
 </shape>

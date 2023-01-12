@@ -101,7 +101,7 @@
                             android:paddingBottom="5dp"
                             android:singleLine="true"
                             android:text="@string/action_filter"
-                            android:textColor="@color/purple_500"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="20sp" />
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
