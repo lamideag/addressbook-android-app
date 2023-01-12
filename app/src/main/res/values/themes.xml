@@ -10,6 +10,8 @@
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="snackbarStyle">@style/snackBarStyle</item>
         <item name="windowActionBar">true</item>
+        <item name="toolbarBackgroundColor">@color/white</item>
+        <item name="toolbarBorderColor">@color/white</item>
     </style>
 
     <style name="Theme.Addressbook.NoActionBar">
