@@ -33,8 +33,6 @@ import com.google.gson.reflect.TypeToken
 import org.wordpress.aztec.Aztec
 import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
-import org.wordpress.aztec.toolbar.ToolbarAction
-import org.wordpress.aztec.toolbar.ToolbarItems
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
