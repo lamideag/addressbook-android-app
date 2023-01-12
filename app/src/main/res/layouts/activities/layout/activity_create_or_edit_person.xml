@@ -205,6 +205,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    aztec:toolbarBackgroundColor="@color/white"
+                    aztec:toolbarBorderColor="@color/white"
                     aztec:mediaToolbarAvailable="false" />
             </RelativeLayout>
 

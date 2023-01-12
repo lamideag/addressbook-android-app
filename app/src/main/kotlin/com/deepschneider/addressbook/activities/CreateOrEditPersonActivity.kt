@@ -161,21 +161,6 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     private fun prepareAztecToolbar() {
         binding.formattingToolbar.visibility = View.VISIBLE
         binding.formattingToolbar.enableMediaMode(false)
-        binding.formattingToolbar.setToolbarItems(
-            ToolbarItems.BasicLayout(
-                ToolbarAction.LIST,
-                ToolbarAction.QUOTE,
-                ToolbarAction.BOLD,
-                ToolbarAction.ITALIC,
-                ToolbarAction.LINK,
-                ToolbarAction.UNDERLINE,
-                ToolbarAction.STRIKETHROUGH,
-                ToolbarAction.ALIGN_LEFT,
-                ToolbarAction.ALIGN_CENTER,
-                ToolbarAction.ALIGN_RIGHT,
-                ToolbarAction.HORIZONTAL_RULE
-            )
-        )
     }
 
     private fun prepareLauncher() {
