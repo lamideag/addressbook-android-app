@@ -34,4 +34,6 @@ object Constants {
             }
         }
     }
+
+    var ACTIVE_LOGIN_COMPONENT: String? = null
 }

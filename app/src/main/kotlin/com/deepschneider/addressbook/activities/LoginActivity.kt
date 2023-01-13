@@ -1,6 +1,8 @@
 package com.deepschneider.addressbook.activities
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -31,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if(!resources.configuration.isNightModeActive)
-            setTheme(R.style.Theme_Addressbook_Light)
+            setTheme(R.style.Theme_Addressbook_Light_NoActionBar)
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -44,6 +46,52 @@ class LoginActivity : AppCompatActivity() {
             createOrRotateLoginToken(true)
         }
         Constants.PAGE_SIZE = (((resources.displayMetrics.run { heightPixels / density } - 50) / 90)).toInt()
+        if (resources.configuration.isNightModeActive) {
+            enableDarkIcon()
+            Constants.ACTIVE_LOGIN_COMPONENT = ".activities.LoginActivity"
+        } else {
+            enableLightIcon()
+            Constants.ACTIVE_LOGIN_COMPONENT = ".activities.LoginActivityAlias"
+        }
+    }
+
+    private fun enableDarkIcon() {
+        packageManager.setComponentEnabledSetting(
+            ComponentName(
+                this@LoginActivity,
+                "com.deepschneider.addressbook.activities.LoginActivity"
+            ),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
+
+        packageManager.setComponentEnabledSetting(
+            ComponentName(
+                this@LoginActivity,
+                "com.deepschneider.addressbook.activities.LoginActivityAlias"
+            ),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
+    }
+
+    private fun enableLightIcon() {
+        packageManager.setComponentEnabledSetting(
+            ComponentName(
+                this@LoginActivity,
+                "com.deepschneider.addressbook.activities.LoginActivity"
+            ),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
+        packageManager.setComponentEnabledSetting(
+            ComponentName(
+                this@LoginActivity,
+                "com.deepschneider.addressbook.activities.LoginActivityAlias"
+            ),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
     override fun onResume() {
@@ -72,7 +120,8 @@ class LoginActivity : AppCompatActivity() {
                     .edit()
                     .remove(Constants.TOKEN_KEY)
                     .commit()
-                val intent = Intent(applicationContext, LoginActivity::class.java)
+                val intent = Intent()
+                intent.component = ComponentName(this.packageName, this.packageName + Constants.ACTIVE_LOGIN_COMPONENT)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)

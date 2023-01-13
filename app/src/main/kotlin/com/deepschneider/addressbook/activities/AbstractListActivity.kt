@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -137,7 +138,8 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
             .edit()
             .remove(Constants.TOKEN_KEY)
             .commit()
-        val intent = Intent(applicationContext, LoginActivity::class.java)
+        val intent = Intent()
+        intent.component = ComponentName(this.packageName, this.packageName + Constants.ACTIVE_LOGIN_COMPONENT)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
