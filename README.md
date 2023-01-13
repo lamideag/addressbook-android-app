@@ -1,6 +1,10 @@
 # [Addressbook](https://github.com/dredwardhyde/addressbook) Android Client Application
 
-<img src="https://raw.githubusercontent.com/dredwardhyde/addressbook-android-app/master/screenshots/all_panels.png" width="1000"/>  
+### Light Theme
+<img src="https://raw.githubusercontent.com/dredwardhyde/addressbook-android-app/master/screenshots/all_panels_light.png" width="1000"/>  
+
+### Dark Theme
+<img src="https://raw.githubusercontent.com/dredwardhyde/addressbook-android-app/master/screenshots/all_panels_dark.png" width="1000"/>  
 
 ### Demos
 
