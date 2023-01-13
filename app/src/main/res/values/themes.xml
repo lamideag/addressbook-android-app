@@ -8,7 +8,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
-        <item name="snackbarStyle">@style/snackBarStyleLight</item>
+        <item name="snackbarStyle">@style/SnackBarStyleLight</item>
         <item name="windowActionBar">true</item>
         <item name="toolbarBackgroundColor">@color/white</item>
         <item name="toolbarBorderColor">@color/white</item>
@@ -24,14 +24,14 @@
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
         <item name="android:statusBarColor">@color/purple_500</item>
-        <item name="actionOverflowButtonStyle">@style/overflowButtonStyleLight</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButtonStyleLight</item>
     </style>
 
-    <style name="snackBarStyleLight" parent="Widget.MaterialComponents.Snackbar">
+    <style name="SnackBarStyleLight" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:background">@color/purple_500</item>
     </style>
 
-    <style name="overflowButtonStyleLight" parent="Widget.AppCompat.ActionButton.Overflow">
+    <style name="OverflowButtonStyleLight" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/purple_500</item>
     </style>
 
@@ -50,7 +50,7 @@
         <item name="colorPrimary">@color/teal_200</item>
         <item name="colorPrimaryVariant">@color/teal_700</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
-        <item name="snackbarStyle">@style/snackBarStyleDark</item>
+        <item name="snackbarStyle">@style/SnackBarStyleDark</item>
         <item name="windowActionBar">true</item>
         <item name="toolbarBackgroundColor">@color/dark_theme_main_grey</item>
         <item name="toolbarBorderColor">@color/dark_theme_main_grey</item>
@@ -60,20 +60,36 @@
         <item name="rteTextColor">@color/white</item>
         <item name="rteHintTextColor">@color/light_grey</item>
         <item name="main_list_item_secondary_color">@color/teal_200</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButtonStyleDarkMain</item>
+        <item name="toolbarNavigationButtonStyle">@style/ToolbarNavButtonStyle</item>
+    </style>
+
+    <style name="ToolbarNavButtonStyle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
     </style>
 
     <style name="Theme.Addressbook.Dark.NoActionBar">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
         <item name="android:statusBarColor">@color/teal_200</item>
-        <item name="actionOverflowButtonStyle">@style/overflowButtonStyleDark</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButtonStyleDarkLogin</item>
     </style>
 
-    <style name="overflowButtonStyleDark" parent="Widget.AppCompat.ActionButton.Overflow">
+    <style name="OverflowButtonStyleDarkLogin" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/teal_200</item>
     </style>
 
-    <style name="snackBarStyleDark" parent="Widget.MaterialComponents.Snackbar">
+    <style name="OverflowButtonStyleDarkMain" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="SnackBarStyleDark" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:background">@color/teal_200</item>
         <item name="textColor">@color/black</item>
     </style>
