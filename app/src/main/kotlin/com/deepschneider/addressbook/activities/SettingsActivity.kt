@@ -9,6 +9,8 @@ import com.deepschneider.addressbook.R
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(!resources.configuration.isNightModeActive)
+            setTheme(R.style.Theme_Addressbook_Light)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         if (savedInstanceState == null) {

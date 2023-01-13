@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Addressbook"
+        android:theme="@style/Theme.Addressbook.Dark"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
@@ -75,7 +75,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Addressbook.NoActionBar">
+            android:theme="@style/Theme.Addressbook.Dark.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

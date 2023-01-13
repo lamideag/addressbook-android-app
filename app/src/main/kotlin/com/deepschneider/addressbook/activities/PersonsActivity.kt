@@ -35,6 +35,8 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
     private lateinit var organizationDto: OrganizationDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(!resources.configuration.isNightModeActive)
+            setTheme(R.style.Theme_Addressbook_Light)
         super.onCreate(savedInstanceState)
         binding = ActivityPersonBinding.inflate(layoutInflater)
         setContentView(binding.root)

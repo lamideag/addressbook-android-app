@@ -135,6 +135,8 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(!resources.configuration.isNightModeActive)
+            setTheme(R.style.Theme_Addressbook_Light)
         super.onCreate(savedInstanceState)
         binding = ActivityCreateOrEditOrganizationBinding.inflate(layoutInflater)
         setContentView(binding.root)

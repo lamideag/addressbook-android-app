@@ -34,6 +34,8 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(!resources.configuration.isNightModeActive)
+            setTheme(R.style.Theme_Addressbook_Light)
         super.onCreate(savedInstanceState)
         binding = ActivityCreateOrEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -12,4 +12,8 @@
     <color name="rte_resume_hint_text_color">#757575</color>
     <color name="list_item_secondary_color">#4D4D4D</color>
     <color name="red_error">@color/mtrl_error</color>
+    <color name="grey_darken_20">#ff4f748e</color>
+    <color name="grey_lighten_20">#ffc8d7e1</color>
+    <color name="almost_black">#ff11181D</color>
+    <color name="dark_theme_main_grey">#424242</color>
 </resources>

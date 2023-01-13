@@ -37,6 +37,8 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     private var start: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(!resources.configuration.isNightModeActive)
+            setTheme(R.style.Theme_Addressbook_Light)
         super.onCreate(savedInstanceState)
         binding = ActivityOrganizationBinding.inflate(layoutInflater)
         setContentView(binding.root)

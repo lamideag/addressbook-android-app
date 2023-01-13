@@ -30,11 +30,15 @@ class LoginActivity : AppCompatActivity() {
     private val requestTag = "LOGIN_TAG"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(!resources.configuration.isNightModeActive)
+            setTheme(R.style.Theme_Addressbook_Light)
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
+        if(!resources.configuration.isNightModeActive)
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
         supportActionBar?.elevation = 0F
+        title = null
         requestQueue = Volley.newRequestQueue(this)
         binding.loginButton.setOnClickListener {
             createOrRotateLoginToken(true)

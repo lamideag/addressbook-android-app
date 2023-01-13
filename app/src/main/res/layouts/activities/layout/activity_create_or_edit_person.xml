@@ -187,8 +187,8 @@
                     android:scrollbars="none"
                     android:translationY="10dp"
                     aztec:historyEnable="false"
-                    aztec:textColor="@color/rte_resume_text_color"
-                    aztec:textColorHint="@color/rte_resume_hint_text_color" />
+                    aztec:textColor="?attr/rteTextColor"
+                    aztec:textColorHint="?attr/rteHintTextColor" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
@@ -202,10 +202,11 @@
 
                 <org.wordpress.aztec.toolbar.AztecToolbar
                     android:id="@+id/formatting_toolbar"
+                    style="@style/AztecToolbarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    aztec:mediaToolbarAvailable="false"/>
+                    aztec:mediaToolbarAvailable="false" />
             </RelativeLayout>
 
             <RelativeLayout

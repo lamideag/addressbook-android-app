@@ -73,7 +73,7 @@
                     android:gravity="end"
                     android:paddingEnd="10dp"
                     android:textAlignment="gravity"
-                    android:textColor="@color/list_item_secondary_color"
+                    android:textColor="?attr/main_list_item_secondary_color"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:ignore="RtlSymmetry" />
@@ -87,7 +87,7 @@
                     android:paddingEnd="10dp"
                     android:textAlignment="gravity"
                     android:textAllCaps="true"
-                    android:textColor="@color/list_item_secondary_color"
+                    android:textColor="?attr/main_list_item_secondary_color"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:ignore="RtlSymmetry" />
