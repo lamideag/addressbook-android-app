@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -164,6 +165,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         binding.formattingToolbar.enableMediaMode(false)
     }
 
+    @Suppress("DEPRECATION")
     private fun prepareLauncher() {
         startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -194,6 +196,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateContactAdapter() {
         val adapter = binding.contactsListView.adapter
         if (adapter != null) {

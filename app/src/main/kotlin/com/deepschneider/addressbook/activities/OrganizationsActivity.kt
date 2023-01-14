@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -50,6 +51,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
         prepareOrganizationSearchButton()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun prepareListView() {
         binding.listView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, PersonsActivity::class.java)
@@ -227,6 +229,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             .getString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_ORDER, "desc").toString()
     }
 
+    @SuppressLint("ApplySharedPref")
     override fun saveSortSettings() {
         PreferenceManager.getDefaultSharedPreferences(this).edit()
             .putString(Constants.SETTINGS_ORGANIZATION_LIST_SORT_FIELD, sortName).commit()

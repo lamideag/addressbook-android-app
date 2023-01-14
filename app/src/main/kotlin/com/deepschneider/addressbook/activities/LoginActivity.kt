@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -109,6 +110,7 @@ class LoginActivity : AppCompatActivity() {
         return true
     }
 
+    @SuppressLint("ApplySharedPref")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
@@ -189,6 +191,7 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @SuppressLint("ApplySharedPref")
     private fun saveTokenFromResponse(response: JSONObject) {
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(
             Constants.TOKEN_KEY, response.get(Constants.TOKEN_KEY) as String?

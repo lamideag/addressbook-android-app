@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
@@ -133,6 +134,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     protected fun logout() {
         PreferenceManager.getDefaultSharedPreferences(this)
             .edit()

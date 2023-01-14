@@ -1,5 +1,6 @@
 package com.deepschneider.addressbook.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -51,6 +52,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         preparePersonSearchButton()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun prepareListView() {
         binding.listView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, CreateOrEditPersonActivity::class.java)
@@ -187,6 +189,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
         updateList(getFilter())
     }
 
+    @SuppressLint("ApplySharedPref")
     override fun saveSortSettings() {
         PreferenceManager.getDefaultSharedPreferences(this).edit()
             .putString(Constants.SETTINGS_PERSON_LIST_SORT_FIELD, sortName).commit()
