@@ -58,9 +58,9 @@ class ServiceInfoFragment : Fragment() {
         requestQueue.add(object :
             JsonObjectRequest(Method.GET, serverUrl + Urls.BUILD_INFO, null, { response ->
                 val buildInfo = gson.fromJson(response.toString(), BuildInfoDto::class.java)
-                binding.versionInfo.text = "version: " + buildInfo.version?.uppercase()
-                binding.buildInfo.text = "build: " + buildInfo.time?.uppercase()
-                binding.serverHost.text = "server host: " + buildInfo.serverHost?.uppercase()
+                binding.versionInfo.text = "version: ${buildInfo.version?.uppercase()}"
+                binding.buildInfo.text = "build: ${buildInfo.time?.uppercase()}"
+                binding.serverHost.text = "server host: ${buildInfo.serverHost?.uppercase()}"
                 binding.serverInfo.text = "server: $serverUrl"
             }, { error ->
                 Log.d("SERVICE INFO ERROR", error.toString())

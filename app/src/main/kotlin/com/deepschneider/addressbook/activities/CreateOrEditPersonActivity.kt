@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.deepschneider.addressbook.R
@@ -167,10 +168,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         startForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    val resultContactDto = result.data?.extras?.getSerializable(
-                        "contact",
-                        ContactDto::class.java
-                    ) as ContactDto
+                    val resultContactDto = result.data?.extras?.get("contact") as ContactDto
                     val shouldDelete = result.data?.extras?.getBoolean("delete")
                     resultContactDto.id?.let {
                         if (shouldDelete == true) {
@@ -456,23 +454,23 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun highlightRteErrorFocus() {
-        binding.resumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
-        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_focus)
+        binding.resumeLayout.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_error_focus)
+        binding.rteToolbarContainer.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_error_focus)
     }
 
     private fun highlightRteUnfocused() {
-        binding.resumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
-        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_unfocused)
+        binding.resumeLayout.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_unfocused)
+        binding.rteToolbarContainer.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_unfocused)
     }
 
     private fun highlightRteErrorUnfocused() {
-        binding.resumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
-        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_error_unfocused)
+        binding.resumeLayout.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_error_unfocused)
+        binding.rteToolbarContainer.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_error_unfocused)
     }
 
     private fun highlightRteFocus() {
-        binding.resumeLayout.background = this.getDrawable(R.drawable.ic_rte_background_focus)
-        binding.rteToolbarContainer.background = this.getDrawable(R.drawable.ic_rte_background_focus)
+        binding.resumeLayout.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_focus)
+        binding.rteToolbarContainer.background = AppCompatResources.getDrawable(this@CreateOrEditPersonActivity, R.drawable.ic_rte_background_focus)
     }
 
     override fun onToolbarCollapseButtonClicked() {}

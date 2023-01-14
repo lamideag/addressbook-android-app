@@ -17,7 +17,7 @@ class OrganizationsListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = OrganizationsListItemBinding.inflate(LayoutInflater.from(activity), parent, false)
         binding.name.text = organizations[position].name
-        binding.addressAndZip.text = organizations[position].street + " " + organizations[position].zip
+        binding.addressAndZip.text = "${organizations[position].street} ${organizations[position].zip}"
         binding.lastUpdated.text = organizations[position].lastUpdated
         binding.id.text = organizations[position].id
         binding.type.text = organizations[position].type
