@@ -327,6 +327,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="48dp"
+        android:backgroundTint="?attr/fab_color"
         android:contentDescription="@string/add_new_organization"
         app:srcCompat="@android:drawable/ic_input_add" />
 

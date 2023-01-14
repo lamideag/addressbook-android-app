@@ -223,9 +223,9 @@
 
                 <Button
                     android:id="@+id/search_button"
-                    android:layout_below="@id/search_salary_layout"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_below="@id/search_salary_layout"
                     android:layout_marginStart="3dp"
                     android:layout_marginEnd="3dp"
                     android:text="@string/action_search" />
@@ -251,6 +251,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="48dp"
+        android:backgroundTint="?attr/fab_color"
         android:contentDescription="@string/add_new_person"
         app:srcCompat="@android:drawable/ic_input_add" />
 

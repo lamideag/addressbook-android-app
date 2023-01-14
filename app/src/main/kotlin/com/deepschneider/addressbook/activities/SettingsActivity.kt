@@ -10,7 +10,7 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if(!resources.configuration.isNightModeActive)
-            setTheme(R.style.Theme_Addressbook_Light)
+            setTheme(R.style.PreferenceScreenThemeLight)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         if (savedInstanceState == null) {
