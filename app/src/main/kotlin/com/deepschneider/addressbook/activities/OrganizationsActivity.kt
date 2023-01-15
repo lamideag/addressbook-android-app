@@ -99,10 +99,14 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
                 this.getString(R.string.search_org_obj_zip),
                 binding.searchZip.text.toString()
             )?.let { it1 -> filters.add(it1) }
-            Utils.getTextFilterDto(
-                this.getString(R.string.search_org_obj_type),
-                binding.searchType.text.toString()
-            )?.let { it1 -> filters.add(it1) }
+            if (binding.searchType.text.toString().isNotBlank()) {
+                val targetTypeIdx = (this.resources.getStringArray(R.array.org_types)
+                    .indexOf(binding.searchType.text.toString()) - 1).toString()
+                Utils.getTextFilterDto(
+                    this.getString(R.string.search_org_obj_type),
+                    targetTypeIdx
+                )?.let { it1 -> filters.add(it1) }
+            }
             val comparatorEnglish = binding.searchDateComparator.text.toString()
             if (comparatorEnglish.isNotBlank() && comparatorEnglish != this.getString(R.string.no_value_placeholder)) {
                 val actualComparatorIndex = this.resources.getStringArray(R.array.date_comparators_english).indexOf(comparatorEnglish)
