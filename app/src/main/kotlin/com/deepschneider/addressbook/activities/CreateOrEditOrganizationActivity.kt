@@ -163,7 +163,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
 
     private fun updateUi(organizationDto: OrganizationDto?) {
         organizationDto?.let {
-            binding.type.setText(it.type)
+            it.type?.let { type -> binding.type.setText(convertIndexToType(type)) }
             binding.zip.setText(it.zip)
             binding.address.setText(it.street)
             binding.name.setText(it.name)
@@ -217,9 +217,6 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
                     { response ->
                         response.data?.let {
                             handler.post {
-                                it.type?.let {
-                                    response.data?.type = convertIndexToType(it)
-                                }
                                 organizationDto = it
                                 handler.post {
                                     updateUi(it)

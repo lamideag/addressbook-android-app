@@ -110,9 +110,19 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                                 totalListSize?.let {
                                     var upperBound = getStartPage() * Constants.PAGE_SIZE
                                     if (upperBound > totalListSize) upperBound = totalListSize
-                                    val total: String =
-                                        "From " + ((getStartPage() - 1) * Constants.PAGE_SIZE + 1) +
-                                                " to " + upperBound + " total " + totalListSize
+                                    val total = buildString {
+                                        append(this@AbstractListActivity.getString(R.string.list_footer_from))
+                                        append(" ")
+                                        append(((getStartPage() - 1) * Constants.PAGE_SIZE + 1))
+                                        append(" ")
+                                        append(this@AbstractListActivity.getString(R.string.list_footer_to))
+                                        append(" ")
+                                        append(upperBound)
+                                        append(" ")
+                                        append(this@AbstractListActivity.getString(R.string.list_footer_total))
+                                        append(" ")
+                                        append(totalListSize)
+                                    }
                                     getTotalListSizeTextView().text = total
                                     this.totalListSize = totalListSize
                                 }

@@ -19,12 +19,12 @@
 
     <string-array name="date_comparators_english">
         <item>@string/no_value_placeholder</item>
-        <item>Equal</item>
-        <item>More</item>
-        <item>More Or Equal</item>
-        <item>Less</item>
-        <item>Less Or Equal</item>
-        <item>Not Equal</item>
+        <item>@string/comparator_equal</item>
+        <item>@string/comparator_more</item>
+        <item>@string/comparator_more_or_equal</item>
+        <item>@string/comparator_less</item>
+        <item>@string/comparator_less_or_equal</item>
+        <item>@string/comparator_not_equal</item>
     </string-array>
 
     <string-array name="organizations_list_field_display_names">

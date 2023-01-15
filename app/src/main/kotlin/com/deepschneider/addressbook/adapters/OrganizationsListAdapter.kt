@@ -10,6 +10,7 @@ import com.deepschneider.addressbook.databinding.OrganizationsListItemBinding
 import com.deepschneider.addressbook.dto.OrganizationDto
 
 class OrganizationsListAdapter(
+    private val organizationTypes: Array<String>,
     private val organizations: List<OrganizationDto>,
     private val activity: Activity
 ) : ArrayAdapter<OrganizationDto>(activity, R.layout.organizations_list_item, organizations) {
@@ -20,7 +21,9 @@ class OrganizationsListAdapter(
         binding.addressAndZip.text = "${organizations[position].street} ${organizations[position].zip}"
         binding.lastUpdated.text = organizations[position].lastUpdated
         binding.id.text = organizations[position].id
-        binding.type.text = organizations[position].type
+        organizations[position].type?.let {
+            binding.type.text = organizationTypes[it.toInt() + 1]
+        }
         return binding.root
     }
 }

@@ -255,7 +255,12 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
 
     override fun getMainListType(): Type = object : TypeToken<PageDataDto<TableDataDto<OrganizationDto>>>() {}.type
 
-    override fun getListAdapter(list: List<OrganizationDto>): ListAdapter = OrganizationsListAdapter(list, this@OrganizationsActivity)
+    override fun getListAdapter(list: List<OrganizationDto>): ListAdapter =
+        OrganizationsListAdapter(
+            this.resources.getStringArray(R.array.org_types),
+            list,
+            this@OrganizationsActivity
+        )
 
     override fun getFilter(): List<FilterDto> = currentFilter ?: emptyList()
 

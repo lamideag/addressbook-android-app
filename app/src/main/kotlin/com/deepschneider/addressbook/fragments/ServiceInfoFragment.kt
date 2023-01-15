@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ServiceInfoFragmentBinding
 import com.deepschneider.addressbook.dto.BuildInfoDto
 import com.deepschneider.addressbook.utils.NetworkUtils
@@ -58,10 +59,10 @@ class ServiceInfoFragment : Fragment() {
         requestQueue.add(object :
             JsonObjectRequest(Method.GET, serverUrl + Urls.BUILD_INFO, null, { response ->
                 val buildInfo = gson.fromJson(response.toString(), BuildInfoDto::class.java)
-                binding.versionInfo.text = "version: ${buildInfo.version?.uppercase()}"
-                binding.buildInfo.text = "build: ${buildInfo.time?.uppercase()}"
-                binding.serverHost.text = "server host: ${buildInfo.serverHost?.uppercase()}"
-                binding.serverInfo.text = "server: $serverUrl"
+                binding.versionInfo.text = "${listener.getString(R.string.service_info_version)} ${buildInfo.version?.uppercase()}"
+                binding.buildInfo.text = "${listener.getString(R.string.service_info_build_date)} ${buildInfo.time?.uppercase()}"
+                binding.serverHost.text = "${listener.getString(R.string.service_info_server_host)} ${buildInfo.serverHost?.uppercase()}"
+                binding.serverInfo.text = "${listener.getString(R.string.service_info_server_url)} $serverUrl"
             }, { error ->
                 Log.d("SERVICE INFO ERROR", error.toString())
             }) {

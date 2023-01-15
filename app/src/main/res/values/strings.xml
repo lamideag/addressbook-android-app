@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Addressbook</string>
+    <string name="app_name" translatable="false">Addressbook</string>
 
     <string name="action_settings">SETTINGS</string>
     <string name="action_logout">LOGOUT</string>
@@ -15,44 +15,45 @@
     <string name="action_save_changes">SAVE</string>
     <string name="action_delete_contact">DELETE CONTACT</string>
     <string name="login_action">LOGIN</string>
+    <string name="login_button">LOGIN</string>
     <string name="password_action">PASSWORD</string>
 
     <string name="no_value_placeholder">No value</string>
 
-    <string name="search_org_id">ID</string>
+    <string name="search_org_id" translatable="false">ID</string>
     <string name="search_org_name">NAME</string>
     <string name="search_org_address">ADDRESS</string>
     <string name="search_org_zip">ZIP</string>
     <string name="search_org_type">TYPE</string>
     <string name="search_org_last_updated">LAST UPDATED</string>
 
-    <string name="search_contact_id">ID</string>
+    <string name="search_contact_id" translatable="false">ID</string>
     <string name="search_contact_data">DATA</string>
     <string name="search_contact_desc">DESCRIPTION</string>
     <string name="search_contact_type">TYPE</string>
 
-    <string name="search_org_obj_id">id</string>
-    <string name="search_org_obj_name">name</string>
-    <string name="search_org_obj_address">street</string>
-    <string name="search_org_obj_zip">zip</string>
-    <string name="search_org_obj_type">type</string>
-    <string name="search_org_obj_last_updated">lastUpdated</string>
+    <string name="search_org_obj_id" translatable="false">id</string>
+    <string name="search_org_obj_name" translatable="false">name</string>
+    <string name="search_org_obj_address" translatable="false">street</string>
+    <string name="search_org_obj_zip" translatable="false">zip</string>
+    <string name="search_org_obj_type" translatable="false">type</string>
+    <string name="search_org_obj_last_updated" translatable="false">lastUpdated</string>
 
     <string name="search_org_last_updated_comp">COMPARATOR</string>
     <string name="title_activity_settings">SETTINGS</string>
 
-    <string name="search_person_id">ID</string>
+    <string name="search_person_id" translatable="false">ID</string>
     <string name="search_person_first_name">FIRST NAME</string>
     <string name="search_person_last_name">LAST NAME</string>
     <string name="search_person_resume">RESUME</string>
     <string name="search_person_salary">ANNUAL SALARY</string>
     <string name="search_person_salary_currency">CURRENCY</string>
 
-    <string name="search_person_obj_id">id</string>
-    <string name="search_person_obj_first_name">firstName</string>
-    <string name="search_person_obj_last_name">lastName</string>
-    <string name="search_person_obj_resume">resume</string>
-    <string name="search_person_obj_salary">salary</string>
+    <string name="search_person_obj_id" translatable="false">id</string>
+    <string name="search_person_obj_first_name" translatable="false">firstName</string>
+    <string name="search_person_obj_last_name" translatable="false">lastName</string>
+    <string name="search_person_obj_resume" translatable="false">resume</string>
+    <string name="search_person_obj_salary" translatable="false">salary</string>
 
     <string name="organizations">ORGANIZATIONS</string>
     <string name="persons">PERSONS</string>
@@ -102,4 +103,23 @@
     <string name="contact_type_home_phone">Home phone</string>
     <string name="contact_type_address">Address</string>
     <string name="contact_type_email">E-mail</string>
+
+    <string name="service_info_version">VERSION:</string>
+    <string name="service_info_build_date">BUILD:</string>
+    <string name="service_info_server_host">SERVER HOST:</string>
+    <string name="service_info_server_url">SERVER:</string>
+
+    <string name="list_footer_from">From</string>
+    <string name="list_footer_to">to</string>
+    <string name="list_footer_total">total</string>
+
+    <string name="contact_deletion_cancel">CANCEL</string>
+    <string name="contact_deletion_delete">DELETE</string>
+
+    <string name="comparator_equal">Equal</string>
+    <string name="comparator_more">More</string>
+    <string name="comparator_more_or_equal">More Or Equal</string>
+    <string name="comparator_less">Less</string>
+    <string name="comparator_less_or_equal">Less Or Equal</string>
+    <string name="comparator_not_equal">Not Equal</string>
 </resources>
