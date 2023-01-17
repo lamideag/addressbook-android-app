@@ -37,7 +37,9 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password_action">
+            android:hint="@string/password_action"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_password"
