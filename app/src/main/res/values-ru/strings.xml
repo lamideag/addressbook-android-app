@@ -3,6 +3,7 @@
     <string name="app_name">Addressbook</string>
     <string name="action_settings">НАСТРОЙКИ</string>
     <string name="action_logout">ВЫХОД</string>
+    <string name="action_about">О ПРИЛОЖЕНИИ</string>
     <string name="action_sort_settings">НАСТРОЙКИ СОРТИРОВКИ</string>
     <string name="action_edit_organization">РЕДАКТИРОВАНИЕ ОРГАНИЗАЦИИ</string>
     <string name="action_create">СОЗДАТЬ</string>
@@ -87,4 +88,6 @@
     <string name="comparator_less">Меньше</string>
     <string name="comparator_less_or_equal">Меньше или равно</string>
     <string name="comparator_not_equal">Не равно</string>
+    <string name="app_info_version">ВЕРСИЯ</string>
+    <string name="app_info_developer">РАЗРАБОТЧИК</string>
 </resources>

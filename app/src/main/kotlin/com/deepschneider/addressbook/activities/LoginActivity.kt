@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import com.deepschneider.addressbook.BuildConfig
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -23,7 +24,9 @@ import com.deepschneider.addressbook.databinding.ActivityLoginBinding
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
@@ -33,12 +36,12 @@ class LoginActivity : AppCompatActivity() {
     private val requestTag = "LOGIN_TAG"
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if(!resources.configuration.isNightModeActive)
+        if (!resources.configuration.isNightModeActive)
             setTheme(R.style.Theme_Addressbook_Light_NoActionBar)
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if(!resources.configuration.isNightModeActive)
+        if (!resources.configuration.isNightModeActive)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
         supportActionBar?.elevation = 0F
         title = null
@@ -127,6 +130,21 @@ class LoginActivity : AppCompatActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+                return true
+            }
+            R.id.action_about_main -> {
+                val view = layoutInflater.inflate(R.layout.dialog_app_info, null)
+                view.findViewById<TextInputEditText>(R.id.dialog_app_info_version)
+                    .setText(BuildConfig.VERSION_NAME)
+                view.findViewById<TextInputEditText>(R.id.dialog_app_info_developer)
+                    .setText(R.string.app_info_author)
+                MaterialAlertDialogBuilder(this@LoginActivity).setView(view)
+                    .setCancelable(false)
+                    .setPositiveButton(
+                        android.R.string.ok
+                    ) { dialog, _ ->
+                        dialog.cancel()
+                    }.create().show()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
