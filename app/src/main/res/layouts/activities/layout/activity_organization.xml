@@ -114,7 +114,8 @@
                     android:layout_below="@id/filter_header_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_org_id">
+                    android:hint="@string/search_org_id"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_id"
@@ -137,7 +138,8 @@
                     android:layout_below="@id/search_id_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_org_name">
+                    android:hint="@string/search_org_name"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_name"
@@ -160,7 +162,8 @@
                     android:layout_below="@id/search_name_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_org_address">
+                    android:hint="@string/search_org_address"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_address"
@@ -182,7 +185,8 @@
                     android:layout_below="@id/search_address_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_org_zip">
+                    android:hint="@string/search_org_zip"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_zip"

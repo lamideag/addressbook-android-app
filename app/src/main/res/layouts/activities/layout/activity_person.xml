@@ -114,7 +114,8 @@
                     android:layout_below="@id/filter_header_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_id">
+                    android:hint="@string/search_person_id"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_id"
@@ -137,7 +138,8 @@
                     android:layout_below="@id/search_id_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_first_name">
+                    android:hint="@string/search_person_first_name"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_first_name"
@@ -160,7 +162,8 @@
                     android:layout_below="@id/search_edit_first_name_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_last_name">
+                    android:hint="@string/search_person_last_name"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_last_name"
@@ -183,7 +186,8 @@
                     android:layout_below="@id/search_last_name_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_resume">
+                    android:hint="@string/search_person_resume"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_resume"
@@ -206,7 +210,8 @@
                     android:layout_below="@id/search_resume_layout"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:hint="@string/search_person_salary">
+                    android:hint="@string/search_person_salary"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/search_salary"
