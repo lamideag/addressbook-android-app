@@ -4,7 +4,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dialog_app_info_version_layout"
+        android:id="@+id/version_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:hint="@string/app_info_version">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dialog_app_info_version"
+            android:id="@+id/version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -31,7 +31,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dialog_app_info_developer_layout"
+        android:id="@+id/developer_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:hint="@string/app_info_developer">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dialog_app_info_developer"
+            android:id="@+id/developer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"

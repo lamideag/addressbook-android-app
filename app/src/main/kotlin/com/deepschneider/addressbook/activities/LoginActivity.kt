@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityLoginBinding
+import com.deepschneider.addressbook.databinding.DialogAppInfoBinding
 import com.deepschneider.addressbook.utils.Constants
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
@@ -133,14 +134,11 @@ class LoginActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_about_main -> {
-                val view = layoutInflater.inflate(R.layout.dialog_app_info, null)
-                view.findViewById<TextInputEditText>(R.id.dialog_app_info_version)
-                    .setText(BuildConfig.VERSION_NAME)
-                view.findViewById<TextInputEditText>(R.id.dialog_app_info_developer)
-                    .setText(R.string.app_info_author)
-                MaterialAlertDialogBuilder(this@LoginActivity).setView(view)
-                    .setCancelable(false)
-                    .setPositiveButton(
+                val binding = DialogAppInfoBinding.inflate(layoutInflater)
+                binding.developer.setText(R.string.app_info_author)
+                binding.version.setText(BuildConfig.VERSION_NAME)
+                MaterialAlertDialogBuilder(this@LoginActivity).setView(binding.root)
+                    .setCancelable(false).setPositiveButton(
                         android.R.string.ok
                     ) { dialog, _ ->
                         dialog.cancel()
