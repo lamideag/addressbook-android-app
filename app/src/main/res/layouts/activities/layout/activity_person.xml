@@ -258,6 +258,7 @@
         android:layout_marginBottom="48dp"
         android:backgroundTint="?attr/fab_color"
         android:contentDescription="@string/add_new_person"
+        app:backgroundTint="?attr/fab_color"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
