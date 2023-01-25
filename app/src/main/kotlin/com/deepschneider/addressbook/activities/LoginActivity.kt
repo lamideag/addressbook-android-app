@@ -7,18 +7,19 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import com.deepschneider.addressbook.BuildConfig
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.deepschneider.addressbook.BuildConfig
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityLoginBinding
 import com.deepschneider.addressbook.databinding.DialogAppInfoBinding
@@ -27,7 +28,6 @@ import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
@@ -184,6 +184,7 @@ class LoginActivity : AppCompatActivity() {
             }, Snackbar.LENGTH_LONG
         )
         val view: View = snackBar.view
+        view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 10
         val params = view.layoutParams as CoordinatorLayout.LayoutParams
         params.gravity = Gravity.TOP
         view.layoutParams = params
