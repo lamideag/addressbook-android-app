@@ -23,7 +23,7 @@ object Utils {
         val filterDto = FilterDto()
         filterDto.name = name
         filterDto.value = SimpleDateFormat(
-            "MM/dd/yy",
+            "yyyy-MM-dd",
             Locale.US
         ).parse(value)?.let {
             SimpleDateFormat(

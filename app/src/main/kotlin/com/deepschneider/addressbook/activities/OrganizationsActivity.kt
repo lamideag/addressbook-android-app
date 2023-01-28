@@ -190,7 +190,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
     private fun updateLabel() {
         binding.searchDateLastUpdated.setText(
             SimpleDateFormat(
-                "MM/dd/yy", Locale.US
+                "yyyy-MM-dd", Locale.US
             ).format(lastUpdatedCalendar.time)
         )
         binding.searchDateLastUpdated.gravity = Gravity.CENTER
