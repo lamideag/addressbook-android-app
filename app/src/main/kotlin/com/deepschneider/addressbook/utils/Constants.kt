@@ -5,6 +5,10 @@ import java.util.*
 object Constants {
     const val NO_VALUE = "no value"
     const val TOKEN_KEY = "token"
+    const val BIOMETRICS = "biometrics"
+    const val KEYSTORE = "AndroidKeyStore"
+    const val KEY_ALIAS = "addressbook_biometrics"
+    const val SHARED_PREFERENCE_KEY_IV = "iv"
 
     const val ORGANIZATIONS_CACHE_NAME = "com.addressbook.model.Organization"
     const val PERSONS_CACHE_NAME = "com.addressbook.model.Person"

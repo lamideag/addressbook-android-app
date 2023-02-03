@@ -1,11 +1,14 @@
 package com.deepschneider.addressbook.utils
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
+import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.dto.FilterDto
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
+import android.util.Base64
 
 object Utils {
     fun getTextFilterDto(name: String, value: String?): FilterDto? {
@@ -42,5 +45,17 @@ object Utils {
             activity.intent.getSerializableExtra(name, clazz)
         else
             activity.intent.getSerializableExtra(name) as T?
+    }
+
+    fun saveBiometrics(context: Context, data: ByteArray) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+            .edit()
+            .putString(Constants.BIOMETRICS, Base64.encodeToString(data, Base64.NO_WRAP))
+            .commit()
+    }
+
+    fun getBiometrics(context: Context): String? {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+            .getString(Constants.BIOMETRICS, null)
     }
 }

@@ -105,4 +105,10 @@
     <string name="app_info_version">VERSION</string>
     <string name="app_info_developer">DEVELOPER</string>
     <string name="app_info_author" translatable="false">Nikita Schneider</string>
+    <string name="biometric_login_message">Log in using your biometric credential</string>
+    <string name="regular_login_message">Use account password</string>
+    <string name="biometric_login_title">Use biometric login for this app</string>
+    <string name="biometric_login_title_question">Use biometric login for this app?</string>
+    <string name="biometric_authentification_failed_message">Authentication failed</string>
+    <string name="biometric_authentification_error_message">Authentication error:</string>
 </resources>

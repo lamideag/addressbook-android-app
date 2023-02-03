@@ -90,4 +90,10 @@
     <string name="comparator_not_equal">Не равно</string>
     <string name="app_info_version">ВЕРСИЯ</string>
     <string name="app_info_developer">РАЗРАБОТЧИК</string>
+    <string name="biometric_login_message">Войдите используя биометрические данные</string>
+    <string name="regular_login_message">Использовать логин и пароль</string>
+    <string name="biometric_login_title">Использование биометрических данных для входа</string>
+    <string name="biometric_login_title_question">Использовать биометрические данные для входа?</string>
+    <string name="biometric_authentification_failed_message">Ошибка аутентификации</string>
+    <string name="biometric_authentification_error_message">Ошибка аутентификации:</string>
 </resources>

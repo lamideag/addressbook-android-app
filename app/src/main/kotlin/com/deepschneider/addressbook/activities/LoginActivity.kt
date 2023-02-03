@@ -7,14 +7,22 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import android.util.Base64
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricPrompt
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
@@ -24,11 +32,20 @@ import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityLoginBinding
 import com.deepschneider.addressbook.databinding.DialogAppInfoBinding
 import com.deepschneider.addressbook.utils.Constants
+import com.deepschneider.addressbook.utils.Constants.SHARED_PREFERENCE_KEY_IV
 import com.deepschneider.addressbook.utils.NetworkUtils
 import com.deepschneider.addressbook.utils.Urls
+import com.deepschneider.addressbook.utils.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
+import java.nio.charset.Charset
+import java.security.KeyStore
+import java.util.*
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 
 class LoginActivity : AppCompatActivity() {
 
@@ -48,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
         title = null
         requestQueue = Volley.newRequestQueue(this)
         binding.loginButton.setOnClickListener {
-            createOrRotateLoginToken(true)
+            createOrRotateLoginToken(true, ::saveBiometrics)
         }
         Constants.PAGE_SIZE = (((resources.displayMetrics.run { heightPixels / density } - 50) / 90)).toInt()
         if (resources.configuration.isNightModeActive) {
@@ -57,6 +74,21 @@ class LoginActivity : AppCompatActivity() {
         } else {
             enableLightIcon()
             Constants.ACTIVE_LOGIN_COMPONENT = ".activities.LoginActivityAlias"
+        }
+        if (isBiometricSupported() && Utils.getBiometrics(this) != null) {
+            binding.biometricLogin.visibility = View.VISIBLE
+            binding.biometricLogin.setOnClickListener {
+                getBiometrics()
+            }
+        } else {
+            binding.biometricLogin.visibility = View.GONE
+        }
+    }
+
+    private fun isBiometricSupported(): Boolean {
+        return when (BiometricManager.from(this).canAuthenticate(BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> true
+            else -> false
         }
     }
 
@@ -101,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        createOrRotateLoginToken(false)
+        createOrRotateLoginToken(false, ::startOrganizationActivity)
     }
 
     override fun onStop() {
@@ -127,7 +159,10 @@ class LoginActivity : AppCompatActivity() {
                     .remove(Constants.TOKEN_KEY)
                     .commit()
                 val intent = Intent()
-                intent.component = ComponentName(this.packageName, this.packageName + Constants.ACTIVE_LOGIN_COMPONENT)
+                intent.component = ComponentName(
+                    this.packageName,
+                    this.packageName + Constants.ACTIVE_LOGIN_COMPONENT
+                )
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -149,7 +184,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun createOrRotateLoginToken(create: Boolean) {
+    private fun createOrRotateLoginToken(create: Boolean, onSuccess: () -> (Unit)) {
         hideLoginButton()
         val serverUrl = NetworkUtils.getServerUrl(this)
         if (serverUrl == Constants.NO_VALUE) {
@@ -167,12 +202,201 @@ class LoginActivity : AppCompatActivity() {
             { response ->
                 saveTokenFromResponse(response)
                 showLoginButton()
-                startOrganizationActivity()
+                onSuccess()
             },
             { error ->
                 makeErrorSnackBar(error)
                 showLoginButton()
             }).also { it.tag = requestTag })
+    }
+
+    private fun generateSecretKey() {
+        val keyStore = KeyStore.getInstance(Constants.KEYSTORE);
+        keyStore.load(null);
+        if (!keyStore.containsAlias(Constants.KEY_ALIAS)) {
+            val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, Constants.KEYSTORE)
+            keyGenerator.init(
+                KeyGenParameterSpec.Builder(
+                    Constants.KEY_ALIAS,
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                )
+                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                    .setUserAuthenticationRequired(true)
+                    .setInvalidatedByBiometricEnrollment(true)
+                    .build()
+            )
+            keyGenerator.generateKey()
+        }
+    }
+
+    private fun getSecretKey(): SecretKey {
+        val keyStore = KeyStore.getInstance(Constants.KEYSTORE)
+        keyStore.load(null)
+        return keyStore.getKey(Constants.KEY_ALIAS, null) as SecretKey
+    }
+
+    private fun getCipher(): Cipher {
+        return Cipher.getInstance(
+            KeyProperties.KEY_ALGORITHM_AES + "/"
+                    + KeyProperties.BLOCK_MODE_CBC + "/"
+                    + KeyProperties.ENCRYPTION_PADDING_PKCS7
+        )
+    }
+
+    private fun getBiometrics() {
+        generateSecretKey()
+        val executor = ContextCompat.getMainExecutor(this)
+        val biometricPrompt = BiometricPrompt(this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(
+                    errorCode: Int,
+                    errString: CharSequence
+                ) {
+                    super.onAuthenticationError(errorCode, errString)
+                    Toast.makeText(
+                        applicationContext,
+                        this@LoginActivity.getString(R.string.biometric_authentification_error_message) + " " + errString,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult
+                ) {
+                    super.onAuthenticationSucceeded(result)
+                    val decryptedInfo = result.cryptoObject?.cipher?.doFinal(
+                        Base64.decode(
+                            Utils.getBiometrics(this@LoginActivity),
+                            Base64.NO_WRAP
+                        )
+                    )
+                    if (decryptedInfo != null) {
+                        hideLoginButton()
+                        val loginAndPass = String(decryptedInfo)
+                        val serverUrl = NetworkUtils.getServerUrl(this@LoginActivity)
+                        if (serverUrl == Constants.NO_VALUE) {
+                            showLoginButton()
+                            return
+                        }
+                        val loginDto = JSONObject()
+                        loginDto.put("login", loginAndPass.split("&!#&")[0])
+                        loginDto.put("password", loginAndPass.split("&!#&")[1])
+                        requestQueue.add(JsonObjectRequest(Request.Method.POST,
+                            serverUrl + Urls.AUTH,
+                            loginDto,
+                            { response ->
+                                saveTokenFromResponse(response)
+                                showLoginButton()
+                                startOrganizationActivity()
+                            },
+                            { error ->
+                                makeErrorSnackBar(error)
+                                showLoginButton()
+                            }).also { it.tag = requestTag })
+                    }
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    Toast.makeText(
+                        applicationContext,
+                        this@LoginActivity.getString(R.string.biometric_authentification_failed_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(this.getString(R.string.biometric_login_title))
+            .setSubtitle(this.getString(R.string.biometric_login_message))
+            .setNegativeButtonText(this.getString(R.string.regular_login_message))
+            .build()
+
+        val keyIV = PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
+            .getString(SHARED_PREFERENCE_KEY_IV, "");
+
+        val cipher = getCipher()
+        val secretKey = getSecretKey()
+        cipher.init(
+            Cipher.DECRYPT_MODE,
+            secretKey,
+            IvParameterSpec(Base64.decode(keyIV, Base64.NO_WRAP))
+        )
+
+        biometricPrompt.authenticate(
+            promptInfo,
+            BiometricPrompt.CryptoObject(cipher)
+        )
+    }
+
+    private fun saveBiometrics() {
+        if (!isBiometricSupported()) {
+            startOrganizationActivity()
+        } else {
+            generateSecretKey()
+            val executor = ContextCompat.getMainExecutor(this)
+            val biometricPrompt = BiometricPrompt(this, executor,
+                object : BiometricPrompt.AuthenticationCallback() {
+                    override fun onAuthenticationError(
+                        errorCode: Int,
+                        errString: CharSequence
+                    ) {
+                        super.onAuthenticationError(errorCode, errString)
+                        Toast.makeText(
+                            applicationContext,
+                            this@LoginActivity.getString(R.string.biometric_authentification_error_message) + " " + errString,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    override fun onAuthenticationSucceeded(
+                        result: BiometricPrompt.AuthenticationResult
+                    ) {
+                        super.onAuthenticationSucceeded(result)
+                        val loginText = binding.editTextLogin.text.toString()
+                        val passwordText = binding.editTextPassword.text.toString()
+                        val encryptedInfo: ByteArray? = result.cryptoObject?.cipher?.doFinal(
+                            ("$loginText&!#&$passwordText").toByteArray(Charset.defaultCharset())
+                        )
+                        encryptedInfo?.let {
+                            Utils.saveBiometrics(this@LoginActivity, encryptedInfo)
+                            startOrganizationActivity()
+                        }
+                    }
+
+                    override fun onAuthenticationFailed() {
+                        super.onAuthenticationFailed()
+                        Toast.makeText(
+                            applicationContext,
+                            this@LoginActivity.getString(R.string.biometric_authentification_failed_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+
+            val promptInfo = BiometricPrompt.PromptInfo.Builder()
+                .setTitle(this.getString(R.string.biometric_login_title_question))
+                .setSubtitle(this.getString(R.string.biometric_login_message))
+                .setNegativeButtonText(this.getString(R.string.regular_login_message))
+                .build()
+
+            val cipher = getCipher()
+            val secretKey = getSecretKey()
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+
+            PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
+                .edit()
+                .putString(
+                    SHARED_PREFERENCE_KEY_IV,
+                    Base64.encodeToString(cipher.iv, Base64.NO_WRAP)
+                ).apply();
+
+            biometricPrompt.authenticate(
+                promptInfo,
+                BiometricPrompt.CryptoObject(cipher)
+            )
+        }
     }
 
     private fun makeErrorSnackBar(error: VolleyError) {
