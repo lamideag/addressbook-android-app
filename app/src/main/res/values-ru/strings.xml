@@ -97,4 +97,5 @@
     <string name="biometric_authentification_failed_message">Ошибка аутентификации</string>
     <string name="biometric_authentification_error_message">Ошибка аутентификации:</string>
     <string name="action_share_person">ОТПРАВИТЬ ДАННЫЕ</string>
+    <string name="server_url_empty_error">УКАЖИТЕ АДРЕС СЕРВЕРА В НАСТРОЙКАХ!</string>
 </resources>

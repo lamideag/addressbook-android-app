@@ -112,4 +112,5 @@
     <string name="biometric_login_title_question">Use biometric login for this app?</string>
     <string name="biometric_authentification_failed_message">Authentication failed</string>
     <string name="biometric_authentification_error_message">Authentication error:</string>
+    <string name="server_url_empty_error">SET SERVER URL IN SETTINGS!</string>
 </resources>

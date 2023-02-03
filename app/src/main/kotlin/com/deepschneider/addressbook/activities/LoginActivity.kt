@@ -42,6 +42,7 @@ import org.json.JSONObject
 import java.nio.charset.Charset
 import java.security.KeyStore
 import java.util.*
+import java.util.concurrent.Executor
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
@@ -51,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var requestQueue: RequestQueue
+    private lateinit var executor: Executor
     private val requestTag = "LOGIN_TAG"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +66,7 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0F
         title = null
         requestQueue = Volley.newRequestQueue(this)
+        executor = ContextCompat.getMainExecutor(this)
         binding.loginButton.setOnClickListener {
             createOrRotateLoginToken(true, ::saveBiometrics)
         }
@@ -188,6 +191,8 @@ class LoginActivity : AppCompatActivity() {
         hideLoginButton()
         val serverUrl = NetworkUtils.getServerUrl(this)
         if (serverUrl == Constants.NO_VALUE) {
+            if (create)
+                makeSnackBar(this.getString(R.string.server_url_empty_error))
             showLoginButton()
             return
         }
@@ -246,7 +251,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getBiometrics() {
         generateSecretKey()
-        val executor = ContextCompat.getMainExecutor(this)
         val biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(
@@ -335,7 +339,6 @@ class LoginActivity : AppCompatActivity() {
             startOrganizationActivity()
         } else {
             generateSecretKey()
-            val executor = ContextCompat.getMainExecutor(this)
             val biometricPrompt = BiometricPrompt(this, executor,
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationError(
@@ -400,13 +403,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun makeErrorSnackBar(error: VolleyError) {
-        val snackBar = Snackbar.make(
-            binding.coordinatorLayout, when (error) {
-                is AuthFailureError -> this.getString(R.string.auth_failure_message)
-                is TimeoutError -> this.getString(R.string.server_timeout_message)
-                else -> error.message.toString()
-            }, Snackbar.LENGTH_LONG
-        )
+        when (error) {
+            is AuthFailureError -> makeSnackBar(this.getString(R.string.auth_failure_message))
+            is TimeoutError -> makeSnackBar(this.getString(R.string.server_timeout_message))
+            else -> makeSnackBar(error.message.toString())
+        }
+    }
+
+    private fun makeSnackBar(message: String) {
+        val snackBar = Snackbar.make(binding.coordinatorLayout, message, Snackbar.LENGTH_LONG)
         val view: View = snackBar.view
         view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 10
         val params = view.layoutParams as CoordinatorLayout.LayoutParams
@@ -418,10 +423,14 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoginButton() {
         binding.loginButton.visibility = View.VISIBLE
         binding.progressBar.visibility = ProgressBar.INVISIBLE
+        if (isBiometricSupported() && Utils.getBiometrics(this) != null) {
+            binding.biometricLogin.visibility = View.VISIBLE
+        }
     }
 
     private fun hideLoginButton() {
         binding.loginButton.visibility = View.GONE
+        binding.biometricLogin.visibility = View.GONE
         binding.progressBar.visibility = ProgressBar.VISIBLE
     }
 
