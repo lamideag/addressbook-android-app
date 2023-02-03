@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -85,6 +87,11 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         binding.contactsListView.setHasFixedSize(true)
         binding.contactsListView.layoutManager = LinearLayoutManager(this)
         binding.contactsListView.itemAnimator = DefaultItemAnimator()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_current_person, menu)
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -436,10 +443,43 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         }
     }
 
+    private fun getCurrentPersonAsHTML(): String {
+        val main = StringBuilder()
+            .append("<p>First name: ${binding.firstName.text}<br/>")
+            .append("Last name: ${binding.lastName.text}<br/>")
+            .append("Resume: ${binding.rteResumeEditor.toHtml()}<br/>")
+            .append("Salary: ${binding.salary.text} ${binding.salaryCurrency.text}</p>")
+        val contactTypes = this.resources.getStringArray(R.array.contact_types)
+        if (currentContactList.isNotEmpty()) {
+            main.append("<p>Contacts:</p><ol>")
+            for (contact in currentContactList) {
+                main.append("<li><div>")
+                contact.type?.let { main.append("<p>${contactTypes[it.toInt() + 1]}<br/>") }
+                main.append("${contact.data}<br/>")
+                main.append("${contact.description}</p>")
+                main.append("</div></li>")
+            }
+            main.append("</ol>")
+        }
+        return main.toString()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
+                return true
+            }
+            R.id.action_share_person -> {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        Html.fromHtml(getCurrentPersonAsHTML(), Html.FROM_HTML_MODE_LEGACY)
+                    )
+                    type = "text/html"
+                }
+                startActivity(Intent.createChooser(sendIntent, null))
                 return true
             }
             else -> super.onOptionsItemSelected(item)

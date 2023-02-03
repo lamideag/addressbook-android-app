@@ -6,6 +6,7 @@
     <string name="action_about">ABOUT</string>
     <string name="action_sort_settings">SORT SETTINGS</string>
     <string name="action_edit_organization">EDIT ORGANIZATION</string>
+    <string name="action_share_person">SHARE PERSON</string>
     <string name="action_create">CREATE</string>
     <string name="action_add_contact">ADD CONTACT</string>
     <string name="action_apply_contact_changes">APPLY CHANGES</string>
