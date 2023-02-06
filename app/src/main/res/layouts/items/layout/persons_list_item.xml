@@ -29,7 +29,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/first_name_and_last_name"
+                    android:id="@+id/person_list_item_first_name_and_last_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -41,7 +41,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    android:id="@+id/resume"
+                    android:id="@+id/person_list_item_resume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -50,7 +50,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    android:id="@+id/id"
+                    android:id="@+id/person_list_item_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -67,7 +67,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/salary"
+                    android:id="@+id/person_list_item_salary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"

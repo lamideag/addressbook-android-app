@@ -1,12 +1,11 @@
 package com.deepschneider.addressbook.adapters
 
 import android.app.Activity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import com.deepschneider.addressbook.R
-import com.deepschneider.addressbook.databinding.OrganizationsListItemBinding
 import com.deepschneider.addressbook.dto.OrganizationDto
 
 class OrganizationsListAdapter(
@@ -16,14 +15,14 @@ class OrganizationsListAdapter(
 ) : ArrayAdapter<OrganizationDto>(activity, R.layout.organizations_list_item, organizations) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val binding = OrganizationsListItemBinding.inflate(LayoutInflater.from(activity), parent, false)
-        binding.name.text = organizations[position].name
-        binding.addressAndZip.text = "${organizations[position].street} ${organizations[position].zip}"
-        binding.lastUpdated.text = organizations[position].lastUpdated
-        binding.id.text = organizations[position].id
+        val rowView: View = convertView ?: activity.layoutInflater.inflate(R.layout.organizations_list_item, parent, false)
+        rowView.findViewById<TextView>(R.id.organization_list_item_name).text = organizations[position].name
+        rowView.findViewById<TextView>(R.id.organization_list_item_address_and_zip).text = "${organizations[position].street} ${organizations[position].zip}"
+        rowView.findViewById<TextView>(R.id.organization_list_item_last_updated).text = organizations[position].lastUpdated
+        rowView.findViewById<TextView>(R.id.organization_list_item_id).text = organizations[position].id
         organizations[position].type?.let {
-            binding.type.text = organizationTypes[it.toInt() + 1]
+            rowView.findViewById<TextView>(R.id.organization_list_item_type).text = organizationTypes[it.toInt() + 1]
         }
-        return binding.root
+        return rowView
     }
 }

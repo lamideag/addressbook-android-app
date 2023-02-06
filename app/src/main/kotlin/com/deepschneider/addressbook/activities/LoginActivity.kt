@@ -216,8 +216,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun generateSecretKey() {
-        val keyStore = KeyStore.getInstance(Constants.KEYSTORE);
-        keyStore.load(null);
+        val keyStore = KeyStore.getInstance(Constants.KEYSTORE)
+        keyStore.load(null)
         if (!keyStore.containsAlias(Constants.KEY_ALIAS)) {
             val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, Constants.KEYSTORE)
             keyGenerator.init(
@@ -318,7 +318,7 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         val keyIV = PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
-            .getString(SHARED_PREFERENCE_KEY_IV, "");
+            .getString(SHARED_PREFERENCE_KEY_IV, "")
 
         val cipher = getCipher()
         val secretKey = getSecretKey()
@@ -393,7 +393,7 @@ class LoginActivity : AppCompatActivity() {
                 .putString(
                     SHARED_PREFERENCE_KEY_IV,
                     Base64.encodeToString(cipher.iv, Base64.NO_WRAP)
-                ).apply();
+                ).apply()
 
             biometricPrompt.authenticate(
                 promptInfo,

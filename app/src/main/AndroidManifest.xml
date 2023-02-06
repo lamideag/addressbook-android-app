@@ -11,15 +11,16 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_dark"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="false"
         android:theme="@style/Theme.Addressbook.Dark"
-        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="33">
         <activity
             android:name=".activities.CreateOrEditOrganizationActivity"
             android:exported="false"
             android:label="@string/add_new_organization"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -28,7 +29,8 @@
             android:name=".activities.CreateOrEditPersonActivity"
             android:exported="false"
             android:label="@string/add_new_person"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -37,7 +39,8 @@
             android:name=".activities.CreateOrEditContactActivity"
             android:exported="false"
             android:label="@string/add_new_contact"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -46,8 +49,9 @@
             android:name=".activities.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"
             android:theme="@style/PreferenceScreenThemeDark"
-            android:screenOrientation="portrait">
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -57,7 +61,8 @@
             android:exported="false"
             android:label="@string/organizations"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -67,7 +72,8 @@
             android:exported="false"
             android:label="@string/persons"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -77,7 +83,8 @@
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Addressbook.Dark.NoActionBar">
+            android:theme="@style/Theme.Addressbook.Dark.NoActionBar"
+            tools:ignore="LockedOrientationActivity,RedundantLabel">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -95,8 +102,8 @@
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Addressbook.Dark.NoActionBar"
-            android:targetActivity=".activities.LoginActivity">
+            android:targetActivity=".activities.LoginActivity"
+            android:theme="@style/Theme.Addressbook.Dark.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
