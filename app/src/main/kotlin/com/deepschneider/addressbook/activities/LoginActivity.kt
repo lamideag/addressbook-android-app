@@ -346,7 +346,19 @@ class LoginActivity : AppCompatActivity() {
                         errString: CharSequence
                     ) {
                         super.onAuthenticationError(errorCode, errString)
-                        startOrganizationActivity()
+                        if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                            PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
+                                .edit()
+                                .remove(Constants.BIOMETRICS)
+                                .commit()
+                            startOrganizationActivity()
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                this@LoginActivity.getString(R.string.biometric_authentification_error_message) + " " + errString,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
 
                     override fun onAuthenticationSucceeded(
