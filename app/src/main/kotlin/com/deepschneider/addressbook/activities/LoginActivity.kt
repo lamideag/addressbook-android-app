@@ -346,11 +346,7 @@ class LoginActivity : AppCompatActivity() {
                         errString: CharSequence
                     ) {
                         super.onAuthenticationError(errorCode, errString)
-                        Toast.makeText(
-                            applicationContext,
-                            this@LoginActivity.getString(R.string.biometric_authentification_error_message) + " " + errString,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        startOrganizationActivity()
                     }
 
                     override fun onAuthenticationSucceeded(

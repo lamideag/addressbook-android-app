@@ -18,6 +18,7 @@ import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
 import com.deepschneider.addressbook.R
+import com.deepschneider.addressbook.drawer.Drawer
 import com.deepschneider.addressbook.dto.AlertDto
 import com.deepschneider.addressbook.dto.FilterDto
 import com.deepschneider.addressbook.network.FilteredListRequest
@@ -35,7 +36,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected lateinit var toggle: ActionBarDrawerToggle
     protected lateinit var requestQueue: RequestQueue
-    protected lateinit var mainDrawer: DrawerLayout
+    protected lateinit var mainDrawer: Drawer
     protected var serverUrl: String? = null
     private val gson = Gson()
     protected var totalListSize: Int? = null
@@ -48,8 +49,9 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         serverUrl = NetworkUtils.getServerUrl(this@AbstractListActivity)
     }
 
-    protected fun prepareActionBar(drawer: DrawerLayout) {
+    protected fun prepareActionBar(drawer: Drawer) {
         mainDrawer = drawer
+        mainDrawer.setInterceptTouchEventChildId(R.id.roles_view);
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         toggle = ActionBarDrawerToggle(this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed)
