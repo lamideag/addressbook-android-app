@@ -411,15 +411,22 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         if (value.isEmpty()) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
-            highlightRteErrorFocus()
+            if(binding.rteResumeEditor.hasFocus())
+                highlightRteErrorFocus()
+            else
+                highlightRteErrorUnfocused()
         } else if (value.length > 2000) {
             resumeEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[2] = false
-            highlightRteErrorFocus()
+            if(binding.rteResumeEditor.hasFocus())
+                highlightRteErrorFocus()
+            else
+                highlightRteErrorUnfocused()
         } else {
             resumeEditTextLayout.error = null
             fieldValidation[2] = true
-            highlightRteFocus()
+            if(binding.rteResumeEditor.hasFocus())
+                highlightRteFocus()
         }
     }
 
