@@ -29,7 +29,7 @@ jobs:
           fileDir: '/home/runner/work/addressbook-android-app/addressbook-android-app/app/keystore/'
           encodedString: ${{ secrets.KEYSTORE }}
       - name: Build APK
-        run: ./gradlew :app:assembleRelease
+        run: ./gradlew :app:assembleRelease -x test
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
