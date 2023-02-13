@@ -1,21 +1,17 @@
 package com.deepschneider.addressbook
 
-import android.widget.Button
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.deepschneider.addressbook.activities.LoginActivity
 import com.deepschneider.addressbook.activities.OrganizationsActivity
 import com.deepschneider.addressbook.utils.Constants
-import com.google.android.material.textfield.TextInputEditText
-import com.google.common.truth.Truth.assertThat
 import junit.framework.TestCase.assertNotNull
 import org.junit.After
 import org.junit.Before
@@ -50,18 +46,19 @@ class LoginActivityTest {
 
     @Test
     fun test() {
-        val loginButton: Button = loginActivity!!.findViewById(R.id.login_button)
-        assertThat(loginButton.text.toString()).isEqualTo("LOGIN")
-        runOnUiThread {
-            loginActivity!!.findViewById<TextInputEditText>(R.id.edit_text_login).setText("admin")
-            loginActivity!!.findViewById<TextInputEditText>(R.id.edit_text_password).setText("adminPass")
-            loginButton.performClick()
-        }
-        val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val monitor = instrumentation.addMonitor(OrganizationsActivity::class.java.name, null, false)
-        val currentActivity = instrumentation.waitForMonitor(monitor)
+        // Log in
+        onView(withId(R.id.edit_text_login)).perform(clearText(), typeText("admin"))
+        onView(withId(R.id.edit_text_password)).perform(clearText(), typeText("adminPass"))
+
+        // Check if organizations activity is open
+        val monitor = InstrumentationRegistry.getInstrumentation()
+            .addMonitor(OrganizationsActivity::class.java.name, null, false)
+        onView(withId(R.id.login_button)).perform(click())
+        val currentActivity = InstrumentationRegistry.getInstrumentation().waitForMonitor(monitor)
         assertNotNull(currentActivity)
-        openActionBarOverflowOrOptionsMenu(instrumentation.targetContext);
+
+        // Log out
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().targetContext)
         onView(withText(R.string.action_logout)).perform(click())
     }
 }

@@ -51,7 +51,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
 
     protected fun prepareActionBar(drawer: Drawer) {
         mainDrawer = drawer
-        mainDrawer.setInterceptTouchEventChildId(R.id.roles_view);
+        mainDrawer.setInterceptTouchEventChildId(R.id.roles_view)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         toggle = ActionBarDrawerToggle(this, mainDrawer, R.string.drawer_opened, R.string.drawer_closed)
