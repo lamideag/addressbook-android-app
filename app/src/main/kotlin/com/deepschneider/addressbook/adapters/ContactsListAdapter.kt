@@ -1,19 +1,19 @@
 package com.deepschneider.addressbook.adapters
 
-import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import com.deepschneider.addressbook.activities.CreateOrEditContactActivity
+import com.deepschneider.addressbook.activities.CreateOrEditPersonActivity
 import com.deepschneider.addressbook.databinding.ContactListItemBinding
 import com.deepschneider.addressbook.dto.ContactDto
 
 class ContactsListAdapter(
     var contacts: List<ContactDto>,
     private val contactTypes: Array<String>,
-    private val activity: Activity,
+    private val activity: CreateOrEditPersonActivity,
     private val startForResult: ActivityResultLauncher<Intent>
 ) :
     RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder>() {
@@ -27,6 +27,7 @@ class ContactsListAdapter(
 
         init {
             binding.root.setOnClickListener {
+                activity.clearFocus()
                 val intent = Intent(activity, CreateOrEditContactActivity::class.java)
                 intent.putExtra("contact", currentItem)
                 startForResult.launch(intent)

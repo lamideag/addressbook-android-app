@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.deepschneider.addressbook.R
 import com.deepschneider.addressbook.databinding.ActivityCreateOrEditContactBinding
@@ -52,6 +53,13 @@ class CreateOrEditContactActivity : AppCompatActivity() {
         validateDescEditText()
         validateTypeEditText()
         updateSaveButtonState()
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                currentFocus?.clearFocus() ?: run {
+                    finish()
+                }
+            }
+        })
     }
 
     private fun prepareLayout() {

@@ -65,6 +65,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
 
     private fun prepareFloatingActionButton() {
         binding.fab.setOnClickListener {
+            clearFocus()
             startForResult.launch(
                 Intent(
                     applicationContext,
@@ -225,6 +226,13 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
         binding.saveCreateButton.isEnabled = fieldValidation.all { it }
     }
 
+    fun clearFocus() {
+        binding.lastName.clearFocus()
+        binding.firstName.clearFocus()
+        binding.rteResumeEditor.clearFocus()
+        binding.salary.clearFocus()
+    }
+
     private fun setupListeners() {
         binding.lastName.addTextChangedListener(TextFieldValidation(binding.lastName))
         binding.firstName.addTextChangedListener(TextFieldValidation(binding.firstName))
@@ -361,6 +369,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                                                 handler.post {
                                                     updateUi(personDto)
                                                     updateContactList()
+                                                    clearFocus()
                                                 }
                                                 personDto?.id?.let {
                                                     if (create) {

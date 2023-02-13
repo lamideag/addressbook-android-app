@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.android.volley.*
@@ -34,6 +35,17 @@ abstract class AbstractEntityActivity : AppCompatActivity() {
         serverUrl = NetworkUtils.getServerUrl(this@AbstractEntityActivity)
         showLockNotifications = PreferenceManager.getDefaultSharedPreferences(this@AbstractEntityActivity)
             .getBoolean(Constants.SETTINGS_SHOW_LOCK_NOTIFICATIONS, true)
+        setupOnBackPressedListener()
+    }
+
+    private fun setupOnBackPressedListener() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                currentFocus?.clearFocus() ?: run {
+                    finish()
+                }
+            }
+        })
     }
 
     protected fun sendLockRequest(lock: Boolean, cache: String, id: String) {

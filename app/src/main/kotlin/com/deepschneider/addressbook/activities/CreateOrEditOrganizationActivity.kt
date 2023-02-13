@@ -161,6 +161,13 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
         binding.name.addTextChangedListener(TextFieldValidation(binding.name))
     }
 
+    private fun clearFocus() {
+        binding.type.clearFocus()
+        binding.zip.clearFocus()
+        binding.address.clearFocus()
+        binding.name.clearFocus()
+    }
+
     private fun updateUi(organizationDto: OrganizationDto?) {
         organizationDto?.let {
             it.type?.let { type -> binding.type.setText(convertIndexToType(type)) }
@@ -238,6 +245,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
                                             )
                                         )
                                     }
+                                    clearFocus()
                                 }
                             }
                         }
