@@ -75,8 +75,8 @@
     <string name="organization_type_private">Private</string>
     <string name="organization_type_government">Government</string>
     <string name="organization_type_public">Public</string>
-    <string name="sort_order_asc">Ascending</string>
-    <string name="sort_order_desc">Descending</string>
+    <string name="sort_order_asc">ASCENDING</string>
+    <string name="sort_order_desc">DESCENDING</string>
     <string name="validation_error_required_field">Required field!</string>
     <string name="validation_error_value_too_long">Value is too long!</string>
     <string name="changes_saved_message">Changes saved!</string>

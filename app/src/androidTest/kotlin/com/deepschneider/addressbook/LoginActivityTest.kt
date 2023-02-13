@@ -39,11 +39,15 @@ class LoginActivityTest {
             .putString(Constants.SETTINGS_SERVER_URL, "192.168.1.210:9000").commit()
         PreferenceManager.getDefaultSharedPreferences(loginActivity).edit()
             .putBoolean(Constants.SETTINGS_SHOW_LOCK_NOTIFICATIONS, false).commit()
+        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit()
+            .remove(Constants.TOKEN_KEY).commit()
     }
 
     @After
     @Throws(Exception::class)
     fun tearDown() {
+        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit()
+            .remove(Constants.TOKEN_KEY).commit()
         loginActivity = null
     }
 

@@ -59,8 +59,8 @@
     <string name="organization_type_private">Частная</string>
     <string name="organization_type_government">Государственная</string>
     <string name="organization_type_public">Публичная</string>
-    <string name="sort_order_asc">По возрастанию</string>
-    <string name="sort_order_desc">По убыванию</string>
+    <string name="sort_order_asc">ПО ВОЗРАСТАНИЮ</string>
+    <string name="sort_order_desc">ПО УБЫВАНИЮ</string>
     <string name="validation_error_required_field">Обязательное поле!</string>
     <string name="validation_error_value_too_long">Слишком длинное значение!</string>
     <string name="changes_saved_message">Изменения сохранены!</string>
