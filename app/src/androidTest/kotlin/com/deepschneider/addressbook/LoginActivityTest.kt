@@ -33,9 +33,12 @@ class LoginActivityTest {
     @Throws(Exception::class)
     fun setUp() {
         loginActivity = loginActivityTestRule.activity
-        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit().putBoolean(Constants.SETTINGS_SHOULD_USE_HTTP, true).commit()
-        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit().putString(Constants.SETTINGS_SERVER_URL, "192.168.1.210:9000").commit()
-        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit().putBoolean(Constants.SETTINGS_SHOW_LOCK_NOTIFICATIONS, false).commit()
+        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit()
+            .putBoolean(Constants.SETTINGS_SHOULD_USE_HTTP, true).commit()
+        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit()
+            .putString(Constants.SETTINGS_SERVER_URL, "192.168.1.210:9000").commit()
+        PreferenceManager.getDefaultSharedPreferences(loginActivity).edit()
+            .putBoolean(Constants.SETTINGS_SHOW_LOCK_NOTIFICATIONS, false).commit()
     }
 
     @After
