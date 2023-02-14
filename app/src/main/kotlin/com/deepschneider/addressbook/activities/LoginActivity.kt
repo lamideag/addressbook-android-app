@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
 import android.util.Base64
 import android.view.Gravity
@@ -393,8 +394,17 @@ class LoginActivity : AppCompatActivity() {
                 .build()
 
             val cipher = getCipher()
-            val secretKey = getSecretKey()
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+            var secretKey = getSecretKey()
+            try {
+                cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+            } catch (e: KeyPermanentlyInvalidatedException) {
+                val keyStore = KeyStore.getInstance(Constants.KEYSTORE)
+                keyStore.load(null)
+                keyStore.deleteEntry(Constants.KEY_ALIAS)
+                generateSecretKey()
+                secretKey = getSecretKey()
+                cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+            }
 
             PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
                 .edit()
