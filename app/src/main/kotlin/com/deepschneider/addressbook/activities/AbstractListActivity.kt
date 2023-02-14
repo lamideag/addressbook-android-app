@@ -7,13 +7,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
@@ -84,6 +84,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
         ).show()
     }
 
+    @Suppress("UNCHECKED_CAST")
     protected fun updateList(filterDto: List<FilterDto>) {
         getMainList().visibility = View.GONE
         getTotalListSizeTextView().visibility = View.GONE
@@ -105,8 +106,16 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                     } else {
                         response.data?.data?.let {
                             handler.post {
-                                getMainList().adapter = getListAdapter(it)
+                                progressBar.visibility = ProgressBar.INVISIBLE
                                 getMainList().visibility = View.VISIBLE
+                                val listAdapter = getMainList().adapter
+                                if(listAdapter == null){
+                                    getMainList().adapter = getListAdapter(it)
+                                } else {
+                                    (listAdapter as ArrayAdapter<T>).clear()
+                                    listAdapter.addAll(it)
+                                    listAdapter.notifyDataSetChanged()
+                                }
                                 getTotalListSizeTextView().visibility = View.VISIBLE
                                 val totalListSize = response.data?.totalDataSize
                                 totalListSize?.let {
@@ -128,7 +137,6 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                                     getTotalListSizeTextView().text = total
                                     this.totalListSize = totalListSize
                                 }
-                                progressBar.visibility = ProgressBar.INVISIBLE
                             }
                         }
                     }

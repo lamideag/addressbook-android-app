@@ -4,6 +4,7 @@ import android.app.Activity
 import android.text.Html
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.deepschneider.addressbook.R
@@ -20,6 +21,7 @@ class PersonsListAdapter(
         rowView.findViewById<TextView>(R.id.person_list_item_resume).text = Html.fromHtml(persons[position].resume, Html.FROM_HTML_MODE_COMPACT)
         rowView.findViewById<TextView>(R.id.person_list_item_id).text = persons[position].id
         rowView.findViewById<TextView>(R.id.person_list_item_salary).text = persons[position].salary
+        rowView.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
         return rowView
     }
 }

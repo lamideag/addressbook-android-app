@@ -3,6 +3,7 @@ package com.deepschneider.addressbook.adapters
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.deepschneider.addressbook.R
@@ -23,6 +24,7 @@ class OrganizationsListAdapter(
         organizations[position].type?.let {
             rowView.findViewById<TextView>(R.id.organization_list_item_type).text = organizationTypes[it.toInt() + 1]
         }
+        rowView.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
         return rowView
     }
 }

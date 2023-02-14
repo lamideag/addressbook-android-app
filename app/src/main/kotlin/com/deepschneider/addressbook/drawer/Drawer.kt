@@ -28,6 +28,10 @@ class Drawer : DrawerLayout {
                 }
             }
         }
-        return super.onInterceptTouchEvent(ev)
+        return try {
+            super.onInterceptTouchEvent(ev)
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            false
+        }
     }
 }
