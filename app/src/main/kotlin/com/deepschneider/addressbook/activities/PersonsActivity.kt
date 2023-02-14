@@ -108,6 +108,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
             )?.let { it1 -> filters.add(it1) }
             filters.add(getOrgIdFilterDto())
             currentFilter = filters
+            tryToHideKeyboard()
             updateList(filters)
         }
     }

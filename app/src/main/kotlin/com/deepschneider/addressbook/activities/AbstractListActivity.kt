@@ -2,11 +2,13 @@ package com.deepschneider.addressbook.activities
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import android.widget.ListView
@@ -151,6 +153,15 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                 this@AbstractListActivity,
                 getMainListType()
             ).also { it.tag = getRequestTag() })
+        }
+    }
+
+    protected fun tryToHideKeyboard() {
+        try {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        } catch (e: Exception) {
+            //No-op
         }
     }
 

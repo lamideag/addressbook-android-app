@@ -119,6 +119,7 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             }
             currentFilter = filters
             start = 1
+            tryToHideKeyboard()
             updateList(filters)
         }
     }
