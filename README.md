@@ -1,5 +1,7 @@
 # [Addressbook](https://github.com/dredwardhyde/addressbook) Android Client Application
 
+[![medium](https://aleen42.github.io/badges/src/medium.svg)](https://medium.com/geekculture/how-to-make-a-login-activity-with-biometrics-support-on-android-62185f19cda1)
+
 ### Features
 
 - **[Biometrics support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/LoginActivity.kt#L338)**
