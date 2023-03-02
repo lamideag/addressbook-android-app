@@ -306,11 +306,25 @@ class LoginActivity : AppCompatActivity() {
 
         val cipher = getCipher()
         val secretKey = getSecretKey()
-        cipher.init(
-            Cipher.DECRYPT_MODE,
-            secretKey,
-            IvParameterSpec(Base64.decode(keyIV, Base64.NO_WRAP))
-        )
+        try {
+            cipher.init(
+                Cipher.DECRYPT_MODE,
+                secretKey,
+                IvParameterSpec(Base64.decode(keyIV, Base64.NO_WRAP))
+            )
+        } catch (e: KeyPermanentlyInvalidatedException) {
+            hideLoginButton()
+            val keyStore = KeyStore.getInstance(Constants.KEYSTORE)
+            keyStore.load(null)
+            keyStore.deleteEntry(Constants.KEY_ALIAS)
+            PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
+                .edit()
+                .remove(Constants.BIOMETRICS)
+                .commit()
+            showLoginButton()
+            makeSnackBar(this@LoginActivity.getString(R.string.biometric_authentification_failed_message))
+            return
+        }
 
         biometricPrompt.authenticate(
             promptInfo,
