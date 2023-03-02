@@ -17,7 +17,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
@@ -251,24 +250,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getBiometrics() {
-        generateSecretKey()
         val biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(
-                    errorCode: Int,
-                    errString: CharSequence
-                ) {
-                    super.onAuthenticationError(errorCode, errString)
-                    Toast.makeText(
-                        applicationContext,
-                        this@LoginActivity.getString(R.string.biometric_authentification_error_message) + " " + errString,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    makeSnackBar(errString as String)
                 }
 
-                override fun onAuthenticationSucceeded(
-                    result: BiometricPrompt.AuthenticationResult
-                ) {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     val decryptedInfo = result.cryptoObject?.cipher?.doFinal(
                         Base64.decode(
@@ -303,12 +291,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    Toast.makeText(
-                        applicationContext,
-                        this@LoginActivity.getString(R.string.biometric_authentification_failed_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    makeSnackBar(this@LoginActivity.getString(R.string.biometric_authentification_failed_message))
                 }
             })
 
@@ -342,11 +325,7 @@ class LoginActivity : AppCompatActivity() {
             generateSecretKey()
             val biometricPrompt = BiometricPrompt(this, executor,
                 object : BiometricPrompt.AuthenticationCallback() {
-                    override fun onAuthenticationError(
-                        errorCode: Int,
-                        errString: CharSequence
-                    ) {
-                        super.onAuthenticationError(errorCode, errString)
+                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
                             PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
                                 .edit()
@@ -354,17 +333,11 @@ class LoginActivity : AppCompatActivity() {
                                 .commit()
                             startOrganizationActivity()
                         } else {
-                            Toast.makeText(
-                                applicationContext,
-                                this@LoginActivity.getString(R.string.biometric_authentification_error_message) + " " + errString,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            makeSnackBar(errString as String)
                         }
                     }
 
-                    override fun onAuthenticationSucceeded(
-                        result: BiometricPrompt.AuthenticationResult
-                    ) {
+                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
                         val loginText = binding.editTextLogin.text.toString()
                         val passwordText = binding.editTextPassword.text.toString()
@@ -378,12 +351,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun onAuthenticationFailed() {
-                        super.onAuthenticationFailed()
-                        Toast.makeText(
-                            applicationContext,
-                            this@LoginActivity.getString(R.string.biometric_authentification_failed_message),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        makeSnackBar(this@LoginActivity.getString(R.string.biometric_authentification_failed_message))
                     }
                 })
 
