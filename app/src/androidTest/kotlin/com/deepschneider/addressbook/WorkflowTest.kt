@@ -66,6 +66,7 @@ class WorkflowTest {
         onView(withId(R.id.name)).perform(clearText(), typeText("Apple"))
         onView(withId(R.id.address)).perform(clearText(), typeText("Test Address 111"))
         onView(withId(R.id.zip)).perform(clearText(), typeText("NN 111"))
+        Espresso.closeSoftKeyboard()
         onView(withId(R.id.type)).perform(click())
         onView(withText(R.string.choose_organization_type)).check(matches(isDisplayed()))
         onView(withText(R.string.organization_type_private)).perform(click())
