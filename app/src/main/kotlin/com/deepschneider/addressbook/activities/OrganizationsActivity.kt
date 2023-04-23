@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ListAdapter
-import android.widget.ListView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
@@ -58,6 +55,13 @@ class OrganizationsActivity : AbstractListActivity<OrganizationDto>() {
             val organizationDto = parent.adapter.getItem(position) as OrganizationDto
             intent.putExtra("organization", organizationDto)
             startActivity(intent)
+        }
+        binding.listView.setOnItemLongClickListener { parent, _, position, _ ->
+            val intent = Intent(applicationContext, CreateOrEditOrganizationActivity::class.java)
+            val organizationDto = parent.adapter.getItem(position) as OrganizationDto
+            intent.putExtra("organization", organizationDto)
+            startActivity(intent)
+            true
         }
         binding.listView.setOnTouchListener(object :
             OnSwipeTouchListener(this@OrganizationsActivity) {

@@ -26,7 +26,7 @@ open class OnSwipeTouchListener(ctx: Context) : View.OnTouchListener {
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onDown(e: MotionEvent): Boolean {
-            return true
+            return false
         }
 
         override fun onFling(
