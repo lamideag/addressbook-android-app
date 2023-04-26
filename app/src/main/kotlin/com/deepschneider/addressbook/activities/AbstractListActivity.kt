@@ -115,6 +115,7 @@ abstract class AbstractListActivity<in T> : AppCompatActivity() {
                                     getMainList().adapter = getListAdapter(it)
                                 } else {
                                     (listAdapter as ArrayAdapter<T>).clear()
+                                    getMainList().scheduleLayoutAnimation()
                                     listAdapter.addAll(it)
                                     listAdapter.notifyDataSetChanged()
                                 }
