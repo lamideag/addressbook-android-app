@@ -11,6 +11,7 @@ object Urls {
     const val SAVE_OR_CREATE_PERSON = "/rest/saveOrCreatePerson"
     const val SAVE_OR_CREATE_CONTACTS = "/rest/saveOrCreateContacts"
     const val UNLOCK_RECORD = "/rest/unlockRecord"
+    const val LOGOUT = "/rest/logout"
 
     const val AUTH = "/auth"
     const val ROTATE_TOKEN = "/rotateToken"

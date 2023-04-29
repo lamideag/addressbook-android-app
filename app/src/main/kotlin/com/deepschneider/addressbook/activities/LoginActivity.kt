@@ -156,21 +156,6 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, SettingsActivity::class.java))
                 return true
             }
-            R.id.action_logout_main -> {
-                PreferenceManager.getDefaultSharedPreferences(this)
-                    .edit()
-                    .remove(Constants.TOKEN_KEY)
-                    .commit()
-                val intent = Intent()
-                intent.component = ComponentName(
-                    this.packageName,
-                    this.packageName + Constants.ACTIVE_LOGIN_COMPONENT
-                )
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                return true
-            }
             R.id.action_about_main -> {
                 val binding = DialogAppInfoBinding.inflate(layoutInflater)
                 binding.developer.setText(R.string.app_info_author)
