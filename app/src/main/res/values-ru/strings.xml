@@ -67,7 +67,6 @@
     <string name="person_created_message">Персона добавлена!</string>
     <string name="organization_created_message">Организация добавлена!</string>
     <string name="delete_contact_confirmation">Удалить этот контакт?</string>
-    <string name="edit_activity_header">Редактирование</string>
     <string name="contact_type_mobile_phone">Мобильный телефон</string>
     <string name="contact_type_home_phone">Домашний телефон</string>
     <string name="contact_type_address">Адрес</string>

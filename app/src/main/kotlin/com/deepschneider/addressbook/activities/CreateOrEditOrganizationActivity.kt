@@ -177,7 +177,7 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
             binding.id.setText(it.id)
             binding.lastUpdated.setText(it.lastUpdated)
             binding.saveCreateButton.text = this.getString(R.string.action_save_changes)
-            title = this.getString(R.string.edit_activity_header) + " " + it.name
+            title = " " + it.name
         } ?: run {
             binding.saveCreateButton.text = this.getString(R.string.action_create)
         }

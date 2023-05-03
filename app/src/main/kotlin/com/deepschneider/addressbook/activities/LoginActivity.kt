@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
@@ -86,6 +87,13 @@ class LoginActivity : AppCompatActivity() {
         } else {
             binding.biometricLogin.visibility = View.GONE
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                currentFocus?.clearFocus() ?: run {
+                    finish()
+                }
+            }
+        })
     }
 
     private fun isBiometricSupported(): Boolean {

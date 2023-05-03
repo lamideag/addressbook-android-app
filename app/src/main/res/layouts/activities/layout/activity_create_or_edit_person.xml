@@ -177,6 +177,7 @@
                 app:errorEnabled="true">
 
                 <org.wordpress.aztec.AztecText
+                    style="@style/AztecText"
                     android:id="@+id/rte_resume_editor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

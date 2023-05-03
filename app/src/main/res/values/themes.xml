@@ -48,6 +48,13 @@
         <item name="toolbarIconDisabledColor">?attr/iconDisabledColor</item>
     </style>
 
+    <style name="AztecText">
+        <item name="bulletColor">?attr/colorPrimary</item>
+        <item name="linkColor">?attr/colorPrimary</item>
+        <item name="quoteBackground">?attr/colorPrimaryVariant</item>
+        <item name="quoteColor">?attr/colorPrimary</item>
+    </style>
+
     <style name="Theme.Addressbook.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorPrimaryVariant">@color/light_blue_700</item>

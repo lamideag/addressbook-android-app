@@ -185,7 +185,7 @@ class CreateOrEditContactActivity : AppCompatActivity() {
             binding.data.setText(contact.data)
             binding.desc.setText(contact.description)
             contact.type?.let { contactType ->
-                title = this.getString(R.string.edit_activity_header) + " " + contactTypes[contactType.toInt() + 1]
+                title = " " + contactTypes[contactType.toInt() + 1]
                 binding.deleteContactButton.visibility = View.VISIBLE
             }
             binding.addApplyButton.text = this.getString(R.string.action_apply_contact_changes)

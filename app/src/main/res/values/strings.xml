@@ -83,7 +83,6 @@
     <string name="person_created_message">Person created!</string>
     <string name="organization_created_message">Organization created!</string>
     <string name="delete_contact_confirmation">Delete this contact?</string>
-    <string name="edit_activity_header">Edit</string>
     <string name="contact_type_mobile_phone">Mobile phone</string>
     <string name="contact_type_home_phone">Home phone</string>
     <string name="contact_type_address">Address</string>

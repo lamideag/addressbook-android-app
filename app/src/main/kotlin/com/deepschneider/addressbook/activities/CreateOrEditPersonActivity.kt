@@ -37,6 +37,8 @@ import com.google.gson.reflect.TypeToken
 import org.wordpress.aztec.Aztec
 import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
+import org.wordpress.aztec.toolbar.ToolbarAction
+import org.wordpress.aztec.toolbar.ToolbarItems
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -169,6 +171,20 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun prepareAztecToolbar() {
+        binding.formattingToolbar.setToolbarItems(
+            ToolbarItems.BasicLayout(
+                ToolbarAction.HEADING,
+                ToolbarAction.LIST,
+                ToolbarAction.BOLD,
+                ToolbarAction.ITALIC,
+                ToolbarAction.UNDERLINE,
+                ToolbarAction.STRIKETHROUGH,
+                ToolbarAction.ALIGN_LEFT,
+                ToolbarAction.ALIGN_CENTER,
+                ToolbarAction.ALIGN_RIGHT,
+                ToolbarAction.HORIZONTAL_RULE
+            )
+        )
         binding.formattingToolbar.visibility = View.VISIBLE
         binding.formattingToolbar.enableMediaMode(false)
     }
@@ -451,7 +467,7 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
             it.salary?.let { salary -> binding.salary.setText(salary.substring(0, salary.length - 4)) }
             it.resume?.let { it1 -> binding.rteResumeEditor.fromHtml(it1) }
             binding.saveCreateButton.text = this.getString(R.string.action_save_changes)
-            title = this.getString(R.string.edit_activity_header) + " " + it.firstName + " " + it.lastName
+            title = " " + it.firstName + " " + it.lastName
             it.salary?.let { salary -> binding.salaryCurrency.setText(salary.substring(salary.length - 3)) }
         } ?: run {
             binding.saveCreateButton.text = this.getString(R.string.action_create)
