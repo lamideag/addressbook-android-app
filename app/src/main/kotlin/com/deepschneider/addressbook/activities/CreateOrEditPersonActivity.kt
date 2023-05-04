@@ -146,11 +146,10 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun prepareAztecTextEditor() {
-        val resumeEditTextLayout = binding.resumeLayout
-        val errorTextView = resumeEditTextLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
+        val errorTextView = binding.resumeLayout.findViewById<TextView>(com.google.android.material.R.id.textinput_error)
         val layoutParams = errorTextView.layoutParams as android.widget.FrameLayout.LayoutParams
         layoutParams.bottomMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 10).toInt()
-        val errorButton = resumeEditTextLayout.findViewById<CheckableImageButton>(com.google.android.material.R.id.text_input_error_icon)
+        val errorButton = binding.resumeLayout.findViewById<CheckableImageButton>(com.google.android.material.R.id.text_input_error_icon)
         val layoutParamsButton = errorButton.layoutParams as android.widget.LinearLayout.LayoutParams
         layoutParamsButton.topMargin = (this@CreateOrEditPersonActivity.resources.displayMetrics.density * 12).toInt()
         binding.rteResumeEditor.setOnFocusChangeListener { _, hasFocus ->
@@ -257,17 +256,15 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun validateFirstNameEditText() {
-        val firstNameEditText = binding.firstName
-        val firstNameEditTextLayout = binding.firstNameLayout
-        val value = firstNameEditText.text.toString().trim()
+        val value = binding.firstName.text.toString().trim()
         if (value.isEmpty()) {
-            firstNameEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.firstNameLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[3] = false
         } else if (value.length > 500) {
-            firstNameEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.firstNameLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[3] = false
         } else {
-            firstNameEditTextLayout.error = null
+            binding.firstNameLayout.error = null
             fieldValidation[3] = true
         }
     }
@@ -315,33 +312,29 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun validateLastNameEditText() {
-        val lastNameEditText = binding.lastName
-        val lastNameEditTextLayout = binding.lastNameLayout
-        val value = lastNameEditText.text.toString().trim()
+        val value = binding.lastName.text.toString().trim()
         if (value.isEmpty()) {
-            lastNameEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.lastNameLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[1] = false
         } else if (value.length > 500) {
-            lastNameEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.lastNameLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[1] = false
         } else {
-            lastNameEditTextLayout.error = null
+            binding.lastNameLayout.error = null
             fieldValidation[1] = true
         }
     }
 
     private fun validateSalaryEditText() {
-        val salaryEditText = binding.salary
-        val salaryEditTextLayout = binding.salaryLayout
-        val value = salaryEditText.text.toString().trim()
+        val value = binding.salary.text.toString().trim()
         if (value.isEmpty()) {
-            salaryEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.salaryLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[0] = false
         } else if (value.length > 100) {
-            salaryEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.salaryLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[0] = false
         } else {
-            salaryEditTextLayout.error = null
+            binding.salaryLayout.error = null
             fieldValidation[0] = true
         }
     }
@@ -431,24 +424,23 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
     }
 
     private fun validateResumeRteEditText() {
-        val resumeEditTextLayout = binding.resumeLayout
         val value = binding.rteResumeEditor.toHtml().trim()
         if (value.isEmpty()) {
-            resumeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.resumeLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
             if(binding.rteResumeEditor.hasFocus())
                 highlightRteErrorFocus()
             else
                 highlightRteErrorUnfocused()
         } else if (value.length > 2000) {
-            resumeEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.resumeLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[2] = false
             if(binding.rteResumeEditor.hasFocus())
                 highlightRteErrorFocus()
             else
                 highlightRteErrorUnfocused()
         } else {
-            resumeEditTextLayout.error = null
+            binding.resumeLayout.error = null
             fieldValidation[2] = true
             if(binding.rteResumeEditor.hasFocus())
                 highlightRteFocus()

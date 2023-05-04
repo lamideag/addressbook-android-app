@@ -50,61 +50,53 @@ class CreateOrEditOrganizationActivity : AbstractEntityActivity() {
     }
 
     private fun validateNameEditText() {
-        val nameEditText = binding.name
-        val nameEditTextLayout = binding.nameLayout
-        val value = nameEditText.text.toString().trim()
+        val value = binding.name.text.toString().trim()
         if (value.isEmpty()) {
-            nameEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.nameLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[3] = false
         } else if (value.length > 500) {
-            nameEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.nameLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[3] = false
         } else {
-            nameEditTextLayout.error = null
+            binding.nameLayout.error = null
             fieldValidation[3] = true
         }
     }
 
     private fun validateAddressEditText() {
-        val addressEditText = binding.address
-        val addressEditTextLayout = binding.addressLayout
-        val value = addressEditText.text.toString().trim()
+        val value = binding.address.text.toString().trim()
         if (value.isEmpty()) {
-            addressEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.addressLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[1] = false
         } else if (value.length > 500) {
-            addressEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.addressLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[1] = false
         } else {
-            addressEditTextLayout.error = null
+            binding.addressLayout.error = null
             fieldValidation[1] = true
         }
     }
 
     private fun validateZipEditText() {
-        val zipEditText = binding.zip
-        val zipEditTextLayout = binding.zipLayout
-        val value = zipEditText.text.toString().trim()
+        val value = binding.zip.text.toString().trim()
         if (value.isEmpty()) {
-            zipEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.zipLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[0] = false
         } else if (value.length > 100) {
-            zipEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.zipLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[0] = false
         } else {
-            zipEditTextLayout.error = null
+            binding.zipLayout.error = null
             fieldValidation[0] = true
         }
     }
 
     private fun validateTypeEditText() {
-        val typeEditText = binding.type
-        val typeEditTextLayout = binding.typeLayout
-        if (typeEditText.text.toString().trim().isEmpty()) {
-            typeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+        if (binding.type.text.toString().trim().isEmpty()) {
+            binding.typeLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
         } else {
-            typeEditTextLayout.error = null
+            binding.typeLayout.error = null
             fieldValidation[2] = true
         }
     }

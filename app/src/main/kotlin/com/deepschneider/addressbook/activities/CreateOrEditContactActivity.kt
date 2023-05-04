@@ -115,45 +115,39 @@ class CreateOrEditContactActivity : AppCompatActivity() {
     }
 
     private fun validateDataEditText() {
-        val dataEditText = binding.data
-        val dataEditTextLayout = binding.dataLayout
-        val value = dataEditText.text.toString().trim()
+        val value = binding.data.text.toString().trim()
         if (value.isEmpty()) {
-            dataEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.dataLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[1] = false
         } else if (value.length > 500) {
-            dataEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.dataLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[1] = false
         } else {
-            dataEditTextLayout.error = null
+            binding.dataLayout.error = null
             fieldValidation[1] = true
         }
     }
 
     private fun validateDescEditText() {
-        val descEditText = binding.desc
-        val descEditTextLayout = binding.descLayout
-        val value = descEditText.text.toString().trim()
+        val value = binding.desc.text.toString().trim()
         if (value.isEmpty()) {
-            descEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+            binding.descLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[0] = false
         } else if (value.length > 100) {
-            descEditTextLayout.error = this.getString(R.string.validation_error_value_too_long)
+            binding.descLayout.error = this.getString(R.string.validation_error_value_too_long)
             fieldValidation[0] = false
         } else {
-            descEditTextLayout.error = null
+            binding.descLayout.error = null
             fieldValidation[0] = true
         }
     }
 
     private fun validateTypeEditText() {
-        val typeEditText = binding.type
-        val typeEditTextLayout = binding.typeLayout
-        if (typeEditText.text.toString().trim().isEmpty()) {
-            typeEditTextLayout.error = this.getString(R.string.validation_error_required_field)
+        if (binding.type.text.toString().trim().isEmpty()) {
+            binding.typeLayout.error = this.getString(R.string.validation_error_required_field)
             fieldValidation[2] = false
         } else {
-            typeEditTextLayout.error = null
+            binding.typeLayout.error = null
             fieldValidation[2] = true
         }
     }
