@@ -1,7 +1,7 @@
 package com.deepschneider.addressbook.dto
 
 import java.io.Serializable
-import java.util.*
+import java.util.Collections
 
 class AlertDto(headline: String?, type: String?, message: String?) : Serializable {
     companion object {

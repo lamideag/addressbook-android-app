@@ -1,6 +1,8 @@
 package com.deepschneider.addressbook.utils
 
-import java.util.*
+import java.util.Currency
+import java.util.Locale
+import java.util.TreeSet
 
 object Constants {
     const val NO_VALUE = "no value"

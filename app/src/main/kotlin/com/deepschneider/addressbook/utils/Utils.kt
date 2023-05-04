@@ -3,12 +3,12 @@ package com.deepschneider.addressbook.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.util.Base64
 import androidx.preference.PreferenceManager
 import com.deepschneider.addressbook.dto.FilterDto
 import java.io.Serializable
 import java.text.SimpleDateFormat
-import java.util.*
-import android.util.Base64
+import java.util.Locale
 
 object Utils {
     fun getTextFilterDto(name: String, value: String?): FilterDto? {
