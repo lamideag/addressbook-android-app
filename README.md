@@ -6,15 +6,15 @@
 ### Features
 
 - **[Biometrics support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/LoginActivity.kt#L328)**
-- **[Instrumentation Testing with Espresso](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/androidTest/kotlin/com/deepschneider/addressbook/WorkflowTest.kt)**
-- **[Dark/Light Theme support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/res/values/themes.xml) with [Dynamic Switching](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/LoginActivity.kt#L60)**
-- **[Dynamic Dark/Light Icon Switching](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/LoginActivity.kt#L106)**
-- **[Material Components](https://github.com/dredwardhyde/addressbook-android-app#demo)**
+- **[Instrumentation testing with Espresso](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/androidTest/kotlin/com/deepschneider/addressbook/WorkflowTest.kt)**
+- **[Dark/Light Theme support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/res/values/themes.xml) with [dynamic switching](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/LoginActivity.kt#L60)**
+- **[Dynamic Dark/Light icon switching](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/LoginActivity.kt#L106)**
+- **[Material components](https://github.com/dredwardhyde/addressbook-android-app#demo)**
 - **[Rich Text Editor support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/res/layouts/activities/layout/activity_create_or_edit_person.xml#L179)**  
-- **[User Certificates support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/res/xml/network_security_config.xml#L5)**  
-- **[Building](https://github.com/dredwardhyde/addressbook-android-app/blob/master/.github/workflows/android.yml#L31), [Signing](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/build.gradle#L20) and [Publishing Release](https://github.com/dredwardhyde/addressbook-android-app/blob/master/.github/workflows/android.yml#L44) using Github Actions**  
-- **[Custom Requests with JWT Authentication](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/network/FilteredListRequest.kt) using [Android Volley](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/AbstractListActivity.kt#L100)**  
-- **[Server Side Pagination and Filtering](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/OrganizationsActivity.kt#L86)**  
+- **[User certificates support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/res/xml/network_security_config.xml#L5)**  
+- **[Building](https://github.com/dredwardhyde/addressbook-android-app/blob/master/.github/workflows/android.yml#L31), [signing](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/build.gradle#L20) and [publishing release](https://github.com/dredwardhyde/addressbook-android-app/blob/master/.github/workflows/android.yml#L44) using Github Actions**  
+- **[Custom requests with JWT authentication](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/network/FilteredListRequest.kt) using [Android Volley](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/AbstractListActivity.kt#L100)**  
+- **[Server-side pagination and filtering](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/OrganizationsActivity.kt#L86)**  
 - **[Custom list animation](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/activities/AbstractListActivity.kt#L119)**  
 - **[Custom gesture recognition](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/src/main/kotlin/com/deepschneider/addressbook/listeners/OnSwipeTouchListener.kt)**  
 - **[ProGuard support](https://github.com/dredwardhyde/addressbook-android-app/blob/master/app/proguard-rules.pro)**  
