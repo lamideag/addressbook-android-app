@@ -12,10 +12,10 @@
         <item name="windowActionBar">true</item>
         <item name="toolbarBackgroundColor">@color/white</item>
         <item name="toolbarBorderColor">@color/white</item>
-        <item name="iconNormalColor">@color/grey_darken_20</item>
-        <item name="iconHighlightColor">@color/almost_black</item>
+        <item name="iconNormalColor">?attr/colorPrimary</item>
+        <item name="iconHighlightColor">?attr/colorSecondary</item>
         <item name="colorAccent">?attr/colorPrimary</item>
-        <item name="iconDisabledColor">@color/grey_lighten_20</item>
+        <item name="iconDisabledColor">@color/grey</item>
         <item name="rteTextColor">@color/rte_resume_text_color</item>
         <item name="fab_color">?attr/colorSecondary</item>
         <item name="rteHintTextColor">@color/rte_resume_hint_text_color</item>
