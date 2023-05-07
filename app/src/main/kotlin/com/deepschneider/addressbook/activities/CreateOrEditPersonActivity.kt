@@ -368,47 +368,49 @@ class CreateOrEditPersonActivity : AbstractEntityActivity(), IAztecToolbarClickL
                         it,
                         { response ->
                             response.data?.let { savedPersonDto ->
-                                requestQueue.add(SaveOrCreateEntityRequest(
-                                    "$serverUrl" + Urls.SAVE_OR_CREATE_CONTACTS + "?personId=" + savedPersonDto.id,
-                                    currentContactList,
-                                    { response ->
-                                        response.data?.let {
-                                            handler.post {
-                                                personDto = savedPersonDto
+                                savedPersonDto.id?.let { personId ->
+                                    sendLockRequest(
+                                        true, Constants.PERSONS_CACHE_NAME, personId
+                                    )
+                                    requestQueue.add(SaveOrCreateEntityRequest(
+                                        "$serverUrl" + Urls.SAVE_OR_CREATE_CONTACTS + "?personId=" + personId,
+                                        currentContactList,
+                                        { response ->
+                                            response.data?.let {
                                                 handler.post {
-                                                    updateUi(personDto)
-                                                    updateContactList()
-                                                    clearFocus()
-                                                }
-                                                personDto?.id?.let {
-                                                    if (create) {
-                                                        sendLockRequest(
-                                                            true, Constants.PERSONS_CACHE_NAME, it
-                                                        )
-                                                        makeSnackBar(
-                                                            this@CreateOrEditPersonActivity.getString(
-                                                                R.string.person_created_message
+                                                    personDto = savedPersonDto
+                                                    handler.post {
+                                                        updateUi(personDto)
+                                                        updateContactList()
+                                                        clearFocus()
+                                                    }
+                                                    personDto?.id?.let {
+                                                        if (create) {
+                                                            makeSnackBar(
+                                                                this@CreateOrEditPersonActivity.getString(
+                                                                    R.string.person_created_message
+                                                                )
                                                             )
-                                                        )
-                                                    } else {
-                                                        makeSnackBar(
-                                                            this@CreateOrEditPersonActivity.getString(
-                                                                R.string.changes_saved_message
+                                                        } else {
+                                                            makeSnackBar(
+                                                                this@CreateOrEditPersonActivity.getString(
+                                                                    R.string.changes_saved_message
+                                                                )
                                                             )
-                                                        )
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
-                                    },
-                                    { error ->
-                                        handler.post {
-                                            makeErrorSnackBar(error)
-                                        }
-                                    },
-                                    this@CreateOrEditPersonActivity,
-                                    object : TypeToken<PageDataDto<List<ContactDto>>>() {}.type
-                                ).also { it.tag = getRequestTag() })
+                                        },
+                                        { error ->
+                                            handler.post {
+                                                makeErrorSnackBar(error)
+                                            }
+                                        },
+                                        this@CreateOrEditPersonActivity,
+                                        object : TypeToken<PageDataDto<List<ContactDto>>>() {}.type
+                                    ).also { it.tag = getRequestTag() })
+                                }
                             }
                         },
                         { error ->
