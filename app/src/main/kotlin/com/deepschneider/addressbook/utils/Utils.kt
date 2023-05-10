@@ -25,15 +25,7 @@ object Utils {
         if (value.isNullOrBlank() || comparator.isNullOrBlank()) return null
         val filterDto = FilterDto()
         filterDto.name = name
-        filterDto.value = SimpleDateFormat(
-            "yyyy-MM-dd",
-            Locale.US
-        ).parse(value)?.let {
-            SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-                Locale.US
-            ).format(it)
-        }
+        filterDto.value = value
         filterDto.comparator = comparator
         filterDto.type = "DateFilter"
         return filterDto
