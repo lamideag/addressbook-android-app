@@ -1,7 +1,7 @@
 # [Addressbook](https://github.com/dredwardhyde/addressbook) Android Client Application
 
 [![medium](https://aleen42.github.io/badges/src/medium.svg)](https://medium.com/geekculture/how-to-make-a-login-activity-with-biometrics-support-on-android-62185f19cda1)  [![medium](https://aleen42.github.io/badges/src/medium.svg)](https://medium.com/geekculture/how-to-build-sign-and-publish-android-application-using-github-actions-aa6346679254)
-
+[![Android CI](https://github.com/dredwardhyde/addressbook-android-app/actions/workflows/android.yml/badge.svg)](https://github.com/dredwardhyde/addressbook-android-app/actions/workflows/android.yml)
 
 ### Features
 
