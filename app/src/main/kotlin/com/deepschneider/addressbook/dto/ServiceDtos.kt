@@ -4,13 +4,6 @@ import java.io.Serializable
 import java.util.Collections
 
 class AlertDto(headline: String?, type: String?, message: String?) : Serializable {
-    companion object {
-        const val SUCCESS: String = "success"
-        const val WARNING: String = "warning"
-        const val DANGER: String = "danger"
-        const val RECORD_PREFIX: String = "Record id "
-    }
-
     var headline: String? = null
     var type: String? = null
     var message: String? = null

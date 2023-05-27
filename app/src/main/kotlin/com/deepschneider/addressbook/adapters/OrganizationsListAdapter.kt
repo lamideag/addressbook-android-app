@@ -16,7 +16,7 @@ class OrganizationsListAdapter(
 ) : ArrayAdapter<OrganizationDto>(activity, R.layout.organizations_list_item, organizations) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val rowView: View = convertView ?: activity.layoutInflater.inflate(R.layout.organizations_list_item, parent, false)
+        val rowView = convertView ?: activity.layoutInflater.inflate(R.layout.organizations_list_item, parent, false)
         rowView.findViewById<TextView>(R.id.organization_list_item_name).text = organizations[position].name
         rowView.findViewById<TextView>(R.id.organization_list_item_address_and_zip).text = "${organizations[position].street} ${organizations[position].zip}"
         rowView.findViewById<TextView>(R.id.organization_list_item_last_updated).text = organizations[position].lastUpdated

@@ -56,7 +56,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
     private fun prepareListView() {
         binding.listView.setOnItemClickListener { parent, _, position, _ ->
             val intent = Intent(applicationContext, CreateOrEditPersonActivity::class.java)
-            val personDto: PersonDto = parent.adapter.getItem(position) as PersonDto
+            val personDto = parent.adapter.getItem(position) as PersonDto
             intent.putExtra("person", personDto)
             intent.putExtra("orgId", organizationDto.id)
             startActivity(intent)
@@ -115,7 +115,7 @@ class PersonsActivity : AbstractListActivity<PersonDto>() {
 
     private fun updateOrganization() {
         val handler = Handler(Looper.getMainLooper())
-        val executor: ExecutorService = Executors.newSingleThreadExecutor()
+        val executor = Executors.newSingleThreadExecutor()
         val url = "$serverUrl" + Urls.GET_ORGANIZATION + "?id=${organizationDto.id}"
         executor.execute {
             requestQueue.add(
